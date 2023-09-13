@@ -4,8 +4,10 @@ const app = express();
 
 app.use(cors());
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
-  res.status(200).send("hello");
+  res.status(200).send({ greeting: "hello" });
 });
 
 const port = 3000;
