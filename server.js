@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const admin = require("firebase-admin");
-const serviceAccount = require("./swimwild-c2ca7-firebase-adminsdk-yneo9-a17048c8f7.json");
+const serviceAccount = require("./firebase-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
