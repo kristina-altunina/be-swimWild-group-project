@@ -4,24 +4,41 @@ mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-const Lakes = require("./models/lakes-model");
-const lakeData = require("./test-data/lakes");
+const Locations = require("./models/locations-model");
+const locationData = require("./test-data/locations");
 
-const seedDB = (lakeData) => {
-  return Lakes.collection
-    .drop()
-    .then(() => Lakes.create(lakeData))
+const Users = require("./models/users-model");
+const userData = require("./test-data/users");
+
+const deleteDB = () => {
+  const promises = [];
+  promises.push(Locations.collection.drop());
+  promises.push(Users.collection.drop());
+  return Promise.all(promises)
     .then(() => {
-      console.log("Lakes seeded");
+      return Promise.resolve();
+    })
+    .catch(() => {
+      return Promise.resolve();
+    });
+};
+
+const seedDB = (locationData, userData) => {
+  return deleteDB()
+    .then(() => Locations.create(locationData))
+    .then(() => {
+      console.log("Locations seeded");
+      return Users.create(userData);
+    })
+    .then(() => {
+      console.log("Users seeded");
     })
     .catch((error) => {
-      console.error("Error seeding lakes:", error);
+      console.error("Error seeding data:", error);
     })
     .finally(() => {
       mongoose.connection.close();
     });
 };
 
-seedDB(lakeData);
-
-
+seedDB(locationData, userData);

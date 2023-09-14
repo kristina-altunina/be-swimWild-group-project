@@ -1,13 +1,13 @@
 module.exports = [
   {
-    uid: "",
+    uid: "01uvnumc0174cm0u99n8vv4",
     name: "Jake",
     surname: "Jones",
     profileImg: "",
     swims: [
       {
         date: "2023-09-02T11:00:00+0000",
-        location: "",
+        location: 2,
         notes:
           "A great swim! To the dog's grave on the main island and back. Water not too cold.",
         stars: 5,

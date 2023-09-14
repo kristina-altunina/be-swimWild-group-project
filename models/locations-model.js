@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const locationSchema = mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: true,
+    },
     name: {
       type: String,
       required: [true, "Please enter a product name"],

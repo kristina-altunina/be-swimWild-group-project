@@ -9,11 +9,11 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   uid: {
-    type: string,
+    type: String,
     required: true,
   },
   profileImg: {
-    type: string,
+    type: String,
   },
   swims: {
     type: [
@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
           required: true,
         },
         location: {
-          type: String,
+          type: Number,
           required: true,
         },
         notes: {
