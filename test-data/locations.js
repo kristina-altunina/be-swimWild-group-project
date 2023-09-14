@@ -15,4 +15,12 @@ module.exports = [
       coordinates: [54.447268, -2.995986],
     },
   },
+  {
+    id: 3,
+    name: "Elie Beach, Fife",
+    loc: {
+      type: "Point",
+      coordinates: [56.188753, -2.830412],
+    },
+  },
 ];
