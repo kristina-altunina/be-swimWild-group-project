@@ -1,4 +1,5 @@
 node_modules
 server.cert
 server.key
-firebase-key.json.env
+firebase-key.json
+.env
