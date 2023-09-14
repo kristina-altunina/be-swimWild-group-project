@@ -1,23 +1,75 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Please enter a user name"],
+const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please enter a first name"],
+  },
+  surname: {
+    type: String,
+  },
+  uid: {
+    type: string,
+    required: true,
+  },
+  profileImg: {
+    type: string,
+  },
+  swims: {
+    type: [
+      {
+        date: {
+          type: Date,
+          required: true,
         },
-    uid: {
-      type: string,
-      required: true,
-    },
+        location: {
+          type: String,
+          required: true,
+        },
+        notes: {
+          type: String,
+        },
+        stars: {
+          type: Number,
+          min: [0, "Too small"],
+          max: [5, "Too big"],
+        },
+        recordTemp: {
+          type: Number,
+          min: [-5, "Don't lie"],
+          max: [60, "Don't lie"],
+        },
+        feelTemp: {
+          type: String,
+          enum: ["freezing", "cold", "average", "warm", "hot"],
+        },
+        outOfDepth: {
+          type: Boolean,
+        },
+        sizekey: {
+          type: String,
+          enum: ["tiny", "small", "medium", "large"],
+        },
+        shore: {
+          type: String,
+          enum: ["muddy", "rocky", "sandy", "pebbly", "grassy", "swampy"],
+        },
+        bankAngle: {
+          type: String,
+          emum: ["shallow", "medium", "steep", "jump-in"],
+        },
+        clarity: {
+          type: String,
+          enum: ["muddy", "murky", "average", "clear", "perfect"],
+        },
+        imageUrls: {
+          type: [String],
+        },
+      },
+    ],
+  },
+});
 
-    swimminghistory : {
-      type: Array,
-      required: false,
-    },
-  }
-);
+const Users = mongoose.model("Users", userSchema);
 
-const User = mongoose.model("Lakes", lakeSchema);
-
-module.exports = Lakes;
+module.exports = Users;
