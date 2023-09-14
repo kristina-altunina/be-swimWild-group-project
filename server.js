@@ -5,37 +5,18 @@ const cors = require("cors");
 const admin = require("firebase-admin");
 const serviceAccount = require("./firebase-key.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const app = express();
 const Locations = require("./models/locations-model");
 const Users = require("./models/users-model");
 
 require("dotenv").config();
 
-const port = 3000;
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const app = express();
 
 app.use(express.json());
-
-// const admin = require('../config/firebase-config');
-
-app.use((req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  admin
-    .auth()
-    .verifyIdToken(token)
-    .then((user) => {
-      req.user = user;
-      console.log("this is the value", user);
-      return next();
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.json({ message: "Unauthorized" });
-    });
-});
 
 app.use(cors());
 
@@ -44,12 +25,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.status(200).send({ greeting: `hello ${req.user.email}` });
 });
-
-// app.post("/locations", (req, res) => {
-//   Locations.create(req.body).then((location) => {
-//     res.status(200).json(location);
-//   });
-// });
 
 app.get("/locations", (req, res) => {
   Locations.find({}).then((locations) => {
@@ -70,11 +45,47 @@ app.get("/locations/:id", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  Users.find({}),
-    then((users) => {
-      res.status(200).json(users);
+  Users.find({}).then((users) => {
+    res.status(200).json(users);
+  });
+});
+
+app.use((req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    res
+      .status(401)
+      .send({ msg: "This endpoint requires an authorization token" });
+    return;
+  }
+  const token = authHeader.split(" ")[1];
+  admin
+    .auth()
+    .verifyIdToken(token)
+    .then((user) => {
+      req.user = user;
+      console.log("User info: ", user);
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.json({ message: "Unauthorized" });
     });
 });
+
+app.get("/profile", (req, res) => {
+  Users.find({ uid: req.user.uid }).then((user) => {
+    res.status(200).json(user);
+  });
+});
+
+// app.post("/locations", (req, res) => {
+//   Locations.create(req.body).then((location) => {
+//     res.status(200).json(location);
+//   });
+// });
+
+const port = 3000;
 
 mongoose
   .connect(process.env.DATABASE_URL)
