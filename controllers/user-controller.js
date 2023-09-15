@@ -15,7 +15,12 @@ function postUser(req, res, next) {
   });
 }
 
-module.exports = { postUser };
+
+function patchUser(req,res,next){
+  console.log(req.body)
+}
+
+module.exports = { postUser, patchUser };
 
 // app.get("/", (req, res) => {
 //   res.status(200).send({ greeting: `hello ${req.user.email}` });
