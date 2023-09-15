@@ -15,7 +15,16 @@ function postUser(req, res, next) {
   });
 }
 
-module.exports = { postUser };
+function getUser(req, res, next) {
+  Users.find({ uid: req.user.uid })
+    .then((user) => {
+    res.status(200).send(user);
+  });
+}
+
+
+
+module.exports = { postUser, getUser };
 
 // app.get("/", (req, res) => {
 //   res.status(200).send({ greeting: `hello ${req.user.email}` });
