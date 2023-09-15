@@ -4,12 +4,12 @@ mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-const Locations = require("./models/locations-model");
-const locationData = require("./test-data/locations");
+const Locations = require("./locations-model");
+const locationData = require("../test-data/locations");
 
-const Users = require("./models/users-model");
-const userData = require("./test-data/users");
-const { addIdToLocations } = require("./models/utils");
+const Users = require("./users-model");
+const userData = require("../test-data/users");
+const { addIdToLocations } = require("./utils");
 
 const deleteDB = () => {
   const promises = [];
@@ -29,10 +29,10 @@ const seedDB = (locationData, userData) => {
     .then(() => Locations.create(locationData))
     .then(() => {
       console.log("Locations seeded");
-      return Locations.find({})
+      return Locations.find({});
     })
-    .then((data)=>{
-      return Users.create(addIdToLocations(data,userData));
+    .then((data) => {
+      return Users.create(addIdToLocations(data, userData));
     })
     .then(() => {
       console.log("Users seeded");
