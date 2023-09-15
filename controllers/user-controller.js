@@ -15,9 +15,26 @@ function postUser(req, res, next) {
   });
 }
 
+function patchUser(req, res, next) {
+  const { nickname, profileImg } = req.body;
+  res.status(200);
+  function stopNonString(input) {
+    if (typeof input !== "string") {
+    return next({ status: 400, msg: "incorrectbody" });
+    }
+  }
+  if (nickname && profileImg) {
+    stopNonString(nickname);
+    stopNonString(profileImg);
 
-function patchUser(req,res,next){
-  console.log(req.body)
+  } else if (nickname) {
+    stopNonString(nickname);
+  } else if(profileImg){
+    stopNonString(profileImg)
+  }
+  else{
+    return next({ status: 400, msg: "incorrectbody" })
+  }
 }
 
 module.exports = { postUser, patchUser };

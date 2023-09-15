@@ -3,7 +3,8 @@ const { postUser, patchUser } = require("../controllers/user-controller");
 
 const usersRouter = require("express").Router();
 
-usersRouter.route("/").post(authoriseUser, postUser)
+usersRouter.route("/")
+.post(authoriseUser, postUser)
 .patch(authoriseUser, patchUser)
 
 module.exports = usersRouter;
