@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mongoose = require("mongoose");
 const cors = require("cors");
 
 const admin = require("firebase-admin");
@@ -18,10 +17,7 @@ admin.initializeApp({
 const app = express();
 
 app.use(express.json());
-
 app.use(cors());
-
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.status(200).send({ greeting: `hello ${req.user.email}` });
