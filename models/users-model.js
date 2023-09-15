@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
   },
   profileImg: {
     type: String,
+    match: [/\.(jpg|jpeg||png|gif|svg|webp|tiff|bmp|heif|heic)$/i],
   },
   dob: {
     type: Date,
@@ -57,10 +58,10 @@ const userSchema = mongoose.Schema({
           enum: ["freezing", "cold", "average", "warm", "hot"],
         },
         mins: {
-          type: Number
+          type: Number,
         },
         km: {
-          type: Number
+          type: Number,
         },
         outOfDepth: {
           type: Boolean,
