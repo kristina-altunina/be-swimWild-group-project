@@ -9,7 +9,6 @@ function postUser(req, res, next) {
     dob: req.body.dob,
     profileImg: req.body.profileImg,
   };
-  console.log(newUser);
   Users.create(newUser).then((newUser) => {
     res.status(200).send(newUser);
   });
@@ -17,29 +16,47 @@ function postUser(req, res, next) {
 
 function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
-
+  const filter = {uid: req.user.uid}
+  const update = {}
+  
+  //functions that check request body is ok.
   function stopNonString(input) {
     if (typeof input !== "string") {
       return next({ status: 400, msg: "incorrectbody" });
     }
   }
   function stopNonURL(input) {
-    const regex = /(https?:\/\/.*\.(?:png|jpg))/;
+    const regex = /(https?:\/\/.*\.(?:png|jpg|svg))/;
     if (!regex.test(input)) {
       return next({ status: 400, msg: "incorrectbody" });
     }
   }
-
+  
+  //checking the request body. If request body is ok, then the "update" object is mutated appropriately.
   if (nickname && profileImg) {
     stopNonString(nickname);
     stopNonURL(profileImg);
+    update.nickname = nickname
+    update.profileImg = profileImg
   } else if (nickname) {
     stopNonString(nickname);
+    update.nickname = nickname
   } else if (profileImg) {
     stopNonURL(profileImg);
+    update.profileImg = profileImg
   } else {
     return next({ status: 400, msg: "incorrectbody" });
   }
+  
+  //Finding and mudating the correct Users Object
+  Users.findOneAndUpdate(filter, update)
+  //Finding the new Users Object
+  .then(()=>{
+    return Users.findOne(filter)
+  })
+  .then((newUser)=>{
+    res.status(200).send(newUser)
+  })
 }
 
 module.exports = { postUser, patchUser };
