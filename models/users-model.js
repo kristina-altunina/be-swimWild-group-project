@@ -56,6 +56,12 @@ const userSchema = mongoose.Schema({
           type: String,
           enum: ["freezing", "cold", "average", "warm", "hot"],
         },
+        mins: {
+          type: Number
+        },
+        km: {
+          type: Number
+        },
         outOfDepth: {
           type: Boolean,
         },
