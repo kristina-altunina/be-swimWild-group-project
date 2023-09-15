@@ -24,7 +24,7 @@ const deleteDB = () => {
     });
 };
 
-const seedDB = (locationData, userData) => {
+const seedWithLogs = (locationData, userData) => {
   return deleteDB()
     .then(() => Locations.create(locationData))
     .then(() => {
@@ -45,4 +45,13 @@ const seedDB = (locationData, userData) => {
     });
 };
 
-seedDB(locationData, userData);
+const testSeed = (locationData, userData) => {
+  return deleteDB()
+    .then(() => Locations.create(locationData))
+    .then(() => Locations.find({}))
+    .then((data) => {
+      return Users.create(addIdToLocations(data, userData));
+    });
+};
+
+module.exports = { testSeed, seedWithLogs };

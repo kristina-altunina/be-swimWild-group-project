@@ -16,13 +16,16 @@ function postUser(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  Users.find({ uid: req.user.uid })
-    .then((user) => {
-    res.status(200).send(user);
+  Users.find({ uid: { $eq: req.user.uid } }).then((user) => {
+    res.status(200).send({
+      name: user[0].name,
+      nickname: user[0].nickname,
+      profileImg: user[0].profileImg,
+      dob: user[0].dob,
+      swims: user[0].swims,
+    });
   });
 }
-
-
 
 module.exports = { postUser, getUser };
 

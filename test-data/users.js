@@ -5,14 +5,14 @@ module.exports = [
     nickname: "The Tester",
     profileImg:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mad_scientist_transparent_background.svg/1200px-Mad_scientist_transparent_background.svg.png",
-    
+
     dob: "1997-09-02T11:00:00+0000",
     swims: [
       {
         date: "2023-09-02T11:00:00+0000",
         location: {
           name: "Rydal, Lake District",
-          id: null
+          id: null,
         },
         notes:
           "A great swim! To the dog's grave on the main island and back. Water not too cold.",
@@ -20,7 +20,7 @@ module.exports = [
         recordTemp: null,
         feelTemp: "average",
         mins: 45,
-        km: 1,    
+        km: 1,
         outOfDepth: true,
         sizeKey: "large",
         shore: "muddy",
@@ -34,7 +34,7 @@ module.exports = [
         date: "2023-08-29T18:00:00+0000",
         location: {
           name: "Elie Beach, Fife",
-          id: null
+          id: null,
         },
         notes:
           "Extremely cold, wetsuit necessary. Clear water though, but lots of seaweed and still quite shallow a long way out.",
@@ -53,5 +53,13 @@ module.exports = [
         ],
       },
     ],
+  },
+  {
+    uid: "UHaKMQx4MLbrELny74UYMyUBcOm2",
+    name: "testUser",
+    nickname: "tester",
+    profileImg: "http://lookatme.jpg",
+    dob: "1997-09-02T11:00:00+0000",
+    swims: [],
   },
 ];
