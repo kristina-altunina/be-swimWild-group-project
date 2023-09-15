@@ -9,6 +9,7 @@ const locationData = require("./test-data/locations");
 
 const Users = require("./models/users-model");
 const userData = require("./test-data/users");
+const { addIdToLocations } = require("./models/utils");
 
 const deleteDB = () => {
   const promises = [];
@@ -28,7 +29,10 @@ const seedDB = (locationData, userData) => {
     .then(() => Locations.create(locationData))
     .then(() => {
       console.log("Locations seeded");
-      return Users.create(userData);
+      return Locations.find({})
+    })
+    .then((data)=>{
+      return Users.create(addIdToLocations(data,userData));
     })
     .then(() => {
       console.log("Users seeded");

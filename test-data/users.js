@@ -10,7 +10,10 @@ module.exports = [
     swims: [
       {
         date: "2023-09-02T11:00:00+0000",
-        location: 2,
+        location: {
+          name: "Rydal, Lake District",
+          id: null
+        },
         notes:
           "A great swim! To the dog's grave on the main island and back. Water not too cold.",
         stars: 5,
@@ -27,7 +30,10 @@ module.exports = [
       },
       {
         date: "2023-08-29T18:00:00+0000",
-        location: 3,
+        location: {
+          name: "Elie Beach, Fife",
+          id: null
+        },
         notes:
           "Extremely cold, wetsuit necessary. Clear water though, but lots of seaweed and still quite shallow a long way out.",
         stars: 3,

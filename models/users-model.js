@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
   },
   dob: {
     type: Date,
-    required: true
+    required: true,
   },
   swims: {
     type: [
@@ -27,7 +27,16 @@ const userSchema = mongoose.Schema({
           required: true,
         },
         location: {
-          type: Number,
+          type: {
+            name: {
+              type: String,
+              required: true,
+            },
+            id: {
+              type: String,
+              required: true,
+            },
+          },
           required: true,
         },
         notes: {
