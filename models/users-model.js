@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter a first name"],
+    required: [true, "Please enter your full name"],
   },
-  surname: {
+  nickname: {
     type: String,
   },
   uid: {
@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema({
   profileImg: {
     type: String,
   },
+  dob: {
+    type: Date,
+    required: true,
+  },
   swims: {
     type: [
       {
@@ -23,7 +27,16 @@ const userSchema = mongoose.Schema({
           required: true,
         },
         location: {
-          type: Number,
+          type: {
+            name: {
+              type: String,
+              required: true,
+            },
+            id: {
+              type: String,
+              required: true,
+            },
+          },
           required: true,
         },
         notes: {
@@ -44,10 +57,10 @@ const userSchema = mongoose.Schema({
           enum: ["freezing", "cold", "average", "warm", "hot"],
         },
         mins: {
-          type: Number,
+          type: Number
         },
         km: {
-          type: Number,
+          type: Number
         },
         outOfDepth: {
           type: Boolean,
