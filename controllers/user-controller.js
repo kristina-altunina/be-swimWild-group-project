@@ -17,23 +17,28 @@ function postUser(req, res, next) {
 
 function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
-  res.status(200);
+
   function stopNonString(input) {
     if (typeof input !== "string") {
-    return next({ status: 400, msg: "incorrectbody" });
+      return next({ status: 400, msg: "incorrectbody" });
     }
   }
+  function stopNonURL(input) {
+    const regex = /(https?:\/\/.*\.(?:png|jpg))/;
+    if (!regex.test(input)) {
+      return next({ status: 400, msg: "incorrectbody" });
+    }
+  }
+
   if (nickname && profileImg) {
     stopNonString(nickname);
-    stopNonString(profileImg);
-
+    stopNonURL(profileImg);
   } else if (nickname) {
     stopNonString(nickname);
-  } else if(profileImg){
-    stopNonString(profileImg)
-  }
-  else{
-    return next({ status: 400, msg: "incorrectbody" })
+  } else if (profileImg) {
+    stopNonURL(profileImg);
+  } else {
+    return next({ status: 400, msg: "incorrectbody" });
   }
 }
 
