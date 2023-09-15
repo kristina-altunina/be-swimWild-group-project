@@ -2,9 +2,11 @@ module.exports = [
   {
     uid: "QyqF2JQjSEY6TOqDvdaSAd99WyA2",
     name: "Test",
-    surname: "The Tester",
+    nickname: "The Tester",
     profileImg:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mad_scientist_transparent_background.svg/1200px-Mad_scientist_transparent_background.svg.png",
+    
+    dob: "1997-09-02T11:00:00+0000",
     swims: [
       {
         date: "2023-09-02T11:00:00+0000",

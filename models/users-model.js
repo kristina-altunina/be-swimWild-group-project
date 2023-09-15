@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter a first name"],
+    required: [true, "Please enter your full name"],
   },
-  surname: {
+  nickname: {
     type: String,
   },
   uid: {
@@ -14,6 +14,10 @@ const userSchema = mongoose.Schema({
   },
   profileImg: {
     type: String,
+  },
+  dob: {
+    type: Date,
+    required: true
   },
   swims: {
     type: [
