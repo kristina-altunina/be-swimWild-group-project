@@ -21,7 +21,9 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  return mongoose.connection.close();
+  // setTimeout(()=>{
+    return mongoose.connection.close();
+  // },500)
 });
 
 describe("GET /users/profile", () => {
@@ -55,36 +57,51 @@ describe("PATCH /users/", () => {
     return request(app).patch("/users").expect(401);
   });
   test("should respond 200 if passed valid access token", () => {
-    const toUpdateFirst =
-      {
-        "nickname": "helloThere",
-        "profileImg": "https://static1.srcdn.com/wordpress/wp-content/uploads/2022/03/Obi-Wan-Kenobi-Hello-There.jpg"
-    }
+    const toUpdateFirst = {
+      nickname: "helloThere",
+      profileImg:
+        "https://static1.srcdn.com/wordpress/wp-content/uploads/2022/03/Obi-Wan-Kenobi-Hello-There.jpg",
+    };
     return request(app)
       .patch("/users")
       .send(toUpdateFirst)
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200);
   });
-  test("responds with correct user information", () => {
-    const toUpdateSecond =
-      {
-        "nickname": "dobbyforHarry",
-        "profileImg": "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg"
-    }
+  test("responds with correct user information when passed correcttly formated body", () => {
+    const toUpdateSecond = {
+      nickname: "dobbyforRon",
+      profileImg:
+        "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+    };
     return request(app)
       .patch("/users")
       .send(toUpdateSecond)
       .set("Authorization", `Bearer ${accessToken}`)
-      .then(({body}) => {
-        console.log(body)
+      .then(({ body }) => {
         expect(body).toMatchObject({
-            name: 'testUser',
-            nickname: 'dobbyforHarry',
-            profileImg: 'https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg',
-            dob: '1997-09-02T11:00:00.000Z',
-            swims: []
-        })
+          name: "testUser",
+          nickname: "dobbyforRon",
+          profileImg:
+            "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+          dob: "1997-09-02T11:00:00.000Z",
+          swims: [],
+        });
       });
+  });
+  test.only("Should return 400 error when passed incorret body", () => {
+    const toUpdateBad = {
+      nickname: 300,
+      profileImg:
+        "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+    };
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdateBad)
+      .expect(400)
+      .then(({body})=>{
+        console.log(body)
+      })
   });
 });

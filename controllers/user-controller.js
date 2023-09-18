@@ -1,6 +1,6 @@
 const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
-const isURL = require("is-url")
+const {validatePatchBody} = require("./validators/User-validators")
 
 function postUser(req, res, next) {
   const newUser = {
@@ -19,39 +19,18 @@ function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
   const filter = {uid: req.user.uid}
   const update = {}
+  const isCorrectBody = 
 
-  function stopNonString(input) {
-    if (typeof input !== "string") {
-      return next({ status: 400, msg: "incorrectbody" });
-    }
-  }
-  function stopNonURL(input) {
-    if (!isURL(input)) {
-      return next({ status: 400, msg: "incorrectbody" });
-    }
-  }
   
-  if (nickname && profileImg) {
-    stopNonString(nickname);
-    stopNonURL(profileImg);
-    update.nickname = nickname
-    update.profileImg = profileImg
-  } else if (nickname) {
-    stopNonString(nickname);
-    update.nickname = nickname
-  } else if (profileImg) {
-    stopNonURL(profileImg);
-    update.profileImg = profileImg
-  } else {
-    return next({ status: 400, msg: "incorrectbody" });
-  }
-
   Users.findOneAndUpdate(filter, update)
   .then(()=>{
     return Users.findOne(filter)
   })
   .then((newUser)=>{
     res.status(200).send(newUser)
+  })
+  .catch((err)=>{
+    console.log("why here")
   })
 }
 
