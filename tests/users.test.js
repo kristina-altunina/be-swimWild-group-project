@@ -56,7 +56,7 @@ describe("PATCH /users/", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).patch("/users").expect(401);
   });
-  test.only("responds with correct user information when passed correcttly formated body", () => {
+  test("responds with correct user information when passed correcttly formated body", () => {
     const toUpdate = {
       nickname: "dobbyforRon",
       profileImg:
@@ -90,7 +90,47 @@ describe("PATCH /users/", () => {
       .send(toUpdateBad)
       .expect(400)
       .then(({body})=>{
-        console.log(body)
+        expect(body.msg).toBe("incorrect body")
+      })
+  });
+  test("Should return 400 error when passed incorret body", () => {
+    const toUpdateBad = {
+      nickname: "hello",
+      profileImg:
+        "fish",
+    };
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdateBad)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("incorrect body")
+      })
+  });
+  test("Should return 400 error when passed incorret body", () => {
+    const toUpdateBad = {};
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdateBad)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("incorrect body")
+      })
+  });
+  test("Should return 400 error when passed incorret body", () => {
+    const toUpdateBad = {
+      nickname: null,
+      profileImg: null
+    }
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdateBad)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("incorrect body")
       })
   });
 });

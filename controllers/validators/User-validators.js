@@ -1,40 +1,48 @@
 const isURL = require("is-url");
 
-function validatePatchBody(req,res) {
+function validatePatchBody(req, res, next) {
   let isBad = false;
-  console.log("here")
-  const { nickname, profileImg } = req.body
-  
+  const { nickname, profileImg } = req.body;
+
+  //defening functions
   function CheckString(input) {
     if (typeof input !== "string") {
-        isBad = true;
+      return (isBad = true);
     }
   }
   function CheckURL(input) {
     if (!isURL(input)) {
-        isBad = true;
+      return (isBad = true);
     }
   }
-
+  //Checking different cases
   if (nickname && profileImg) {
     CheckString(nickname);
     CheckURL(profileImg);
-    if(isBad){
-        return next({status: 401, msg: "incorrect body"})
+    if (isBad) {
+      return next({ status: 400, msg: "incorrect body" });
+    } else {
+      next();
     }
   } else if (nickname) {
     CheckString(nickname);
-    if(isBad){
-        return next({status: 401, msg: "incorrect body"})
+    if (isBad) {
+      return next({ status: 400, msg: "incorrect body" });
+    } else {
+      next();
     }
+
   } else if (profileImg) {
     CheckURL(profileImg);
-    if(isBad){
-        return next({status: 401, msg: "incorrect body"})
+    if (isBad) {
+      return next({ status: 400, msg: "incorrect body" });
+    } else {
+      next();
     }
-  } else {
-    next()
+  }
+  else{
+    next({ status: 400, msg: "incorrect body" })
   }
 }
 
-module.exports = {validatePatchBody}
+module.exports = { validatePatchBody };
