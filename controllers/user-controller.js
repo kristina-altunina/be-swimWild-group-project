@@ -1,6 +1,5 @@
 const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
-const {validatePatchBody} = require("./validators/User-validators")
 
 function postUser(req, res, next) {
   const newUser = {
@@ -18,10 +17,8 @@ function postUser(req, res, next) {
 function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
   const filter = {uid: req.user.uid}
-  const update = {}
-  const isCorrectBody = 
-
-  
+  const update = {nickname: nickname,
+  profileImg: profileImg}
   Users.findOneAndUpdate(filter, update)
   .then(()=>{
     return Users.findOne(filter)

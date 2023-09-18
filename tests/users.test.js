@@ -56,28 +56,17 @@ describe("PATCH /users/", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).patch("/users").expect(401);
   });
-  test("should respond 200 if passed valid access token", () => {
-    const toUpdateFirst = {
-      nickname: "helloThere",
-      profileImg:
-        "https://static1.srcdn.com/wordpress/wp-content/uploads/2022/03/Obi-Wan-Kenobi-Hello-There.jpg",
-    };
-    return request(app)
-      .patch("/users")
-      .send(toUpdateFirst)
-      .set("Authorization", `Bearer ${accessToken}`)
-      .expect(200);
-  });
-  test("responds with correct user information when passed correcttly formated body", () => {
-    const toUpdateSecond = {
+  test.only("responds with correct user information when passed correcttly formated body", () => {
+    const toUpdate = {
       nickname: "dobbyforRon",
       profileImg:
         "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
     };
     return request(app)
       .patch("/users")
-      .send(toUpdateSecond)
+      .send(toUpdate)
       .set("Authorization", `Bearer ${accessToken}`)
+      .expect(200)
       .then(({ body }) => {
         expect(body).toMatchObject({
           name: "testUser",
@@ -89,7 +78,7 @@ describe("PATCH /users/", () => {
         });
       });
   });
-  test.only("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorret body", () => {
     const toUpdateBad = {
       nickname: 300,
       profileImg:

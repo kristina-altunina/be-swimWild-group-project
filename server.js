@@ -21,7 +21,6 @@ app.use("/locations", locationsRouter);
 
 app.use((err, req, res, next)=>{
   const {status, msg} = err
-  console.log("middle")
   return res.status(status).send({msg})
 })
 

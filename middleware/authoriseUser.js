@@ -14,7 +14,6 @@ const authoriseUser = (req, res, next) => {
     .verifyIdToken(token)
     .then((user) => {
       req.user = user;
-      console.log("User info: ", user);
       return next();
     })
     .catch((err) => {

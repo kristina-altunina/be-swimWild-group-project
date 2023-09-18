@@ -1,32 +1,39 @@
 const isURL = require("is-url");
 
-function validatePatchBody(input) {
-  let isCorrect = true;
-  const { nickname, profileImg } = input;
+function validatePatchBody(req,res) {
+  let isBad = false;
+  console.log("here")
+  const { nickname, profileImg } = req.body
   
-  function stopNonString(input) {
+  function CheckString(input) {
     if (typeof input !== "string") {
-      isCorrect = false;
+        isBad = true;
     }
   }
-  function stopNonURL(input) {
+  function CheckURL(input) {
     if (!isURL(input)) {
-      isCorrect = false;
+        isBad = true;
     }
   }
 
   if (nickname && profileImg) {
-    stopNonString(nickname);
-    stopNonURL(profileImg);
-    return isCorrect;
+    CheckString(nickname);
+    CheckURL(profileImg);
+    if(isBad){
+        return next({status: 401, msg: "incorrect body"})
+    }
   } else if (nickname) {
-    stopNonString(nickname);
-    return isCorrect;
+    CheckString(nickname);
+    if(isBad){
+        return next({status: 401, msg: "incorrect body"})
+    }
   } else if (profileImg) {
-    stopNonURL(profileImg);
-    return isCorrect;
+    CheckURL(profileImg);
+    if(isBad){
+        return next({status: 401, msg: "incorrect body"})
+    }
   } else {
-    return false
+    next()
   }
 }
 
