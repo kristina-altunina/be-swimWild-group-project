@@ -31,7 +31,6 @@ function patchUser(req, res, next) {
     }
   }
   
-  //checking the request body. If request body is ok, then the "update" object is mutated appropriately.
   if (nickname && profileImg) {
     stopNonString(nickname);
     stopNonURL(profileImg);
