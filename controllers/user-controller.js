@@ -1,5 +1,6 @@
 const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
+const isURL = require("is-url")
 
 function postUser(req, res, next) {
   const newUser = {
@@ -18,7 +19,7 @@ function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
   const filter = {uid: req.user.uid}
   const update = {}
-  
+
   //functions that check request body is ok.
   function stopNonString(input) {
     if (typeof input !== "string") {
@@ -26,8 +27,7 @@ function patchUser(req, res, next) {
     }
   }
   function stopNonURL(input) {
-    const regex = /(https?:\/\/.*\.(?:png|jpg|svg))/;
-    if (!regex.test(input)) {
+    if (!isURL(input)) {
       return next({ status: 400, msg: "incorrectbody" });
     }
   }
@@ -47,7 +47,8 @@ function patchUser(req, res, next) {
   } else {
     return next({ status: 400, msg: "incorrectbody" });
   }
-  
+
+
   //Finding and mudating the correct Users Object
   Users.findOneAndUpdate(filter, update)
   //Finding the new Users Object
