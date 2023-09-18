@@ -6,6 +6,11 @@ const locationSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a product name"],
     },
+    type: {
+      type: String,
+      enum: ["river", "lake", "pond", "sea"],
+      required: true,
+    },
     loc: {
       type: {
         type: String,
