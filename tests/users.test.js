@@ -51,13 +51,13 @@ describe("GET /users/profile", () => {
   });
 });
 
-describe("PATCH /users/", () => {
-  test("", () => {
-    return request(app)
-      .get("/users")
-      .set("Authorization", `Bearer ${accessToken}`)
-      .then((mystery) => {
-        console.log(mystery);
-      });
-  });
-});
+// describe("PATCH /users/", () => {
+//   test("", () => {
+//     return request(app)
+//       .get("/users")
+//       .set("Authorization", `Bearer ${accessToken}`)
+//       .then((mystery) => {
+//         console.log(mystery);
+//       });
+//   });
+// });
