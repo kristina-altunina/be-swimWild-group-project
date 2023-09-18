@@ -77,4 +77,13 @@ describe("GET /locations", () => {
   test("pagination queries should be validated", () => {
     return request(app).get("/locations?p=-1").expect(400);
   });
+  test("limit should be validated", () => {
+    return request(app).get("/locations?limit=fish").expect(400);
+  });
+  test("lat should be validated", () => {
+    return request(app).get("/locations?lat=fish").expect(400);
+  });
+  test("long should be validated", () => {
+    return request(app).get("/locations?long=200").expect(400);
+  });
 });
