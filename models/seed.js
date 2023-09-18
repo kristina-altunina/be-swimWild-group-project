@@ -39,6 +39,12 @@ const testSeed = (locationData, userData) => {
     .then(() => Locations.find({}))
     .then((data) => {
       return Users.create(addIdToLocations(data, userData));
+    })
+    .then(() => {
+      return Locations.syncIndexes();
+    })
+    .then(() => {
+      return Users.syncIndexes();
     });
 };
 

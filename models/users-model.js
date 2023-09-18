@@ -7,10 +7,15 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
+    required: true,
+    unique: true,
+    index: true,
   },
   uid: {
     type: String,
     required: true,
+    unique: true,
+    index: true,
   },
   profileImg: {
     type: String,

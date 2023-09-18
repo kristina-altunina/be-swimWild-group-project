@@ -10,9 +10,12 @@ function postUser(req, res, next) {
     profileImg: req.body.profileImg,
   };
   console.log(newUser);
-  Users.create(newUser).then((newUser) => {
-    res.status(200).send(newUser);
-  });
+  Users.create(newUser)
+    .then((newUser) => {
+      console.log(newUser);
+      res.status(201).send(newUser);
+    })
+    .catch(next);
 }
 
 function getUser(req, res, next) {
