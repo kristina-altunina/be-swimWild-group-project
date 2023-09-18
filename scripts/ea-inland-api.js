@@ -143,7 +143,6 @@ function processEaData(dataPromise, searchDate) {
 
 module.exports = { collectEaInlandData };
 
-//collectEaInlandData([54.2744, -2.9516], 1000, "lakes", "2022-01-01T11:00:00+0000");
 collectEaInlandData(
   [54.2744, -2.9516],
   1000,

@@ -19,7 +19,8 @@
     "express-openid-connect": "^2.16.0",
     "firebase-admin": "^11.10.1",
     "ml-regression-polynomial": "^2.2.0",
-    "mongoose": "^7.5.1"
+    "mongoose": "^7.5.1",
+    "node-html-parser": "^6.1.10"
   },
   "devDependencies": {
     "jest": "^29.7.0",

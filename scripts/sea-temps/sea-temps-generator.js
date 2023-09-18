@@ -5,7 +5,6 @@ const api = axios.create({
   baseURL: "https://api.geoapify.com/v1/geocode",
 });
 
-const baseUrl = "https://www.seatemperature.org/";
 const locations = [
   { url: "/europe/united-kingdom/aberaeron.htm", name: "Aberaeron" },
   { url: "/europe/united-kingdom/aberdeen.htm", name: "Aberdeen" },
