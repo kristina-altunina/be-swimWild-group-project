@@ -20,7 +20,6 @@ function patchUser(req, res, next) {
   const filter = {uid: req.user.uid}
   const update = {}
 
-  //functions that check request body is ok.
   function stopNonString(input) {
     if (typeof input !== "string") {
       return next({ status: 400, msg: "incorrectbody" });
@@ -48,10 +47,7 @@ function patchUser(req, res, next) {
     return next({ status: 400, msg: "incorrectbody" });
   }
 
-
-  //Finding and mudating the correct Users Object
   Users.findOneAndUpdate(filter, update)
-  //Finding the new Users Object
   .then(()=>{
     return Users.findOne(filter)
   })
