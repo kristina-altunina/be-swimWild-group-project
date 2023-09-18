@@ -1,6 +1,5 @@
 module.exports = [
   {
-    id: 1,
     name: "National Trust - Fell Foot, Windermere",
     loc: {
       type: "Point",
@@ -8,7 +7,6 @@ module.exports = [
     },
   },
   {
-    id: 2,
     name: "Rydal, Lake District",
     loc: {
       type: "Point",
@@ -16,7 +14,6 @@ module.exports = [
     },
   },
   {
-    id: 3,
     name: "Elie Beach, Fife",
     loc: {
       type: "Point",
