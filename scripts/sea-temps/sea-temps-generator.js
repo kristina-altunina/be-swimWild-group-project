@@ -424,7 +424,7 @@ setTimeout(() => {
       const url = locations.find((location) => {
         return location.name === name;
       }).url;
-      fileString += ` { url: "${url}", name: "${name}", coords: [${response.data?.features[0]?.geometry?.coordinates}]},`;
+      fileString += ` { url: "${url}", name: "${name}", coords: [${response.data?.features[0]?.geometry?.coordinates[1]}, ${response.data?.features[0]?.geometry?.coordinates[0]} ]},`;
     }
     fileString += `];`;
     fs.writeFile("coords.js", fileString);

@@ -17,13 +17,14 @@ function scrapeTemp(url) {
 }
 
 function findTempOfNearestBeach(coords) {
-  const closest = { url: "", distance: Infinity, name: "" };
+  const closest = { url: "", proximity: Infinity, name: "", coords: [0, 0] };
   for (const location of locations) {
     const proximity = distanceBetweenCoords(coords, location.coords);
-    if (proximity < closest.distance) {
-      closest.distance = proximity;
+    if (proximity < closest.proximity) {
+      closest.proximity = proximity;
       closest.url = location.url;
       closest.name = location.name;
+      closest.coords = location.coords;
     }
   }
   return scrapeTemp(closest.url).then((celsius) => {
@@ -31,5 +32,9 @@ function findTempOfNearestBeach(coords) {
     return closest;
   });
 }
+
+findTempOfNearestBeach([54.2744, -2.9516]).then((data) => {
+  console.log(data);
+});
 
 module.exports = { findTempOfNearestBeach };

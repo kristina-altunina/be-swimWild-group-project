@@ -1,4 +1,5 @@
 function distanceBetweenCoords(coords1, coords2) {
+  // assumes world is flat...
   const x = coords1[0] - coords2[0];
   const y = coords1[1] - coords2[1];
   return Math.sqrt(x ** 2 + y ** 2);
