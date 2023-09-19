@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
-const { accessToken } = require("./access-token");
 
 require("dotenv").config();
 

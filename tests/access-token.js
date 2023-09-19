@@ -1,11 +1,36 @@
-const accessToken =
-  "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3dpbXdpbGQtYzJjYTciLCJhdWQiOiJzd2ltd2lsZC1jMmNhNyIsImF1dGhfdGltZSI6MTY5NTExMzg4OCwidXNlcl9pZCI6IlVIYUtNUXg0TUxickVMbnk3NFVZTXlVQmNPbTIiLCJzdWIiOiJVSGFLTVF4NE1MYnJFTG55NzRVWU15VUJjT20yIiwiaWF0IjoxNjk1MTEzODg4LCJleHAiOjE2OTUxMTc0ODgsImVtYWlsIjoidGVzdEBvdXRsb29rLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0QG91dGxvb2suY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.n3RVBTJ7LrtVvorzVEtPBRTwXjXllFyMekmQj1UlKDRuaIVPyrGTg6IxmTV4B9ZQOCloXSDAaZmd-FdZm5Pg0p_NhvUTVBR3dhTVi0R5bIIsVvAncZJwAvui9QopDHHtWt8IA9au0qKJ__BufWgtasVJaDKIp24eEB82bSwK0EQVFWSqOBD8nrHAJgT_mWW-rcKuUOySDGIMLw3UoI8a0hfyLU-y49yGHQrnjWSEPOzp9XaE1NRFh1AXYM8qG_KG-gZoKrGLMroUdezjb3Rifa3ohy16Mfw90Vl6XjL1goLJiyPsw2IDO4GlKyATx0EXfScEyCaXUWGHgv5sg_143g";
+const { initializeApp } = require("firebase/app");
+const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
 
-const test2atOutlookComToken =
-  "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3dpbXdpbGQtYzJjYTciLCJhdWQiOiJzd2ltd2lsZC1jMmNhNyIsImF1dGhfdGltZSI6MTY5NTExNzE5MywidXNlcl9pZCI6IkNoWU1iNnBuNHNRbjRIczBxdDZYVzlUYUU3NDIiLCJzdWIiOiJDaFlNYjZwbjRzUW40SHMwcXQ2WFc5VGFFNzQyIiwiaWF0IjoxNjk1MTE3MTkzLCJleHAiOjE2OTUxMjA3OTMsImVtYWlsIjoidGVzdDJAb3V0bG9vay5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdDJAb3V0bG9vay5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ReK_gHGDEX0xpLm-wFg5V_Q321pam2zkJLwmUj8gqCrvrqVI3_Wsq5uOXgOZXcJfWle_DqaMfJgtKlEsG40x_QhBwRTxYivAflbvKv_RdiN_gayuqwtQ-wxnLKOA7De-JAvqJEmRZ3gZl673Cmgorcgb9akDV7DXORD4LS7tKuwtOKlB8uMEN0xrIXEWBJbSWsDbyF_kEeBn2aFWQB5d9G0Z3J80ihhc-fBdvu0aiGzQDOLqQdnmAFpZaZaa0HQrgxCmspBZcQQqIMe5EEIO9gozo7lbNIT5TzXU8KOjPuPFXr4t91wFvOEZ2ci_3TKyvgSk5VM6kRlKnZ3JhiVxcw";
+const firebaseConfig = {
+  apiKey: "AIzaSyABjPb5ApAILuDCTMwHUPBh78nnCLhZmMg",
+  authDomain: "swimwild-c2ca7.firebaseapp.com",
+  projectId: "swimwild-c2ca7",
+  storageBucket: "swimwild-c2ca7.appspot.com",
+  messagingSenderId: "914299090405",
+  appId: "1:914299090405:web:0520e1a7b19dc4b219ab0c",
+  measurementId: "G-VBBKT6LJZ5",
+};
 
-module.exports = { accessToken, test2atOutlookComToken };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-`curl 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyABjPb5ApAILuDCTMwHUPBh78nnCLhZmMg' \
--H 'Content-Type: application/json' \
---data-binary '{"email":"test2@outlook.com","password":"password","returnSecureToken":true}'`;
+function getAccessTokens() {
+  const promises = [];
+  promises.push(
+    signInWithEmailAndPassword(auth, "test@outlook.com", "password").then(
+      (userCredential) => {
+        return userCredential.user.stsTokenManager.accessToken;
+      }
+    )
+  );
+  promises.push(
+    signInWithEmailAndPassword(auth, "test2@outlook.com", "password").then(
+      (userCredential) => {
+        return userCredential.user.stsTokenManager.accessToken;
+      }
+    )
+  );
+  return Promise.all(promises);
+}
+
+module.exports = { getAccessTokens };

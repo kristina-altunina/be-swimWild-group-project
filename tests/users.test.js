@@ -5,16 +5,28 @@ const mongoose = require("mongoose");
 const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
-const { accessToken, test2atOutlookComToken } = require("./access-token");
-const Users = require("../models/users-model");
+const { getAccessTokens } = require("./access-token");
 
 require("dotenv").config();
 
+let accessToken;
+let registeredAccessToken;
+
 beforeAll(() => {
-  return mongoose.connect(process.env.DATABASE_LOCAL_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const promises = [];
+  promises.push(
+    mongoose.connect(process.env.DATABASE_LOCAL_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+  );
+  promises.push(
+    getAccessTokens().then(([unregisteredToken, registeredToken]) => {
+      console.log(unregisteredToken, registeredToken);
+      accessToken = unregisteredToken;
+      registeredAccessToken = registeredToken;
+    })
+  );
 });
 
 beforeEach(() => {
@@ -62,7 +74,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(201)
       .then(({ body }) => {
         expect(body).toMatchObject({
@@ -97,7 +109,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
   test("should respond with 400 if body missing name", () => {
@@ -109,7 +121,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
   test("should respond with 400 if body missing nickname", () => {
@@ -121,7 +133,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
   test("should respond with 400 if body missing dob", () => {
@@ -133,7 +145,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
   test("should respond with 400 if image url invalid", () => {
@@ -145,7 +157,7 @@ describe("POST /users", () => {
     return request(app)
       .post("/users")
       .send(postBody)
-      .set("Authorization", `Bearer ${test2atOutlookComToken}`)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
 });
