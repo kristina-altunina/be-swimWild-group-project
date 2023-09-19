@@ -23,7 +23,7 @@ function distanceBetweenCoords(coords1, coords2) {
 
 
 function getLocations(req, res, next) {
-  const { lat = 52.77, long = -1.54, limit = 10, p = 1, searchName } = req.query;
+  const { lat = 52.77, long = -1.54, limit = 10, p = 1, filterName } = req.query;
   Locations.find().then((allLocations) => {
     const locationsWithDistance = allLocations
       .map((location) => {
@@ -34,7 +34,7 @@ function getLocations(req, res, next) {
         return newLocation;
       })
       .sort((a, b) => a.distanceKm - b.distanceKm);
-      if(searchName){
+      if(filterName){
         const fuseOptions = {
           threshold: 0.5, //default is 0.6
           shouldSort: false, //defualt is true
@@ -44,8 +44,11 @@ function getLocations(req, res, next) {
         };
         const fuse = new Fuse(locationsWithDistance, fuseOptions)
 
-        const filteredObject = fuse.search(searchName)
-        res.status(200).send(filteredObject.slice((p - 1) * limit, p * limit))
+        const filteredArray = fuse.search(filterName)
+        const filteredLocationsWithDistance = filteredArray.map((place)=>{
+          return place.item
+        })
+        res.status(200).send(filteredLocationsWithDistance.slice((p - 1) * limit, p * limit))
       }
       else{
         res

@@ -73,12 +73,15 @@ describe("GET /locations", () => {
         expect(body[0].name).toBe("Rydal, Lake District");
       });
   });
-  test.only("should be sorted by a Searchlocation query", () => {
+  test("should be filtered by a filterName query", () => {
     return request(app)
-      .get("/locations?searchName='Rydal'")
+      .get("/locations?filterName='Rydal'")
       .then(({ body }) => {
         console.log(body)
         expect(body).toBeSortedBy("distanceKm");
+        expect(body.length).toBe(1)
+        // console.log(body[0])
+        expect(body[0].name).toBe('Rydal, Lake District')
       });
   });
   test("pagination queries should be validated", () => {
