@@ -33,8 +33,8 @@ function findTempOfNearestBeach(coords) {
   });
 }
 
-findTempOfNearestBeach([54.2744, -2.9516]).then((data) => {
-  console.log(data);
-});
+// findTempOfNearestBeach([54.2744, -2.9516]).then((data) => {
+//   console.log(data);
+// });
 
 module.exports = { findTempOfNearestBeach };
