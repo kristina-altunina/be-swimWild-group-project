@@ -2,11 +2,11 @@
   "name": "spikeauth",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "listen.js",
   "scripts": {
     "test": "jest --runInBand",
     "start": "node listen.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon listen.js",
     "seed": "node models/run-seed.js"
   },
   "keywords": [],
