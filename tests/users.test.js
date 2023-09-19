@@ -21,9 +21,7 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  // setTimeout(()=>{
-    return mongoose.connection.close();
-  // },500)
+  return mongoose.connection.close();
 });
 
 describe("GET /users/profile", () => {
@@ -56,7 +54,7 @@ describe("PATCH /users/", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).patch("/users").expect(401);
   });
-  test("responds with correct user information when passed correcttly formated body", () => {
+  test("responds with correct user information when passed correctly formated body", () => {
     const toUpdate = {
       nickname: "dobbyforRon",
       profileImg:
@@ -78,7 +76,7 @@ describe("PATCH /users/", () => {
         });
       });
   });
-  test("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {
       nickname: 300,
       profileImg:
@@ -89,48 +87,51 @@ describe("PATCH /users/", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .send(toUpdateBad)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("incorrect body")
-      })
+      .then(({ body }) => {
+        expect(body.msg).toBe("Nickname should be a string");
+      });
   });
-  test("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {
       nickname: "hello",
-      profileImg:
-        "fish",
+      profileImg: "fish",
     };
     return request(app)
       .patch("/users")
       .set("Authorization", `Bearer ${accessToken}`)
       .send(toUpdateBad)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("incorrect body")
-      })
+      .then(({ body }) => {
+        expect(body.msg).toBe("fish is not a valid URL");
+      });
   });
-  test("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {};
     return request(app)
       .patch("/users")
       .set("Authorization", `Bearer ${accessToken}`)
       .send(toUpdateBad)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("incorrect body")
-      })
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Please enter a nickname or profile image to update"
+        );
+      });
   });
   test("Should return 400 error when passed incorret body", () => {
     const toUpdateBad = {
       nickname: null,
-      profileImg: null
-    }
+      profileImg: null,
+    };
     return request(app)
       .patch("/users")
       .set("Authorization", `Bearer ${accessToken}`)
       .send(toUpdateBad)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("incorrect body")
-      })
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Please enter a nickname or profile image to update"
+        );
+      });
   });
 });
