@@ -75,8 +75,8 @@ function formattedData(dataFetched) {
   waveData.swell_wave_direction_dominant = swell_wave_direction_dominant;
   waveData.swell_wave_period_max = swell_wave_period_max;
   waveData.swell_wave_peak_period_max = swell_wave_peak_period_max;
-  
-    return waveData;
+
+  return waveData;
 }
 
 const api = axios.create({
@@ -84,7 +84,6 @@ const api = axios.create({
 });
 
 function getMarineData(lat, lon) {
-
   return api
     .get(
       `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max,wave_direction_dominant,wave_period_max,wind_wave_height_max,wind_wave_direction_dominant,wind_wave_period_max,wind_wave_peak_period_max,swell_wave_height_max,swell_wave_direction_dominant,swell_wave_period_max,swell_wave_peak_period_max&timezone=Europe%2FLondon`
@@ -94,6 +93,8 @@ function getMarineData(lat, lon) {
     });
 }
 
-
+getMarineData(50.1, -3).then((data) => {
+  console.log(data);
+});
 
 module.exports = { getMarineData };
