@@ -73,6 +73,49 @@ describe("GET /locations", () => {
         expect(body[0].name).toBe("Rydal, Lake District");
       });
   });
+  test("should be filtered by a filterName query", () => {
+    return request(app)
+      .get("/locations?filterName='Rydal'&lat=54.447268&long=-2.995986")
+      .then(({ body }) => {
+        expect(body).toBeSortedBy("distanceKm");
+        expect(body.length).toBe(1);
+        expect(body[0]).toMatchObject({
+          name: "Rydal, Lake District",
+          _id: expect.any(String),
+          loc: { coordinates: [expect.any(Number), expect.any(Number)] },
+          distanceKm: expect.any(Number),
+          type: expect.any(String),
+        });
+      });
+  });
+  test("should be filtered by a filterName query", () => {
+    return request(app)
+      .get("/locations?filterName='Lake'")
+      .then(({ body }) => {
+        expect(body).toBeSortedBy("distanceKm");
+        expect(body.length).toBe(2);
+        expect(body).toBeSortedBy("distanceKm");
+        expect(body[0].name).toBe("Beckenham Park Swimming Lake, London");
+        expect(body[1].name).toBe("Rydal, Lake District");
+      });
+  });
+  test("should be filtered by a filterName query", () => {
+    return request(app)
+      .get("/locations?filterName='fish'")
+      .then(({ body }) => {
+        expect(body.length).toBe(0);
+      });
+  });
+  test("should be filtered by a filterName query", () => {
+    return request(app)
+      .get("/locations?filterName='Fellfoot'")
+      .then(({ body }) => {
+        expect(body.length).toBe(2);
+        expect(body).toBeSortedBy("distanceKm");
+        expect(body[0].name).toBe("National Trust - Fell Foot, Windermere");
+        expect(body[1].name).toBe("Falls of Falloch, Crianlarich, Scotland");
+      });
+  });
   test("pagination queries should be validated", () => {
     return request(app).get("/locations?p=-1").expect(400);
   });

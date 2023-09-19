@@ -1,5 +1,5 @@
 const Locations = require("../models/locations-model");
-const Users = require("../models/users-model");
+const Fuse = require("fuse.js");
 
 function distanceBetweenCoords(coords1, coords2) {
   function deg2rad(deg) {
@@ -18,21 +18,37 @@ function distanceBetweenCoords(coords1, coords2) {
   return +d.toFixed(2);
 }
 
-function getLocations(req, res, next) {
-  const { lat = 52.77, long = -1.54, limit = 10, p = 1 } = req.query;
+function getLocations(req, res) {
+  function paginate(arr) {
+    return arr.slice((p - 1) * limit, p * limit);
+  }
+  function addDistance(location) {
+    const coords = location.loc.coordinates.map((coord) => +coord);
+    const km = distanceBetweenCoords([lat, long], coords);
+    const newLocation = location.toObject();
+    newLocation.distanceKm = km;
+    return newLocation;
+  }
+  const {
+    lat = 52.77,
+    long = -1.54,
+    limit = 10,
+    p = 1,
+    filterName,
+  } = req.query;
   Locations.find().then((allLocations) => {
-    const locationsWithDistance = allLocations
-      .map((location) => {
-        const coords = location.loc.coordinates.map((coord) => +coord);
-        const km = distanceBetweenCoords([lat, long], coords);
-        const newLocation = location.toObject();
-        newLocation.distanceKm = km;
-        return newLocation;
-      })
+    const locations = allLocations
+      .map(addDistance)
       .sort((a, b) => a.distanceKm - b.distanceKm);
-    res
-      .status(200)
-      .send(locationsWithDistance.slice((p - 1) * limit, p * limit));
+    if (!filterName) return res.status(200).send(paginate(locations));
+    const fuseOptions = {
+      threshold: 0.6, //default is 0.6
+      shouldSort: false, //defualt is true
+      keys: ["name"],
+    };
+    const fuse = new Fuse(locations, fuseOptions);
+    const filtered = fuse.search(filterName).map((place) => place.item);
+    return res.status(200).send(paginate(filtered));
   });
 }
 
