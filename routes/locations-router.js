@@ -1,16 +1,25 @@
-const { getLocations } = require("../controllers/location-controller");
+const {
+  getLocations,
+  postLocation,
+} = require("../controllers/location-controller");
 const {
   validateCoordQueries,
+  validateCoordBody,
 } = require("../controllers/validators/coordinate-validator");
+const {
+  checkLocationDistinct,
+} = require("../controllers/validators/location.validators");
 const {
   validatePaginationQueries,
 } = require("../controllers/validators/pagination-validator");
+
 const { authoriseUser } = require("../middleware/authoriseUser");
 
 const locationsRouter = require("express").Router();
 
 locationsRouter
   .route("/")
-  .get(validatePaginationQueries, validateCoordQueries, getLocations);
+  .get(validatePaginationQueries, validateCoordQueries, getLocations)
+  .post(authoriseUser, validateCoordBody, checkLocationDistinct, postLocation);
 
 module.exports = locationsRouter;

@@ -5,14 +5,25 @@ const mongoose = require("mongoose");
 const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
+const { getAccessTokens } = require("./access-token");
 
 require("dotenv").config();
 
 beforeAll(() => {
-  return mongoose.connect(process.env.DATABASE_LOCAL_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const promises = [];
+  promises.push(
+    mongoose.connect(process.env.DATABASE_LOCAL_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+  );
+  promises.push(
+    getAccessTokens().then(([unregisteredToken, registeredToken]) => {
+      console.log(unregisteredToken, registeredToken);
+      accessToken = unregisteredToken;
+      registeredAccessToken = registeredToken;
+    })
+  );
 });
 
 beforeEach(() => {
@@ -85,4 +96,38 @@ describe("GET /locations", () => {
   test("long should be validated", () => {
     return request(app).get("/locations?long=200").expect(400);
   });
+});
+
+describe("POST /locations", () => {
+  test("should return 400 if no coords given", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river" })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Must include coordinates as array of [lat, long]!");
+      });
+  });
+  test("should return 400 if latitude out of range", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [91, -71] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("latittude must be a float between -90 and 90 deg");
+      });
+  });
+  test("should return 400 if longitude out of range", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [90, -181] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("longitude must be a float between -180 and 180 deg");
+      });
+  });
+  test("should return 400 if within 1km of existing site", () => {});
 });

@@ -51,7 +51,7 @@ describe("GET /users/profile", () => {
     return request(app)
       .get("/users/profile")
       .set("Authorization", `Bearer ${accessToken}`)
-      .then(({ body }) => {
+      .then((body) => {
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",

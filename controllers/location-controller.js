@@ -36,4 +36,6 @@ function getLocations(req, res, next) {
   });
 }
 
-module.exports = { getLocations };
+function postLocation(req, res, next) {}
+
+module.exports = { getLocations, postLocation };
