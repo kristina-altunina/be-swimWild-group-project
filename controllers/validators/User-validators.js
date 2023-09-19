@@ -1,6 +1,6 @@
 const isURL = require("is-url");
 
-function validatePatchBody(req, res, next) {
+function validateUserPatchBody(req, res, next) {
   const { nickname, profileImg } = req.body;
   if (!nickname && !profileImg) {
     return res.status(400).send({
@@ -16,4 +16,4 @@ function validatePatchBody(req, res, next) {
   next();
 }
 
-module.exports = { validatePatchBody };
+module.exports = { validateUserPatchBody };
