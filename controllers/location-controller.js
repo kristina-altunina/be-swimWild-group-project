@@ -1,5 +1,7 @@
 const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
+const Fuse = require('fuse.js');
+const { filter } = require("../test-data/locations");
 
 function distanceBetweenCoords(coords1, coords2) {
   function deg2rad(deg) {
@@ -18,8 +20,10 @@ function distanceBetweenCoords(coords1, coords2) {
   return +d.toFixed(2);
 }
 
+
+
 function getLocations(req, res, next) {
-  const { lat = 52.77, long = -1.54, limit = 10, p = 1 } = req.query;
+  const { lat = 52.77, long = -1.54, limit = 10, p = 1, searchName } = req.query;
   Locations.find().then((allLocations) => {
     const locationsWithDistance = allLocations
       .map((location) => {
@@ -30,9 +34,24 @@ function getLocations(req, res, next) {
         return newLocation;
       })
       .sort((a, b) => a.distanceKm - b.distanceKm);
-    res
+      if(searchName){
+        const fuseOptions = {
+          threshold: 0.5, //default is 0.6
+          shouldSort: false, //defualt is true
+          keys: [
+            "name"
+          ]
+        };
+        const fuse = new Fuse(locationsWithDistance, fuseOptions)
+
+        const filteredObject = fuse.search(searchName)
+        res.status(200).send(filteredObject.slice((p - 1) * limit, p * limit))
+      }
+      else{
+        res
       .status(200)
       .send(locationsWithDistance.slice((p - 1) * limit, p * limit));
+      }
   });
 }
 
