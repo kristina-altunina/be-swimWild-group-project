@@ -75,7 +75,7 @@ function formattedData(dataFetched) {
   waveData.swell_wave_direction_dominant = swell_wave_direction_dominant;
   waveData.swell_wave_period_max = swell_wave_period_max;
   waveData.swell_wave_peak_period_max = swell_wave_peak_period_max;
-  console.log(waveData)
+  
     return waveData;
 }
 
@@ -95,6 +95,5 @@ function getMarineData(lat, lon) {
 }
 
 
-getMarineData(52.1134, 1.1234);
 
 module.exports = { getMarineData };
