@@ -134,6 +134,27 @@ describe("POST /locations", () => {
         expect(text).toBe("longitude must be a float between -180 and 180 deg");
       });
   });
+  test("should return 400 if given non-numerical coordinates", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [90, "-181"] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("longitude must be a float between -180 and 180 deg");
+      });
+  });
+  test("should return 400 if coords array is empty", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [] })
+      .expect(400)
+      .then(({ text }) => {
+        console.log(text)
+        expect(text).toBe("Must include coordinates as array of [lat, long]!");
+      });
+  });
   test("should return 400 if within 1km of existing site", () => {
     return request(app)
       .post("/locations")

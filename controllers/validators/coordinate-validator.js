@@ -15,7 +15,7 @@ function validateCoords(lat = 1, long = 1, res, next) {
       .status(400)
       .send("latittude must be a float between -90 and 90 deg");
   }
-  if (!/^[0-9.-]+$/.test(long) || Math.abs(long) > 180) {
+  if (!/^[0-9.-]+$/.test(long) || Math.abs(+long) > 180) {
     return res
       .status(400)
       .send("longitude must be a float between -180 and 180 deg");
