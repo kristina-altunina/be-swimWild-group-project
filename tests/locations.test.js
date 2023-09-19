@@ -199,6 +199,20 @@ describe("POST /locations", () => {
         expect(text).toBe("Include a key of type on the request body");
       });
   });
+  test("should return 400 if sent malformed body", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({})
+      .expect(400)
+  });
+  test("should return 400 if sent malformed body", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({coords: [54.647263, -2.995982],})
+      .expect(400)
+  });
   test("should create the new location with 201", () => {
     return request(app)
       .post("/locations")
