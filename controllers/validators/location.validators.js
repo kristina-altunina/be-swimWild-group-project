@@ -10,7 +10,7 @@ function checkLocationDistinct(req, res, next) {
   }
   Locations.find({}).then((locations) => {
     for (const location of locations) {
-      const proximity = distanceBetweenCoords(location.loc.coordinates, coords);
+      const proximity = distanceBetweenCoords(location.coords, coords);
       if (proximity < 1) {
         return res.status(400).send(`${location.name} has similar coordinates`);
       }

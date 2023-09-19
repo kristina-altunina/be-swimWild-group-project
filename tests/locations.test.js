@@ -6,6 +6,7 @@ const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
 const { getAccessTokens } = require("./access-token");
+const Locations = require("../models/locations-model");
 
 require("dotenv").config();
 
@@ -27,6 +28,7 @@ beforeAll(() => {
       registeredAccessToken = registeredToken;
     })
   );
+  return Promise.all(promises);
 });
 
 beforeEach(() => {
@@ -46,7 +48,7 @@ describe("GET /locations", () => {
         expect(body[0]).toMatchObject({
           name: expect.any(String),
           _id: expect.any(String),
-          loc: { coordinates: [expect.any(Number), expect.any(Number)] },
+          coords: [expect.any(Number), expect.any(Number)],
           distanceKm: expect.any(Number),
           type: expect.any(String),
         });
@@ -176,7 +178,7 @@ describe("POST /locations", () => {
         expect(text).toBe("Include a key of type on the request body");
       });
   });
-  test.only("should create the new location with 201", () => {
+  test("should create the new location with 201", () => {
     return request(app)
       .post("/locations")
       .set("Authorization", `Bearer ${accessToken}`)
@@ -188,11 +190,15 @@ describe("POST /locations", () => {
       .expect(201)
       .then(({ body }) => {
         expect(body).toMatchObject({
-          _id: expect.any(Number),
+          _id: expect.any(String),
           name: "new place",
           type: "river",
           coords: [54.647263, -2.995982],
         });
+        return Locations.find({ name: "new place" }).then();
+      })
+      .then((locations) => {
+        expect(locations.length).toBe(1);
       });
   });
 });

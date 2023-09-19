@@ -23,7 +23,7 @@ function getLocations(req, res, next) {
   Locations.find().then((allLocations) => {
     const locationsWithDistance = allLocations
       .map((location) => {
-        const coords = location.loc.coordinates.map((coord) => +coord);
+        const coords = location.coords.map((coord) => +coord);
         const km = distanceBetweenCoords([lat, long], coords);
         const newLocation = location.toObject();
         newLocation.distanceKm = km;
