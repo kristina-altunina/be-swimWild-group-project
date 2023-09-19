@@ -1,4 +1,5 @@
 const { getNearestEaAab } = require("./ea-aab-api");
+const { collectEaInlandData } = require("./ea-inland-api");
 const { getMarineData } = require("./marine-api");
 const { findTempOfNearestBeach } = require("./sea-temps/sea-temp-scraper");
 
@@ -17,7 +18,7 @@ function getApiData(coords, type) {
       };
     });
   } else {
-    const promises = [];
+    const promises = [collectEaInlandData(coords, radius)];
   }
 }
 
