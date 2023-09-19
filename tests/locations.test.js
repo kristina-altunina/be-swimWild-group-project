@@ -9,6 +9,9 @@ const { getAccessTokens } = require("./access-token");
 
 require("dotenv").config();
 
+let accessToken;
+let registeredAccessToken;
+
 beforeAll(() => {
   const promises = [];
   promises.push(
@@ -129,5 +132,67 @@ describe("POST /locations", () => {
         expect(text).toBe("longitude must be a float between -180 and 180 deg");
       });
   });
-  test("should return 400 if within 1km of existing site", () => {});
+  test("should return 400 if within 1km of existing site", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [54.447263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Rydal, Lake District has similar coordinates");
+      });
+  });
+  test("should return 400 if no name offered", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ type: "river", coords: [54.647263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of name on the request body");
+      });
+  });
+  test("should return 400 if no type offered", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "river", coords: [54.647263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of type on the request body");
+      });
+  });
+  test("should return 400 if type not within enum", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        name: "river",
+        type: "reservoir",
+        coords: [54.647263, -2.995982],
+      })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of type on the request body");
+      });
+  });
+  test.only("should create the new location with 201", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        name: "new place",
+        type: "river",
+        coords: [54.647263, -2.995982],
+      })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          _id: expect.any(Number),
+          name: "new place",
+          type: "river",
+          coords: [54.647263, -2.995982],
+        });
+      });
+  });
 });
