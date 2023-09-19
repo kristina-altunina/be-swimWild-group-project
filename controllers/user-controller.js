@@ -9,10 +9,26 @@ function postUser(req, res, next) {
     dob: req.body.dob,
     profileImg: req.body.profileImg,
   };
-  console.log(newUser);
   Users.create(newUser).then((newUser) => {
     res.status(200).send(newUser);
   });
+}
+
+function patchUser(req, res, next) {
+  const { nickname, profileImg } = req.body;
+  const filter = {uid: req.user.uid}
+  const update = {nickname: nickname,
+  profileImg: profileImg}
+  Users.findOneAndUpdate(filter, update)
+  .then(()=>{
+    return Users.findOne(filter)
+  })
+  .then((newUser)=>{
+    res.status(200).send(newUser)
+  })
+  .catch((err)=>{
+    console.log("why here")
+  })
 }
 
 function getUser(req, res, next) {
@@ -27,7 +43,7 @@ function getUser(req, res, next) {
   });
 }
 
-module.exports = { postUser, getUser };
+module.exports = { postUser, getUser, patchUser };
 
 // app.get("/", (req, res) => {
 //   res.status(200).send({ greeting: `hello ${req.user.email}` });
