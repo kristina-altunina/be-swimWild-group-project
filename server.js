@@ -6,6 +6,7 @@ const serviceAccount = require("./firebase-key.json");
 // routers
 const usersRouter = require("./routes/users-routers");
 const locationsRouter = require("./routes/locations-router");
+const { mongoDbErrors } = require("./middleware/errorHandlers");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -19,9 +20,10 @@ app.use(cors());
 app.use("/users", usersRouter);
 app.use("/locations", locationsRouter);
 
-app.use((err, req, res, next)=>{
-  const {status, msg} = err
-  return res.status(status).send({msg})
-})
+app.use(mongoDbErrors);
+
+app.use((err, req, res, next) => {
+  res.status(500).send("something has gone wrong here!");
+});
 
 module.exports = { app };
