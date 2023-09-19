@@ -91,6 +91,17 @@ describe("GET /locations", () => {
   });
   test("should be filtered by a filterName query", () => {
     return request(app)
+      .get("/locations?filterName='Lake'")
+      .then(({ body }) => {
+        expect(body).toBeSortedBy("distanceKm");
+        expect(body.length).toBe(2)
+        expect(body).toBeSortedBy("distanceKm")
+        expect(body[0].name).toBe('Beckenham Park Swimming Lake, London')
+        expect(body[1].name).toBe('Rydal, Lake District')
+      });
+  });
+  test("should be filtered by a filterName query", () => {
+    return request(app)
       .get("/locations?filterName='fish'")
       .then(({ body }) => {
         expect(body.length).toBe(0)
@@ -100,8 +111,10 @@ describe("GET /locations", () => {
     return request(app)
       .get("/locations?filterName='Fellfoot'")
       .then(({ body }) => {
-        expect(body.length).toBe(1)
+        expect(body.length).toBe(2)
+        expect(body).toBeSortedBy("distanceKm")
         expect(body[0].name).toBe("National Trust - Fell Foot, Windermere")
+        expect(body[1].name).toBe("Falls of Falloch, Crianlarich, Scotland")
       });
   });
   test("pagination queries should be validated", () => {

@@ -71,4 +71,12 @@ module.exports = [
       coordinates: [51.93842606503727, -5.207754321139982],
     },
   },
+  {
+    name: "Beckenham Park Swimming Lake, London",
+    type: "lake",
+    loc: {
+      type: "Point",
+      coordinates: [51.420439601017776, -0.014583048102605571],
+    },
+  },
 ];

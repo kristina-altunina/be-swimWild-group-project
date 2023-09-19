@@ -36,7 +36,7 @@ function getLocations(req, res, next) {
       .sort((a, b) => a.distanceKm - b.distanceKm);
       if(filterName){
         const fuseOptions = {
-          threshold: 0.5, //default is 0.6
+          threshold: 0.6, //default is 0.6
           shouldSort: false, //defualt is true
           keys: [
             "name"
