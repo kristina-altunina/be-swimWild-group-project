@@ -27,6 +27,7 @@ beforeAll(() => {
       registeredAccessToken = registeredToken;
     })
   );
+  return Promise.all(promises)
 });
 
 beforeEach(() => {
@@ -247,3 +248,13 @@ describe("PATCH /users/", () => {
       });
   });
 });
+
+describe("GET /users/:uid",()=>{
+  test.only("",()=>{
+    return request(app)
+    .get("/users/")
+    .then(()=>{
+      expect(1).toEqual(1)
+    })
+  })
+})

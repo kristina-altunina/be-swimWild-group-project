@@ -45,4 +45,8 @@ function getUser(req, res, next) {
   });
 }
 
-module.exports = { postUser, getUser, patchUser };
+function fetchUserById(req,res,next){
+  return console.log(req.query)
+}
+
+module.exports = { postUser, getUser, patchUser, fetchUserById };

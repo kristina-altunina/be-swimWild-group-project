@@ -3,6 +3,7 @@ const {
   postUser,
   patchUser,
   getUser,
+  fetchUserById
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
@@ -16,5 +17,8 @@ usersRouter
   .patch(authoriseUser, validateUserPatchBody, patchUser);
 
 usersRouter.route("/profile").get(authoriseUser, getUser);
+
+usersRouter.route("/:uid")
+.get(fetchUserById)
 
 module.exports = usersRouter;
