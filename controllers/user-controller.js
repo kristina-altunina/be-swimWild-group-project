@@ -16,7 +16,7 @@ function postUser(req, res, next) {
     .catch(next);
 }
 
-function patchUser(req, res) {
+function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
   const filter = { uid: req.user.uid };
   const update = { nickname: nickname, profileImg: profileImg };
