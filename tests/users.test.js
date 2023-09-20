@@ -230,7 +230,7 @@ describe("PATCH /users/", () => {
         );
       });
   });
-  test("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {
       nickname: null,
       profileImg: null,

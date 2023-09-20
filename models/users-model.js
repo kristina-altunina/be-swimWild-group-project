@@ -49,48 +49,60 @@ const userSchema = mongoose.Schema({
         },
         notes: {
           type: String,
+          default: null,
         },
         stars: {
           type: Number,
           min: [0, "Too small"],
           max: [5, "Too big"],
+          default: null,
         },
         recordTemp: {
           type: Number,
           min: [-5, "Don't lie"],
           max: [60, "Don't lie"],
+          default: null,
         },
         feelTemp: {
           type: String,
           enum: ["freezing", "cold", "average", "warm", "hot"],
+          default: null,
         },
         mins: {
           type: Number,
+          default: null,
         },
         km: {
           type: Number,
+          default: null,
         },
         outOfDepth: {
           type: Boolean,
+          default: null,
         },
-        sizekey: {
+        sizeKey: {
           type: String,
-          enum: ["tiny", "small", "medium", "large"],
+          enum: ["tiny", "small", "medium", "large",null],
+          default: null,
         },
         shore: {
           type: String,
-          enum: ["muddy", "rocky", "sandy", "pebbly", "grassy", "swampy"],
+          enum: ["muddy", "rocky", "sandy", "pebbly", "grassy", "swampy",null],
+          default: null,
         },
         bankAngle: {
           type: String,
-          emum: ["shallow", "medium", "steep", "jump-in"],
+          emum: ["shallow", "medium", "steep", "jump-in", null],
+          default: null,
         },
         clarity: {
           type: String,
-          enum: ["muddy", "murky", "average", "clear", "perfect"],
+          enum: ["muddy", "murky", "average", "clear", "perfect",null],
+          default: null,
         },
-        imageUrls: {
+        imgUrls: {
           type: [String],
+          default: [],
         },
       },
     ],

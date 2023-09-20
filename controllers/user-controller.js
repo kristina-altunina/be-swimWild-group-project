@@ -19,19 +19,18 @@ function postUser(req, res, next) {
 
 function patchUser(req, res, next) {
   const { nickname, profileImg } = req.body;
-  const filter = {uid: req.user.uid}
-  const update = {nickname: nickname,
-  profileImg: profileImg}
+  const filter = { uid: req.user.uid };
+  const update = { nickname: nickname, profileImg: profileImg };
   Users.findOneAndUpdate(filter, update)
-  .then(()=>{
-    return Users.findOne(filter)
-  })
-  .then((newUser)=>{
-    res.status(200).send(newUser)
-  })
-  .catch((err)=>{
-    console.log("why here")
-  })
+    .then(() => {
+      return Users.findOne(filter);
+    })
+    .then((newUser) => {
+      res.status(200).send(newUser);
+    })
+    .catch((err) => {
+      console.log("why here");
+    });
 }
 
 function getUser(req, res, next) {
@@ -46,44 +45,58 @@ function getUser(req, res, next) {
   });
 }
 
-module.exports = { postUser, getUser, patchUser };
+function postSwim(req, res, next) {
+  const {
+    date,
+    locationName,
+    locationId,
+    notes,
+    stars,
+    recordTemp,
+    feelTemp,
+    mins,
+    km,
+    outOfDepth,
+    shore,
+    bankAngle,
+    clarity,
+    imageUrls,
+  } = req.body;
+  const uid = req.user.uid;
 
-// app.get("/", (req, res) => {
-//   res.status(200).send({ greeting: `hello ${req.user.email}` });
-// });
+  new_swim = {
+    date,
+    location: {
+      name: locationName,
+      id: locationId,
+    },
+    notes,
+    stars,
+    recordTemp,
+    feelTemp,
+    mins,
+    km,
+    outOfDepth,
+    shore,
+    bankAngle,
+    clarity,
+    imageUrls
+  };
 
-// app.get("/locations", (req, res) => {
-//   Locations.find({}).then((locations) => {
-//     res.status(200).json(locations);
-//   });
-// });
+  console.log(newSwim)
+  
 
-// app.get("/locations/:id", (req, res) => {
-//   const { id } = req.params;
+  Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
+    .then(() => {
+      return Users.findOne({ uid: uid });
+    }).then((user) => {
+      const newSwim = user.swims[user.swims.length - 1];
+      console.log(newSwim)
+      res.status(201).send(newSwim);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
-//   Locations.find({ id: id })
-//     .then((location) => {
-//       res.status(200).json(location);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
-// app.get("/users", (req, res) => {
-//   Users.find({}).then((users) => {
-//     res.status(200).json(users);
-//   });
-// });
-
-// app.get("/profile", (req, res) => {
-//   Users.find({ uid: req.user.uid }).then((user) => {
-//     res.status(200).json(user);
-//   });
-// });
-
-// app.post("/locations", (req, res) => {
-//   Locations.create(req.body).then((location) => {
-//     res.status(200).json(location);
-//   });
-// });
+module.exports = { postUser, getUser, patchUser, postSwim };
