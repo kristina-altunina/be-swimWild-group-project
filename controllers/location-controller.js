@@ -1,6 +1,7 @@
 const Locations = require("../models/locations-model");
 const Fuse = require("fuse.js");
 const { processUserData } = require("./utils");
+const Users = require("../models/users-model");
 
 function distanceBetweenCoords(coords1, coords2) {
   function deg2rad(deg) {

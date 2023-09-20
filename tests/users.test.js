@@ -59,7 +59,31 @@ describe("GET /users/profile", () => {
           nickname: "tester",
           dob: "1997-09-02T11:00:00.000Z",
           profileImg: "http://lookatme.jpg",
-          swims: [],
+          swims: [
+            {
+              date: "2023-06-21T17:00:00+0000",
+              location: {
+                name: "Rydal, Lake District",
+                id: null,
+              },
+              notes: "Good fun",
+              stars: 4,
+              recordTemp: null,
+              feelTemp: "average",
+              mins: 25,
+              km: 0.5,
+              outOfDepth: true,
+              sizeKey: "large",
+              shore: "pebbly",
+              bankAngle: "medium",
+              clarity: "average",
+              imgUrls: [
+                "https://www.parkcliffe.co.uk/wp-content/uploads/2023/01/rydal-water-2-lake-district.jpg",
+                "https://www.ratedtrips.com/images/styles/rt_slider/public/00008881_A3.jpg?itok=3BSnVDBP",
+                "https://windows10spotlight.com/wp-content/uploads/2022/06/5cc14463fca6e0211691ddf32779fbf2.jpg",
+              ],
+            },
+          ],
         });
       });
   });
@@ -185,8 +209,6 @@ describe("PATCH /users/", () => {
           nickname: "dobbyforRon",
           profileImg:
             "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
-          dob: "1997-09-02T11:00:00.000Z",
-          swims: [],
         });
       });
   });
