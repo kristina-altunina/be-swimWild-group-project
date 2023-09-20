@@ -15,6 +15,7 @@ let registeredAccessToken;
 
 beforeAll(() => {
   const promises = [];
+  mongoose.set("runValidators", true);
   promises.push(
     mongoose.connect(process.env.DATABASE_LOCAL_URL, {
       useNewUrlParser: true,

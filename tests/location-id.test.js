@@ -12,6 +12,7 @@ require("dotenv").config();
 let rydalId = "";
 
 beforeAll(() => {
+  mongoose.set("runValidators", true);
   return mongoose.connect(process.env.DATABASE_LOCAL_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
