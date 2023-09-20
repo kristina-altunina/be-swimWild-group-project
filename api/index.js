@@ -1,5 +1,6 @@
 const { getNearestEaAab } = require("./ea-aab-api");
 const { collectEaInlandData } = require("./ea-inland-api");
+const { getLiveWeather } = require("./live-weather-api");
 const { getMarineData } = require("./marine-api");
 const { findTempOfNearestBeach } = require("./sea-temps/sea-temp-scraper");
 
@@ -9,6 +10,7 @@ function getApiData(coords, type) {
       findTempOfNearestBeach(coords),
       getNearestEaAab(coords),
       getMarineData(coords),
+      getLiveWeather(coords),
     ];
     return Promise.allSettled(promises).then(([temp, aab, wave]) => {
       return {
