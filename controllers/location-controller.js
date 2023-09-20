@@ -101,4 +101,4 @@ function getLocationById(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getLocations, getLocationById };
+module.exports = { getLocations, getLocationById, postLocation };

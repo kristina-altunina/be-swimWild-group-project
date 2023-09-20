@@ -1,7 +1,7 @@
 const {
   getLocations,
   postLocation,
-  getLocationsById,
+  getLocationById,
 } = require("../controllers/location-controller");
 const {
   validateCoordQueries,
