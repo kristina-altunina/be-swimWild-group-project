@@ -50,8 +50,7 @@ describe("POST/users/swim", () => {
     return request(app).post("/users/swim").expect(401);
   });
 
-  test.only("should respond with new swim object", () => {
-    console.log(rydalId);
+  test("should respond with new swim object", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
       locationName: "Rydal, Lake District",
@@ -76,7 +75,6 @@ describe("POST/users/swim", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(201)
       .then(({ body }) => {
-        console.log(body.msg)
         expect(body).toMatchObject({
           date: "2023-05-02T11:00:00.000Z",
           notes:
@@ -84,7 +82,7 @@ describe("POST/users/swim", () => {
           stars: 5,
           location: {
             name: "Rydal, Lake District",
-            id: rydalId,
+            id: rydalId.toString(),
           },
           recordTemp: null,
           feelTemp: "average",
@@ -99,7 +97,7 @@ describe("POST/users/swim", () => {
         });
       });
   });
-  test.only("Should return a 201 when location and date are provided", () => {
+  test("Should return a 201 when location and date are provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
       locationName: "Rydal, Lake District",
@@ -112,15 +110,13 @@ describe("POST/users/swim", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(201)
       .then(({ body }) => {
-                console.log(body.msg);
-
         expect(body).toMatchObject({
           date: "2023-05-02T11:00:00.000Z",
           notes: null,
           stars: null,
           location: {
             name: "Rydal, Lake District",
-            id: rydalId,
+            id: rydalId.toString(),
           },
           recordTemp: null,
           feelTemp: null,
@@ -182,4 +178,52 @@ describe("POST/users/swim", () => {
         expect(body.msg).toBe("Location ID is not valid.");
       });
   });
+
+  test ("Should return a 400 when date  is not provided", () => {
+    const postBody = {
+      locationName: "Rydal, Lake District",
+      locationId: rydalId.toString(),
+    };
+    return request(app)
+      .post("/users/swim")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(postBody)
+      .expect(400)
+      .then(({ body }) => {
+        console.log(body.msg)
+        expect(body.msg).toBe("No date provided");
+      });
+  });
+
+  test("Should return a 400 when Location name is not provided", () => {
+    const postBody = {
+      date: "2023-05-02T11:00:00Z",
+      locationId: rydalId.toString(),
+    };
+    return request(app)
+      .post("/users/swim")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(postBody)
+      .expect(400)
+      .then(({ body }) => {
+        console.log(body.msg);
+        expect(body.msg).toBe("Location name is not provided.");
+      });
+  });
+
+   test("Should return a 400 when Location Id is not provided", () => {
+     const postBody = {
+       date: "2023-05-02T11:00:00Z",
+       locationName: "Rydal, Lake District",
+     };
+     return request(app)
+       .post("/users/swim")
+       .set("Authorization", `Bearer ${accessToken}`)
+       .send(postBody)
+       .expect(400)
+       .then(({ body }) => {
+         console.log(body.msg);
+         expect(body.msg).toBe("Location Id is not provided.");
+       });
+   });
 });

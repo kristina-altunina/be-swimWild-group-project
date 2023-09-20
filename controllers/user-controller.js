@@ -81,17 +81,13 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imageUrls
-  };
-
-  console.log(newSwim)
-  
+  };  
 
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
     .then(() => {
       return Users.findOne({ uid: uid });
     }).then((user) => {
       const newSwim = user.swims[user.swims.length - 1];
-      console.log(newSwim)
       res.status(201).send(newSwim);
     })
     .catch((err) => {
