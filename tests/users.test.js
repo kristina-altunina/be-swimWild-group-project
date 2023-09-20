@@ -266,10 +266,10 @@ describe("GET /users/:uid", () => {
   });
   test("returns correct error message for non-existent user", () => {
     return request(app)
-    .get("/users/32222")
-    .expect(404)
-    .then(({body})=>{
-      expect(body.msg).toBe("user not found")
-    });
+      .get("/users/32222")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("user not found");
+      });
   });
 });

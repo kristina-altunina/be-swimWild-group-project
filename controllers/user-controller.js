@@ -1,4 +1,3 @@
-const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
 
 function postUser(req, res, next) {
@@ -28,29 +27,12 @@ function patchUser(req, res, next) {
     .then((newUser) => {
       res.status(200).send(newUser);
     })
-    .catch((err) => {
-      console.log("why here");
-    });
+    .catch(next);
 }
 
 function getUser(req, res, next) {
-  Users.find({ uid: { $eq: req.user.uid } }).then((user) => {
-    res.status(200).send({
-      name: user[0].name,
-      nickname: user[0].nickname,
-      profileImg: user[0].profileImg,
-      dob: user[0].dob,
-      swims: user[0].swims,
-    });
-  });
-}
-
-function fetchUserById(req, res, next) {
-  const { uid } = req.params;
-  Users.find({ uid: { $eq: uid } }).then((user) => {
-    if (!user.length) {
-      res.status(404).send({ msg: "user not found" });
-    } else {
+  Users.find({ uid: { $eq: req.user.uid } })
+    .then((user) => {
       res.status(200).send({
         name: user[0].name,
         nickname: user[0].nickname,
@@ -58,8 +40,27 @@ function fetchUserById(req, res, next) {
         dob: user[0].dob,
         swims: user[0].swims,
       });
-    }
-  });
+    })
+    .catch(next);
 }
 
-module.exports = { postUser, getUser, patchUser, fetchUserById };
+function getUserById(req, res, next) {
+  const { uid } = req.params;
+  Users.find({ uid: { $eq: uid } })
+    .then((user) => {
+      if (!user.length) {
+        return res.status(404).send({ msg: "user not found" });
+      } else {
+        return res.status(200).send({
+          name: user[0].name,
+          nickname: user[0].nickname,
+          profileImg: user[0].profileImg,
+          dob: user[0].dob,
+          swims: user[0].swims,
+        });
+      }
+    })
+    .catch(next);
+}
+
+module.exports = { postUser, getUser, patchUser, getUserById };

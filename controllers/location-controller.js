@@ -18,7 +18,7 @@ function distanceBetweenCoords(coords1, coords2) {
   return +d.toFixed(2);
 }
 
-function getLocations(req, res) {
+function getLocations(req, res, next) {
   function paginate(arr) {
     return arr.slice((p - 1) * limit, p * limit);
   }
@@ -36,20 +36,22 @@ function getLocations(req, res) {
     p = 1,
     filterName,
   } = req.query;
-  Locations.find().then((allLocations) => {
-    const locations = allLocations
-      .map(addDistance)
-      .sort((a, b) => a.distanceKm - b.distanceKm);
-    if (!filterName) return res.status(200).send(paginate(locations));
-    const fuseOptions = {
-      threshold: 0.6, //default is 0.6
-      shouldSort: false, //defualt is true
-      keys: ["name"],
-    };
-    const fuse = new Fuse(locations, fuseOptions);
-    const filtered = fuse.search(filterName).map((place) => place.item);
-    return res.status(200).send(paginate(filtered));
-  });
+  Locations.find()
+    .then((allLocations) => {
+      const locations = allLocations
+        .map(addDistance)
+        .sort((a, b) => a.distanceKm - b.distanceKm);
+      if (!filterName) return res.status(200).send(paginate(locations));
+      const fuseOptions = {
+        threshold: 0.6, //default is 0.6
+        shouldSort: false, //defualt is true
+        keys: ["name"],
+      };
+      const fuse = new Fuse(locations, fuseOptions);
+      const filtered = fuse.search(filterName).map((place) => place.item);
+      return res.status(200).send(paginate(filtered));
+    })
+    .catch(next);
 }
 
 module.exports = { getLocations };
