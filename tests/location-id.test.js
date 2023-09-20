@@ -101,6 +101,7 @@ describe("GET location/:id", () => {
       .get(`/locations/${rydalId}`)
       .expect(200)
       .then(({ body }) => {
+        console.log(body);
         expect(body.location).toMatchObject({
           _id: expect.any(String),
           name: "Rydal, Lake District",
