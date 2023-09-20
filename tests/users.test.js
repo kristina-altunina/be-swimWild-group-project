@@ -1,6 +1,7 @@
 const { app } = require("../server");
 const request = require("supertest");
 const mongoose = require("mongoose");
+const Users = require("../models/users-model");
 
 const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
@@ -27,6 +28,7 @@ beforeAll(() => {
       registeredAccessToken = registeredToken;
     })
   );
+  return Promise.all(promises);
 });
 
 beforeEach(() => {
@@ -244,6 +246,24 @@ describe("PATCH /users/", () => {
         expect(body.msg).toBe(
           "Please enter a nickname or profile image to update"
         );
+      });
+  });
+});
+
+describe("DELETE /users/:uid", () => {
+  test("should respond 401 Unauthorized when no access token provided", () => {
+    return request(app).delete("/users/profile").expect(401);
+  });
+  test("should respond 204 if passed valid access token, and remove the relavent profile from the database", () => {
+    return request(app)
+      .delete("/users/profile")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(204)
+      .then(() => {
+        return Users.find({ uid: { $eq: "UHaKMQx4MLbrELny74UYMyUBcOm2" } });
+      })
+      .then((response) => {
+        expect(response).toEqual([]);
       });
   });
 });

@@ -45,4 +45,14 @@ function getUser(req, res, next) {
   });
 }
 
-module.exports = { postUser, getUser, patchUser };
+function removeUser(req,res,next){
+  Users.deleteOne({ uid: { $eq: req.user.uid } }).then((response)=>{
+    return res.status(204).send()
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+
+}
+
+module.exports = { postUser, getUser, patchUser, removeUser };

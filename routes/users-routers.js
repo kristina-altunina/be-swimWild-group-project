@@ -3,6 +3,7 @@ const {
   postUser,
   patchUser,
   getUser,
+  removeUser
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
@@ -15,6 +16,8 @@ usersRouter
   .post(authoriseUser, postUser)
   .patch(authoriseUser, validateUserPatchBody, patchUser);
 
-usersRouter.route("/profile").get(authoriseUser, getUser);
+usersRouter.route("/profile")
+.get(authoriseUser, getUser)
+.delete(authoriseUser, removeUser);
 
 module.exports = usersRouter;
