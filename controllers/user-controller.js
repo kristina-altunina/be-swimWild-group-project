@@ -45,8 +45,18 @@ function getUser(req, res, next) {
   });
 }
 
-function fetchUserById(req,res,next){
-  return console.log(req.query)
+function fetchUserById(req, res, next){
+  const {uid} = req.params
+  Users.find({ uid: { $eq: uid} }).then((user)=>{
+    console.log(user)
+    return res.status(200).send({
+      name: user[0].name,
+      nickname: user[0].nickname,
+      profileImg: user[0].profileImg,
+      dob: user[0].dob,
+      swims: user[0].swims,
+    })
+  })
 }
 
 module.exports = { postUser, getUser, patchUser, fetchUserById };

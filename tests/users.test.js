@@ -252,9 +252,17 @@ describe("PATCH /users/", () => {
 describe("GET /users/:uid",()=>{
   test.only("",()=>{
     return request(app)
-    .get("/users/")
-    .then(()=>{
-      expect(1).toEqual(1)
+    .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
+    .expect(200)
+    .then(({body})=>{
+      console.log(body)
+      expect(body).toMatchObject({
+        name: "testUser",
+        nickname: "tester",
+        dob: "1997-09-02T11:00:00.000Z",
+        profileImg: "http://lookatme.jpg",
+        swims: [],
+      })
     })
   })
 })
