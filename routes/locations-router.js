@@ -1,6 +1,7 @@
 const {
   getLocations,
   postLocation,
+  getLocationsById,
 } = require("../controllers/location-controller");
 const {
   validateCoordQueries,
@@ -21,5 +22,7 @@ locationsRouter
   .route("/")
   .get(validatePaginationQueries, validateCoordQueries, getLocations)
   .post(authoriseUser, validateCoordBody, checkLocationDistinct, postLocation);
+
+locationsRouter.route("/:id").get(getLocationById);
 
 module.exports = locationsRouter;

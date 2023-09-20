@@ -62,7 +62,7 @@ const userSchema = mongoose.Schema({
         },
         feelTemp: {
           type: String,
-          enum: ["freezing", "cold", "average", "warm", "hot"],
+          enum: ["freezing", "cold", "average", "warm", "hot"], // null: true?
         },
         mins: {
           type: Number,

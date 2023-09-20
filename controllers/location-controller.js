@@ -1,5 +1,6 @@
 const Locations = require("../models/locations-model");
 const Fuse = require("fuse.js");
+const { processUserData } = require("./utils");
 
 function distanceBetweenCoords(coords1, coords2) {
   function deg2rad(deg) {
@@ -66,4 +67,34 @@ function postLocation(req, res, next) {
   });
 }
 
-module.exports = { getLocations, postLocation };
+function getLocationById(req, res, next) {
+  const swims = [];
+  Users.find({ "swims.location.id": req.params.id }).then((users) => {
+    users.forEach((user) => {
+      swims.push(
+        ...user.swims
+          .filter((swim) => {
+            return swim.location.id === req.params.id;
+          })
+          .map((swim) => {
+            const newSwim = { ...swim.toObject() };
+            newSwim.uid = user.uid;
+            newSwim.name = user.name;
+            newSwim.nickname = user.nickname;
+            newSwim.profileImg = user.profileImg;
+            newSwim.sizeKey = swim.sizeKey;
+            newSwim.imgUrls = swim.imgUrls;
+            return newSwim;
+          })
+      );
+    });
+    swims.sort((a, b) => {
+      return b.date - a.date;
+    });
+    const userData = processUserData(swims);
+    // Locations.findOne({ _id: req.params.id }).then((location) => {});
+    res.status(200).send({ swims, userData });
+  });
+}
+
+module.exports = { getLocations, getLocationById };

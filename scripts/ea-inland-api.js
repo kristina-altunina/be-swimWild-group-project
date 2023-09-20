@@ -97,6 +97,7 @@ function processEaData(dataPromise, searchDate) {
       processedData.mostRecentValue = mostRecent.value;
       processedData.mostRecentSampleDate = mostRecent.datetime;
       processedData.determinand = mostRecent.determinand;
+      processedData.units = data[0].units;
 
       if (detail.determinandID === "0076") {
         // polynomial regression
@@ -143,11 +144,11 @@ function processEaData(dataPromise, searchDate) {
 
 module.exports = { collectEaInlandData };
 
-collectEaInlandData(
-  [54.2744, -2.9516],
-  1000,
-  "lakes",
-  new Date().toISOString()
-).then((data) => {
-  console.log(data);
-});
+// collectEaInlandData(
+//   [54.2744, -2.9516],
+//   1000,
+//   "lakes",
+//   new Date().toISOString()
+// ).then((data) => {
+//   console.log(data);
+// });
