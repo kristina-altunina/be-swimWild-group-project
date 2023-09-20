@@ -36,4 +36,32 @@ function getLocations(req, res, next) {
   });
 }
 
-module.exports = { getLocations };
+function getLocationById(req, res, next) {
+  const swims = [];
+  Users.find({ "swims.location.id": req.params.id }).then((users) => {
+    users.forEach((user) => {
+      swims.push(
+        ...user.swims
+          .filter((swim) => {
+            return swim.location.id === req.params.id;
+          })
+          .map((swim) => {
+            const newSwim = { ...swim.toObject() };
+            newSwim.uid = user.uid;
+            newSwim.name = user.name;
+            newSwim.nickname = user.nickname;
+            newSwim.profileImg = user.profileImg;
+            newSwim.sizeKey = swim.sizeKey;
+            newSwim.imgUrls = swim.imgUrls;
+            return newSwim;
+          })
+      );
+    });
+    swims.sort((a, b) => {
+      return b.date - a.date;
+    });
+    res.status(200).send({ swims });
+  });
+}
+
+module.exports = { getLocations, getLocationById };
