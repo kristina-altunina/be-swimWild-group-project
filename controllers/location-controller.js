@@ -25,7 +25,7 @@ function getLocations(req, res, next) {
     return arr.slice((p - 1) * limit, p * limit);
   }
   function addDistance(location) {
-    const coords = location.loc.coordinates.map((coord) => +coord);
+    const coords = location.coords.map((coord) => +coord);
     const km = distanceBetweenCoords([lat, long], coords);
     const newLocation = location.toObject();
     newLocation.distanceKm = km;

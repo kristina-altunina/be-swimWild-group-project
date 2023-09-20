@@ -17,57 +17,36 @@ module.exports = [
   {
     name: "River Isis, Port Meadow, Oxford",
     type: "river",
-    loc: {
-      type: "Point",
-      coordinates: [51.772329824620996, -1.2835620054092063],
-    },
+    coords: [51.772329824620996, -1.2835620054092063],
   },
   {
     name: "Linhope Spout, Northumberland",
     type: "pond",
-    loc: {
-      type: "Point",
-      coordinates: [55.447944356182965, -2.067671030695456],
-    },
+    coords: [55.447944356182965, -2.067671030695456],
   },
   {
     name: "Falls of Falloch, Crianlarich, Scotland",
     type: "pond",
-    loc: {
-      type: "Point",
-      coordinates: [55.662038436359275, -3.7802584005746165],
-    },
+    coords: [55.662038436359275, -3.7802584005746165],
   },
   {
     name: "Goldiggins Quarry, Minions, Cornwall",
     type: "lake",
-    loc: {
-      type: "Point",
-      coordinates: [50.5250108622856, -4.471285995316559],
-    },
+    coords: [50.5250108622856, -4.471285995316559],
   },
   {
     name: "Walpole Bay Tidal Pool, Margate",
     type: "sea",
-    loc: {
-      type: "Point",
-      coordinates: [51.388631888089755, 1.3796788791465624],
-    },
+    coords: [51.388631888089755, 1.3796788791465624],
   },
   {
     name: "Blue Lagoon, Pembrokeshire, Wales",
     type: "sea",
-    loc: {
-      type: "Point",
-      coordinates: [51.93842606503727, -5.207754321139982],
-    },
+    coords: [51.93842606503727, -5.207754321139982],
   },
   {
     name: "Beckenham Park Swimming Lake, London",
     type: "lake",
-    loc: {
-      type: "Point",
-      coordinates: [51.420439601017776, -0.014583048102605571],
-    },
+    coords: [51.420439601017776, -0.014583048102605571],
   },
 ];

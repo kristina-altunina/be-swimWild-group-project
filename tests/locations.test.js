@@ -98,7 +98,7 @@ describe("GET /locations", () => {
         expect(body[0]).toMatchObject({
           name: "Rydal, Lake District",
           _id: expect.any(String),
-          loc: { coordinates: [expect.any(Number), expect.any(Number)] },
+          coords: [expect.any(Number), expect.any(Number)],
           distanceKm: expect.any(Number),
           type: expect.any(String),
         });
@@ -194,7 +194,7 @@ describe("POST /locations", () => {
       .send({ name: "test", type: "river", coords: [] })
       .expect(400)
       .then(({ text }) => {
-        console.log(text)
+        console.log(text);
         expect(text).toBe("Must include coordinates as array of [lat, long]!");
       });
   });
@@ -247,14 +247,14 @@ describe("POST /locations", () => {
       .post("/locations")
       .set("Authorization", `Bearer ${accessToken}`)
       .send({})
-      .expect(400)
+      .expect(400);
   });
   test("should return 400 if sent malformed body", () => {
     return request(app)
       .post("/locations")
       .set("Authorization", `Bearer ${accessToken}`)
-      .send({coords: [54.647263, -2.995982],})
-      .expect(400)
+      .send({ coords: [54.647263, -2.995982] })
+      .expect(400);
   });
   test("should create the new location with 201", () => {
     return request(app)
