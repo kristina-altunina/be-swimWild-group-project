@@ -97,7 +97,7 @@ describe("POST/users/swim", () => {
         });
       });
   });
-  test("Should return a 201 when location and date are provided", () => {
+  test("Should return a 201 when location name plus id and date are provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
       locationName: "Rydal, Lake District",
