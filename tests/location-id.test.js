@@ -19,13 +19,13 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  return testSeed(locations, users).then(() => {
-    return Locations.findOne({ name: "Rydal, Lake District" }).then(
-      (location) => {
-        rydalId = location._id;
-      }
-    );
-  });
+  return testSeed(locations, users)
+    .then(() => {
+      return Locations.findOne({ name: "Rydal, Lake District" });
+    })
+    .then((location) => {
+      rydalId = location._id;
+    });
 });
 
 afterAll(() => {
@@ -74,8 +74,26 @@ describe("GET location/:id", () => {
       .get(`/locations/${rydalId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.swims).toBeSortedBy("date", { descending: true });
+      });
+  });
+  test("should return a userData key with userData", () => {
+    return request(app)
+      .get(`/locations/${rydalId}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.userData).toMatchObject({
+          avStars: expect.any(Number),
+          outOfDepth: expect.any(Boolean),
+          avMins: expect.any(Number),
+          avKms: expect.any(Number),
+          mostRecentTemp: expect.any(Object),
+          feelTemps: expect.any(Object),
+          sizes: expect.any(Object),
+          shores: expect.any(Object),
+          bankAngles: expect.any(Object),
+          clarities: expect.any(Object),
+        });
       });
   });
 });

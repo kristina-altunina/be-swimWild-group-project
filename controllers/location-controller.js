@@ -1,5 +1,6 @@
 const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
+const { processUserData } = require("./utils");
 
 function distanceBetweenCoords(coords1, coords2) {
   function deg2rad(deg) {
@@ -60,7 +61,9 @@ function getLocationById(req, res, next) {
     swims.sort((a, b) => {
       return b.date - a.date;
     });
-    res.status(200).send({ swims });
+    const userData = processUserData(swims);
+    // Locations.findOne({ _id: req.params.id }).then((location) => {});
+    res.status(200).send({ swims, userData });
   });
 }
 
