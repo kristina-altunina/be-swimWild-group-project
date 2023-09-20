@@ -1,5 +1,5 @@
 const Locations = require("../../models/locations-model");
-const { distanceBetweenCoords } = require("../../scripts/utils");
+const { distanceBetweenCoords } = require("../../utils");
 
 function checkLocationDistinct(req, res, next) {
   const { coords } = req.body;

@@ -1,10 +1,7 @@
 const axios = require("axios");
-const {
-  distanceBetweenCoords,
-  convertToDayOfYear,
-  formatSite,
-} = require("./utils");
+const { convertToDayOfYear, formatSite } = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
+const { distanceBetweenCoords } = require("../utils");
 
 const api = axios.create({
   baseURL: "http://eip.ceh.ac.uk/hydrology-ukscape",

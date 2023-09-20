@@ -8,7 +8,7 @@ const {
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
-} = require("../controllers/validators/user-validators");
+} = require("../middleware/validators/user-validators");
 
 const usersRouter = require("express").Router();
 

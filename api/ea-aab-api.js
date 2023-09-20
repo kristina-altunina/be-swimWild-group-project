@@ -1,5 +1,6 @@
 const axios = require("axios");
-const { removeSamplingPoint, distanceBetweenCoords } = require("./utils");
+const { removeSamplingPoint } = require("./utils");
+const { distanceBetweenCoords } = require("../utils");
 
 const api = axios.create({
   baseURL: "https://environment.data.gov.uk",

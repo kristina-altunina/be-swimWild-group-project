@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { parse } = require("node-html-parser");
 const { locations } = require("./sea-temp-locations");
-const { distanceBetweenCoords } = require("../utils");
+const { distanceBetweenCoords } = require("../../utils");
 
 const web = axios.create({
   baseURL: "https://www.seatemperature.org/",

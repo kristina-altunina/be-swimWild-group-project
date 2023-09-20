@@ -6,13 +6,13 @@ const {
 const {
   validateCoordQueries,
   validateCoordBody,
-} = require("../controllers/validators/coordinate-validator");
+} = require("../middleware/validators/coordinate-validator");
 const {
   checkLocationDistinct,
-} = require("../controllers/validators/location.validators");
+} = require("../middleware/validators/location.validators");
 const {
   validatePaginationQueries,
-} = require("../controllers/validators/pagination-validator");
+} = require("../middleware/validators/pagination-validator");
 
 const { authoriseUser } = require("../middleware/authoriseUser");
 
