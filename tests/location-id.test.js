@@ -96,4 +96,17 @@ describe("GET location/:id", () => {
         });
       });
   });
+  test("should return location data on a key of location", () => {
+    return request(app)
+      .get(`/locations/${rydalId}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.location).toMatchObject({
+          _id: expect.any(String),
+          name: "Rydal, Lake District",
+          type: "lake",
+          coords: [54.447268, -2.995986],
+        });
+      });
+  });
 });

@@ -79,8 +79,12 @@ function getLocationById(req, res, next) {
         return b.date - a.date;
       });
       const userData = processUserData(swims);
-      // Locations.findOne({ _id: req.params.id }).then((location) => {});
-      res.status(200).send({ swims, userData });
+      return Locations.findOne({ _id: req.params.id }).then((location) => {
+        return [location, userData, swims];
+      });
+    })
+    .then(([location, userData, swims]) => {
+      res.status(200).send({ swims, userData, location });
     })
     .catch(next);
 }
