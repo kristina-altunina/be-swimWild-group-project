@@ -11,16 +11,9 @@ const locationSchema = mongoose.Schema(
       enum: ["river", "lake", "pond", "sea"],
       required: true,
     },
-    loc: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        required: true,
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-      },
+    coords: {
+      type: [Number],
+      required: true,
     },
   },
   {

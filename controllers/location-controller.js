@@ -54,4 +54,16 @@ function getLocations(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getLocations };
+function postLocation(req, res, next) {
+  if (!req.body.name) {
+    return res.status(400).send("Include a key of name on the request body");
+  }
+  if (!["lake", "pond", "river", "sea"].includes(req.body.type)) {
+    return res.status(400).send("Include a key of type on the request body");
+  }
+  Locations.create(req.body).then((newLocation) => {
+    return res.status(201).send(newLocation);
+  });
+}
+
+module.exports = { getLocations, postLocation };

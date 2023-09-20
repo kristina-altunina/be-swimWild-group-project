@@ -5,14 +5,30 @@ const mongoose = require("mongoose");
 const { testSeed } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
+const { getAccessTokens } = require("./access-token");
+const Locations = require("../models/locations-model");
 
 require("dotenv").config();
 
+let accessToken;
+let registeredAccessToken;
+
 beforeAll(() => {
-  return mongoose.connect(process.env.DATABASE_LOCAL_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const promises = [];
+  promises.push(
+    mongoose.connect(process.env.DATABASE_LOCAL_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+  );
+  promises.push(
+    getAccessTokens().then(([unregisteredToken, registeredToken]) => {
+      console.log(unregisteredToken, registeredToken);
+      accessToken = unregisteredToken;
+      registeredAccessToken = registeredToken;
+    })
+  );
+  return Promise.all(promises);
 });
 
 beforeEach(() => {
@@ -32,7 +48,7 @@ describe("GET /locations", () => {
         expect(body[0]).toMatchObject({
           name: expect.any(String),
           _id: expect.any(String),
-          loc: { coordinates: [expect.any(Number), expect.any(Number)] },
+          coords: [expect.any(Number), expect.any(Number)],
           distanceKm: expect.any(Number),
           type: expect.any(String),
         });
@@ -127,5 +143,140 @@ describe("GET /locations", () => {
   });
   test("long should be validated", () => {
     return request(app).get("/locations?long=200").expect(400);
+  });
+});
+
+describe("POST /locations", () => {
+  test("should return 400 if no coords given", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river" })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Must include coordinates as array of [lat, long]!");
+      });
+  });
+  test("should return 400 if latitude out of range", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [91, -71] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("latittude must be a float between -90 and 90 deg");
+      });
+  });
+  test("should return 400 if longitude out of range", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [90, -181] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("longitude must be a float between -180 and 180 deg");
+      });
+  });
+  test("should return 400 if given non-numerical coordinates", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [90, "-181"] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("longitude must be a float between -180 and 180 deg");
+      });
+  });
+  test("should return 400 if coords array is empty", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [] })
+      .expect(400)
+      .then(({ text }) => {
+        console.log(text)
+        expect(text).toBe("Must include coordinates as array of [lat, long]!");
+      });
+  });
+  test("should return 400 if within 1km of existing site", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "test", type: "river", coords: [54.447263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Rydal, Lake District has similar coordinates");
+      });
+  });
+  test("should return 400 if no name offered", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ type: "river", coords: [54.647263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of name on the request body");
+      });
+  });
+  test("should return 400 if no type offered", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ name: "river", coords: [54.647263, -2.995982] })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of type on the request body");
+      });
+  });
+  test("should return 400 if type not within enum", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        name: "river",
+        type: "reservoir",
+        coords: [54.647263, -2.995982],
+      })
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Include a key of type on the request body");
+      });
+  });
+  test("should return 400 if sent malformed body", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({})
+      .expect(400)
+  });
+  test("should return 400 if sent malformed body", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({coords: [54.647263, -2.995982],})
+      .expect(400)
+  });
+  test("should create the new location with 201", () => {
+    return request(app)
+      .post("/locations")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({
+        name: "new place",
+        type: "river",
+        coords: [54.647263, -2.995982],
+      })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          _id: expect.any(String),
+          name: "new place",
+          type: "river",
+          coords: [54.647263, -2.995982],
+        });
+        return Locations.find({ name: "new place" }).then();
+      })
+      .then((locations) => {
+        expect(locations.length).toBe(1);
+      });
   });
 });
