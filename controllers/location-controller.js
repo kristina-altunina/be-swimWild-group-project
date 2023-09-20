@@ -18,7 +18,7 @@ function distanceBetweenCoords(coords1, coords2) {
   return +d.toFixed(2);
 }
 
-function getLocations(req, res) {
+function getLocations(req, res, next) {
   function paginate(arr) {
     return arr.slice((p - 1) * limit, p * limit);
   }

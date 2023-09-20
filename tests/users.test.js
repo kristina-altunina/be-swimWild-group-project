@@ -250,6 +250,31 @@ describe("PATCH /users/", () => {
   });
 });
 
+describe("GET /users/:uid", () => {
+  test("returns correct user info", () => {
+    return request(app)
+      .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          name: "testUser",
+          nickname: "tester",
+          dob: "1997-09-02T11:00:00.000Z",
+          profileImg: "http://lookatme.jpg",
+          swims: [],
+        });
+      });
+  });
+  test("returns correct error message for non-existent user", () => {
+    return request(app)
+      .get("/users/32222")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("user not found");
+      });
+  });
+});
+
 describe("DELETE /users/profile", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).delete("/users/profile").expect(401);

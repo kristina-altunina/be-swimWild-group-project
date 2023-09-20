@@ -73,7 +73,7 @@ const userSchema = mongoose.Schema({
         outOfDepth: {
           type: Boolean,
         },
-        sizekey: {
+        sizeKey: {
           type: String,
           enum: ["tiny", "small", "medium", "large"],
         },
@@ -89,7 +89,7 @@ const userSchema = mongoose.Schema({
           type: String,
           enum: ["muddy", "murky", "average", "clear", "perfect"],
         },
-        imageUrls: {
+        imgUrls: {
           type: [String],
         },
       },

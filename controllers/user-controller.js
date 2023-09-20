@@ -1,4 +1,3 @@
-const Locations = require("../models/locations-model");
 const Users = require("../models/users-model");
 
 function postUser(req, res, next) {
@@ -31,7 +30,7 @@ function patchUser(req, res) {
     .catch(next);
 }
 
-function getUser(req, res) {
+function getUser(req, res, next) {
   Users.find({ uid: { $eq: req.user.uid } })
     .then((user) => {
       res.status(200).send({
@@ -45,7 +44,7 @@ function getUser(req, res) {
     .catch(next);
 }
 
-function removeUser(req, res) {
+function removeUser(req, res, next) {
   Users.deleteOne({ uid: { $eq: req.user.uid } })
     .then(() => {
       return res.status(204).send();
@@ -53,4 +52,23 @@ function removeUser(req, res) {
     .catch(next);
 }
 
-module.exports = { postUser, getUser, patchUser, removeUser };
+function getUserById(req, res, next) {
+  const { uid } = req.params;
+  Users.find({ uid: { $eq: uid } })
+    .then((user) => {
+      if (!user.length) {
+        return res.status(404).send({ msg: "user not found" });
+      } else {
+        return res.status(200).send({
+          name: user[0].name,
+          nickname: user[0].nickname,
+          profileImg: user[0].profileImg,
+          dob: user[0].dob,
+          swims: user[0].swims,
+        });
+      }
+    })
+    .catch(next);
+}
+
+module.exports = { postUser, getUser, patchUser, getUserById, removeUser };
