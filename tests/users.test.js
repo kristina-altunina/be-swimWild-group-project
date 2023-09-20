@@ -3,7 +3,7 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const Users = require("../models/users-model");
 
-const { testSeed } = require("../models/seed");
+const { refreshDocuments } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
 const { getAccessTokens } = require("./access-token");
@@ -32,7 +32,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  return testSeed(locations, users);
+  return refreshDocuments(locations, users);
 });
 
 afterAll(() => {
@@ -211,7 +211,19 @@ describe("PATCH /users/", () => {
           profileImg:
             "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
         });
+      })
+      .then(() => {
+        Users.findOne({ nickname: "dobbyforRon" }).then((user) => {
+          expect(user.nickname).toBe("dobbyforRon");
+        });
       });
+  });
+  test("check the refresh db function actually refreshes db", () => {
+    Users.find({}).then((allUsers) => {
+      for (const user of allUsers) {
+        expect(user.nickname).not.toBe("dobbyforRon");
+      }
+    });
   });
   test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {
@@ -313,5 +325,11 @@ describe("DELETE /users/profile", () => {
       .then((response) => {
         expect(response).toEqual([]);
       });
+  });
+});
+
+describe("check refresh", () => {
+  test("should ", () => {
+    expect().toBe();
   });
 });

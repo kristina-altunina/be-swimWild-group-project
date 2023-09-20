@@ -2,7 +2,7 @@ const { app } = require("../server");
 const request = require("supertest");
 const mongoose = require("mongoose");
 
-const { testSeed } = require("../models/seed");
+const { refreshDocuments } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
 const { getAccessTokens } = require("./access-token");
@@ -32,7 +32,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  return testSeed(locations, users);
+  return refreshDocuments(locations, users);
 });
 
 afterAll(() => {

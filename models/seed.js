@@ -33,7 +33,7 @@ const seedWithLogs = (locationData, userData) => {
     });
 };
 
-const testSeed = (locationData, userData) => {
+const reSeedTest = (locationData, userData) => {
   return deleteDB()
     .then(() => Locations.create(locationData))
     .then(() => Locations.find({}))
@@ -48,4 +48,14 @@ const testSeed = (locationData, userData) => {
     });
 };
 
-module.exports = { testSeed, seedWithLogs };
+const refreshDocuments = (locationData, userData) => {
+  return Users.deleteMany({})
+    .then(() => Locations.deleteMany({}))
+    .then(() => Locations.create(locationData))
+    .then(() => Locations.find({}))
+    .then((data) => Users.create(addIdToLocations(data, userData)))
+    .then(() => Locations.syncIndexes())
+    .then(() => Users.syncIndexes());
+};
+
+module.exports = { reSeedTest, seedWithLogs, refreshDocuments };
