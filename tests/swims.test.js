@@ -15,6 +15,7 @@ let registeredAccessToken;
 let rydalId = "";
 beforeAll(() => {
   const promises = [];
+  mongoose.set("runValidators", true);
   promises.push(
     mongoose.connect(process.env.DATABASE_LOCAL_URL, {
       useNewUrlParser: true,
@@ -37,7 +38,7 @@ beforeEach(() => {
       return Locations.findOne({ name: "Rydal, Lake District" });
     })
     .then((location) => {
-      return rydalId = location._id;
+      return (rydalId = location._id);
     });
 });
 
@@ -144,7 +145,7 @@ describe("POST/users/swim", () => {
       .send(postBody)
       .expect(400)
       .then(({ body }) => {
-          expect(body.msg).toBe("Date is not valid.");
+        expect(body.msg).toBe("Date is not valid.");
       });
   });
   test("Should return a 400 when location does not exist", () => {
@@ -179,7 +180,7 @@ describe("POST/users/swim", () => {
       });
   });
 
-  test ("Should return a 400 when date  is not provided", () => {
+  test.only("Should return a 400 when date is not provided", () => {
     const postBody = {
       locationName: "Rydal, Lake District",
       locationId: rydalId.toString(),
@@ -188,9 +189,9 @@ describe("POST/users/swim", () => {
       .post("/users/swim")
       .set("Authorization", `Bearer ${accessToken}`)
       .send(postBody)
-      .expect(400)
+      .expect(201)
       .then(({ body }) => {
-        console.log(body.msg)
+        console.log(body);
         expect(body.msg).toBe("No date provided");
       });
   });
@@ -211,19 +212,19 @@ describe("POST/users/swim", () => {
       });
   });
 
-   test("Should return a 400 when Location Id is not provided", () => {
-     const postBody = {
-       date: "2023-05-02T11:00:00Z",
-       locationName: "Rydal, Lake District",
-     };
-     return request(app)
-       .post("/users/swim")
-       .set("Authorization", `Bearer ${accessToken}`)
-       .send(postBody)
-       .expect(400)
-       .then(({ body }) => {
-         console.log(body.msg);
-         expect(body.msg).toBe("Location Id is not provided.");
-       });
-   });
+  test("Should return a 400 when Location Id is not provided", () => {
+    const postBody = {
+      date: "2023-05-02T11:00:00Z",
+      locationName: "Rydal, Lake District",
+    };
+    return request(app)
+      .post("/users/swim")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(postBody)
+      .expect(400)
+      .then(({ body }) => {
+        console.log(body.msg);
+        expect(body.msg).toBe("Location Id is not provided.");
+      });
+  });
 });

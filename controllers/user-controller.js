@@ -63,8 +63,7 @@ function postSwim(req, res, next) {
     imageUrls,
   } = req.body;
   const uid = req.user.uid;
-
-  new_swim = {
+  const new_swim = {
     date,
     location: {
       name: locationName,
@@ -80,19 +79,18 @@ function postSwim(req, res, next) {
     shore,
     bankAngle,
     clarity,
-    imageUrls
-  };  
-
+    imageUrls,
+  };
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
-    .then(() => {
+    .then((user) => {
+      user.validateSync();
       return Users.findOne({ uid: uid });
-    }).then((user) => {
+    })
+    .then((user) => {
       const newSwim = user.swims[user.swims.length - 1];
       res.status(201).send(newSwim);
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(next);
 }
 
 module.exports = { postUser, getUser, patchUser, postSwim };
