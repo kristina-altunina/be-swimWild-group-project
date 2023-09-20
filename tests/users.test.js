@@ -58,13 +58,14 @@ describe("GET /users/profile", () => {
           name: "testUser",
           nickname: "tester",
           dob: "1997-09-02T11:00:00.000Z",
-          profileImg: "http://lookatme.jpg",
+          profileImg:
+            "https://upload.wikimedia.org/wikipedia/commons/a/a7/40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg",
           swims: [
             {
-              date: "2023-06-21T17:00:00+0000",
+              date: "2023-06-21T17:00:00.000Z",
               location: {
                 name: "Rydal, Lake District",
-                id: null,
+                id: expect.any(String),
               },
               notes: "Good fun",
               stars: 4,
@@ -282,8 +283,8 @@ describe("GET /users/:uid", () => {
           name: "testUser",
           nickname: "tester",
           dob: "1997-09-02T11:00:00.000Z",
-          profileImg: "http://lookatme.jpg",
-          swims: [],
+          profileImg:
+            "https://upload.wikimedia.org/wikipedia/commons/a/a7/40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg",
         });
       });
   });
