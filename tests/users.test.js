@@ -250,7 +250,7 @@ describe("PATCH /users/", () => {
   });
 });
 
-describe("DELETE /users/:uid", () => {
+describe("DELETE /users/profile", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).delete("/users/profile").expect(401);
   });

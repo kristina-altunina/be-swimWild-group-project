@@ -17,7 +17,7 @@ function postUser(req, res, next) {
     .catch(next);
 }
 
-function patchUser(req, res, next) {
+function patchUser(req, res) {
   const { nickname, profileImg } = req.body;
   const filter = { uid: req.user.uid };
   const update = { nickname: nickname, profileImg: profileImg };
@@ -28,31 +28,29 @@ function patchUser(req, res, next) {
     .then((newUser) => {
       res.status(200).send(newUser);
     })
-    .catch((err) => {
-      console.log("why here");
-    });
+    .catch(next);
 }
 
-function getUser(req, res, next) {
-  Users.find({ uid: { $eq: req.user.uid } }).then((user) => {
-    res.status(200).send({
-      name: user[0].name,
-      nickname: user[0].nickname,
-      profileImg: user[0].profileImg,
-      dob: user[0].dob,
-      swims: user[0].swims,
-    });
-  });
+function getUser(req, res) {
+  Users.find({ uid: { $eq: req.user.uid } })
+    .then((user) => {
+      res.status(200).send({
+        name: user[0].name,
+        nickname: user[0].nickname,
+        profileImg: user[0].profileImg,
+        dob: user[0].dob,
+        swims: user[0].swims,
+      });
+    })
+    .catch(next);
 }
 
-function removeUser(req,res,next){
-  Users.deleteOne({ uid: { $eq: req.user.uid } }).then((response)=>{
-    return res.status(204).send()
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
-
+function removeUser(req, res) {
+  Users.deleteOne({ uid: { $eq: req.user.uid } })
+    .then(() => {
+      return res.status(204).send();
+    })
+    .catch(next);
 }
 
 module.exports = { postUser, getUser, patchUser, removeUser };
