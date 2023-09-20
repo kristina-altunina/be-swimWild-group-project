@@ -27,7 +27,7 @@ beforeAll(() => {
       registeredAccessToken = registeredToken;
     })
   );
-  return Promise.all(promises)
+  return Promise.all(promises);
 });
 
 beforeEach(() => {
@@ -249,20 +249,27 @@ describe("PATCH /users/", () => {
   });
 });
 
-describe("GET /users/:uid",()=>{
-  test.only("",()=>{
+describe("GET /users/:uid", () => {
+  test("returns correct user info", () => {
     return request(app)
-    .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
-    .expect(200)
+      .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          name: "testUser",
+          nickname: "tester",
+          dob: "1997-09-02T11:00:00.000Z",
+          profileImg: "http://lookatme.jpg",
+          swims: [],
+        });
+      });
+  });
+  test("returns correct error message for non-existent user", () => {
+    return request(app)
+    .get("/users/32222")
+    .expect(404)
     .then(({body})=>{
-      console.log(body)
-      expect(body).toMatchObject({
-        name: "testUser",
-        nickname: "tester",
-        dob: "1997-09-02T11:00:00.000Z",
-        profileImg: "http://lookatme.jpg",
-        swims: [],
-      })
-    })
-  })
-})
+      expect(body.msg).toBe("user not found")
+    });
+  });
+});
