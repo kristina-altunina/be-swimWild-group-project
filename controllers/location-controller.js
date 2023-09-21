@@ -79,6 +79,7 @@ function getLocationById(req, res, next) {
       swims.sort((a, b) => {
         return b.date - a.date;
       });
+      console.log(swims)
       userData = processUserData(swims);
       return Locations.findOne({ _id: req.params.id });
     })

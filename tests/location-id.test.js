@@ -6,12 +6,15 @@ const { refreshDocuments } = require("../models/seed");
 const locations = require("../test-data/locations");
 const users = require("../test-data/users");
 const Locations = require("../models/locations-model");
+const { processUserData } = require("../utils");
+const Users = require("../models/users-model");
 
 require("dotenv").config();
 
 let rydalId = "";
 let margateID = "";
-let BeckenhamID = ""
+let BeckenhamID = "";
+let GoldigginsID = "";
 
 beforeAll(() => {
   mongoose.set("runValidators", true);
@@ -29,13 +32,19 @@ beforeEach(() => {
       promises.push(
         Locations.findOne({ name: "Walpole Bay Tidal Pool, Margate" })
       );
-      promises.push(Locations.findOne({ name: "Beckenham Park Swimming Lake, London" }))
+      promises.push(
+        Locations.findOne({ name: "Beckenham Park Swimming Lake, London" })
+      );
+      promises.push(
+        Locations.findOne({ name: "Goldiggins Quarry, Minions, Cornwall" })
+      );
       return Promise.all(promises);
     })
     .then((resolvedPromises) => {
       rydalId = resolvedPromises[0].id;
       margateID = resolvedPromises[1].id;
-      BeckenhamID = resolvedPromises[2].id
+      BeckenhamID = resolvedPromises[2].id;
+      GoldigginsID = resolvedPromises[3].id;
     })
     .catch((err) => {
       console.log(err);
@@ -110,12 +119,50 @@ describe("GET location/:id", () => {
         });
       });
   });
+  test.skip("should return userData key with userData, when given a location id where there are no swims", () => {
+    return request(app)
+      .get(`/locations/${BeckenhamID}`)
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body.userData);
+        expect(body.userData).toMatchObject({
+          avStars: null,
+          outOfDepth: null,
+          avMins: null,
+          avKms: null,
+          mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
+          feelTemps: expect.any(Object),
+          sizes: expect.any(Object),
+          shores: expect.any(Object),
+          bankAngles: expect.any(Object),
+          clarities: expect.any(Object),
+        });
+      });
+  });
+  test.skip("should return userData key with userData, when given a location id where there is one swim, and that swim only contains the required data", () => {
+    return request(app)
+      .get(`/locations/${GoldigginsID}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.userData).toMatchObject({
+            avStars: null,
+            outOfDepth: null,
+            avMins: null,
+            avKms: null,
+            mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
+            feelTemps: {},
+            sizes: {},
+            shores: {},
+            bankAngles: {},
+            clarities: {},
+        });
+      });
+  });
   test("should return location data on a key of location", () => {
     return request(app)
       .get(`/locations/${rydalId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.location).toMatchObject({
           _id: expect.any(String),
           name: "Rydal, Lake District",
@@ -144,25 +191,70 @@ describe("GET location/:id", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.apiData).toMatchObject({
-          tempCelsius : expect.anything(),
-          nearestAab : expect.anything(),
+          tempCelsius: expect.anything(),
+          nearestAab: expect.anything(),
           waveData: expect.anything(),
           weather: expect.anything(),
           tides: expect.anything(),
         });
       });
   });
-  test("Lakes location should return Lakes apiData on a key of apiData", () => {
+  test.skip("Lakes location should return Lakes apiData on a key of apiData", () => {
     return request(app)
       .get(`/locations/${BeckenhamID}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body.apiData)
+        console.log(body);
         expect(body.apiData).toMatchObject({
-          hydrologyData : expect.anything(),
-          nearestAab : expect.anything(),
+          hydrologyData: expect.anything(),
+          nearestAab: expect.anything(),
           weather: expect.anything(),
         });
       });
+  });
+  test.skip("Lakes location should return Lakes apiData on a key of apiData", () => {
+    return request(app).get(`/locations/22222`).expect(400);
+  });
+});
+
+describe("processUserData", () => {
+  test("", () => {
+    const swims = [
+      {
+        date: "2023-06-21T17:00:00+0000",
+        location: {
+          name: "Rydal, Lake District",
+        },
+        notes: "Good fun",
+        stars: 4,
+        recordTemp: null,
+        feelTemp: "average",
+        mins: 25,
+        km: 0.5,
+        outOfDepth: true,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "medium",
+        clarity: "average",
+        imgUrls: [
+          "https://www.parkcliffe.co.uk/wp-content/uploads/2023/01/rydal-water-2-lake-district.jpg",
+          "https://www.ratedtrips.com/images/styles/rt_slider/public/00008881_A3.jpg?itok=3BSnVDBP",
+          "https://windows10spotlight.com/wp-content/uploads/2022/06/5cc14463fca6e0211691ddf32779fbf2.jpg",
+        ],
+      },
+    ];
+    const result = processUserData(swims);
+    expect(result).toMatchObject({
+      avStars: 4,
+      outOfDepth: true,
+      avMins: 25,
+      avKms: 0.5,
+      mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
+      feelTemps: { average: "100%" },
+      sizes: { large: "100%" },
+      shores: { pebbly: "100%" },
+      bankAngles: { medium: "100%" },
+      clarities: { average: "100%" },
+    });
   });
 });

@@ -118,4 +118,20 @@ module.exports = [
     dob: "1992-09-02T11:00:00+0000",
     swims: [],
   },
+  {
+    uid: "voEGvEJ9LeX3bEZvtV9UzXnh66c2",
+    name: "Test 4",
+    nickname: "casualSwimmer",
+    profileImg:
+    "https://i.pinimg.com/1200x/5c/eb/7b/5ceb7b4e812071f1988052cefd889d03.jpg",
+    dob: "1992-08-02T11:00:00+0000",
+    swims: [{
+      date: "2023-07-29T18:00:00+0000",
+      location: {
+        name: "Goldiggins Quarry, Minions, Cornwall",
+        id: null,
+      }
+    }],
+  },
+
 ];
