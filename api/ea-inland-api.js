@@ -45,6 +45,7 @@ function findEaSites(coords, radiusMetres, type) {
     )
     .then(({ data }) => {
       // sort by distance
+      console.log(data);
       const sites = data[type].sites.toSorted((a, b) => {
         const distanceA = distanceBetweenCoords(coords, [
           a.properties.lat,
