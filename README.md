@@ -45,3 +45,24 @@ Repeats basic info about the location: name, type, coords, \_id
 This object can take two forms - one for **sea** data and one for **lake/pond/river** data.
 
 #### Sea Data
+
+Returns 4 keys:
+
+- `tempCelsius`: the expected water temperature
+- `nearestAab`: the nearest location of a government 'advice against bathing' warning. Includes name of the location and the distance in km.
+- `waveData`: includes metrics about wave data. `maxWave` and `maxWavePeriod` refer to today, the `weekForcast` contains all data for the week (could display something like 'calmest on XX, roughest on XX')
+- `weather`: todays weather
+- `tides`: the approx number of hours until high and low tide.
+
+#### Lake/Pond/River Data
+
+Returns 3 keys:
+
+- `nearestAab`: same as above
+- `weather`: same as above
+- `hydrology`: includes 5 keys:
+  - `name`: the name of the test site
+  - `siteId`: id of the test site
+  - `coords`: coords of the test site
+  - `nearby`: a list of other nearby test sites. If we have time, these could be display with links. Something like: 'Not what you were looking for? Try these nearby stations.'
+  - `data`: an object containing
