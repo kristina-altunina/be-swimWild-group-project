@@ -72,8 +72,6 @@ function getLocationById(req, res, next) {
               newSwim.name = user.name;
               newSwim.nickname = user.nickname;
               newSwim.profileImg = user.profileImg;
-              newSwim.sizeKey = swim.sizeKey;
-              newSwim.imgUrls = swim.imgUrls;
               return newSwim;
             })
         );
