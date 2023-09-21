@@ -16,7 +16,7 @@ function getWeatherData(coords, date) {
       `/v1/archive?latitude=${coords[0]}&longitude=${coords[1]}&start_date=${startDateString}&end_date=${endDateString}&daily=rain_sum,temperature_2m_max,temperature_2m_min`
     )
     .then(({ data }) => {
-      console.log(data);
+      // console.log(data);
     })
     .catch((err) => {});
 }

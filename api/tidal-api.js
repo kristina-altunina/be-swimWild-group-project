@@ -45,7 +45,6 @@ function getTideData([lat, long], radius = 50) {
       return data + "/readings?today";
     })
     .then((url) => {
-      console.log(url);
       return axios.get(url);
     })
     .then(({ data: { items } }) => {

@@ -37,7 +37,7 @@ function getNearestEaAab(coords) {
       };
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 }
 

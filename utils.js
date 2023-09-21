@@ -15,7 +15,7 @@ function processUserData(swims) {
     avStars.add(swim.stars);
     avMins.add(swim.mins);
     avKms.add(swim.km);
-    if (swim.outOfDepth !== null) outOfDepth += outOfDepth ? 1 : -1;
+    if (swim.outOfDepth !== null) outOfDepth += swim.outOfDepth ? 1 : -1;
     if (swim.recordTemp && swim.date > mostRecentTemp.date) {
       mostRecentTemp.temp = swim.recordTemp;
     }
