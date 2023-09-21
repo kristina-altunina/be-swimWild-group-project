@@ -16,3 +16,7 @@ Forcast for the week:
 
 Weather
 hydrology data over 7 days
+
+outOfDepth should return null not true with no data
+
+Improve the quality of temp predictions hydrology if little data rydal

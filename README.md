@@ -65,4 +65,8 @@ Returns 3 keys:
   - `siteId`: id of the test site
   - `coords`: coords of the test site
   - `nearby`: a list of other nearby test sites. If we have time, these could be display with links. Something like: 'Not what you were looking for? Try these nearby stations.'
-  - `data`: an object containing
+  - `data`: an array of **determinands** which includes:
+    - `temperature` (determinandID = 0076),
+    - `oxygen saturation` ()
+
+`http://eip.ceh.ac.uk/hydrology-ukscape/stations/EA/WQ/NW-88010145?determinand=0076`;

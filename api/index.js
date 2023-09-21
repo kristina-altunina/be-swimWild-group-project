@@ -5,7 +5,7 @@ const { getMarineData } = require("./marine-api");
 const { findTempOfNearestBeach } = require("./sea-temps/sea-temp-scraper");
 const { getTideData } = require("./tidal-api");
 
-function getApiData(coords, type) {
+function getApiData(coords, type, day) {
   // values need caching - which api's effectively take all data each time?
   // tide one can be very slow and would be easy to cache
   if (type === "sea") {
@@ -31,7 +31,7 @@ function getApiData(coords, type) {
     if (type === "pond" || type === "lake") type = "lakes";
     else type = "rivers";
     const promises = [
-      collectEaInlandData(coords, 1000, type, new Date().toISOString()),
+      collectEaInlandData(coords, 10000, type, new Date().toISOString()),
       getNearestEaAab(coords),
       getLiveWeather(coords),
     ];

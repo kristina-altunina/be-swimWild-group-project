@@ -1,5 +1,11 @@
 const axios = require("axios");
-const { convertToDayOfYear, formatSite } = require("./utils");
+const {
+  convertToDayOfYear,
+  formatSite,
+  calculateSeasonalSpread,
+  expectedHydrologyTemp,
+  getSurfaceResults,
+} = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
 const { distanceBetweenCoords } = require("../utils");
 
@@ -29,7 +35,7 @@ function collectEaInlandData(
       return siteData;
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err?.response?.status);
       if (err?.response?.status === 404) {
         console.log("404 at ", err.request.method, err.request.path);
       }
@@ -87,6 +93,7 @@ function processEaData(dataPromise, searchDate) {
       const processedData = {
         determinandID: detail.determinandID,
       };
+      data = getSurfaceResults(data);
       // most recent
       data.sort((a, b) => {
         return new Date(b.datetime) - new Date(a.datetime);
@@ -111,6 +118,8 @@ function processEaData(dataPromise, searchDate) {
           x.some((sample) => sample < searchDay)
         ) {
           const regression = new PolynomialRegression(x, y, 5);
+          processedData.samples = x.length;
+          processedData.sampleSpread = calculateSeasonalSpread(x);
           processedData.regression = regression.predict(searchDay);
           const mostRecentDay = convertToDayOfYear(mostRecent.datetime);
           const predictedValueOfMostRecentDay =
@@ -130,14 +139,17 @@ function processEaData(dataPromise, searchDate) {
           );
           return Math.abs(date - aThisYear) - Math.abs(date - bThisYear);
         });
-        const dateMatch = data[0];
-        processedData.dateMatchedValue = dateMatch.value;
-        processedData.dateMatchedSampleDate = dateMatch.datetime;
+        processedData.dateMatchedValue = data[0].value;
+        processedData.dateMatchedSampleDate = data[0].datetime;
+        processedData.maxSurfaceTemp =
+          +expectedHydrologyTemp(processedData).toFixed(1);
       }
       return processedData;
     })
     .catch((err) => {
-      console.log(err);
+      if (err?.response?.status === 404) {
+        console.log("404 at ", err.request.method, err.request.path);
+      }
     });
 }
 
