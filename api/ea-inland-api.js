@@ -17,6 +17,7 @@ function collectEaInlandData(
   return findEaSites(coords, radiusMetres, type)
     .then((sites) => {
       siteData = sites;
+      console.log(sites);
       const eaData = getEaData(sites.siteId);
       const promises = [];
       for (let dataPoint in eaData) {
