@@ -63,7 +63,7 @@ function findEaSites(coords, radiusMetres, type) {
       return output;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
     });
 }
 
