@@ -140,7 +140,7 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
-  test.only("should respond with 400 if body missing name", () => {
+  test("should respond with 400 if body missing name", () => {
     const postBody = {
       nickname: "newnickname",
       profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
