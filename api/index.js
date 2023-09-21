@@ -16,19 +16,22 @@ function getApiData(coords, type) {
       getLiveWeather(coords),
       getTideData(coords),
     ];
-    return Promise.allSettled(promises).then(([temp, aab, wave, weather]) => {
-      return {
-        tempCelsius: temp.status === "fulfilled" ? temp.value.temp : null,
-        nearestAab: aab.status === "fulfilled" ? aab.value : null,
-        waveData: wave.status === "fulfilled" ? wave.value : null,
-        weather: weather.status === "fulfilled" ? weather.value : null,
-      };
-    });
+    return Promise.allSettled(promises).then(
+      ([temp, aab, wave, weather, tide]) => {
+        return {
+          tempCelsius: temp.status === "fulfilled" ? temp.value.temp : null,
+          nearestAab: aab.status === "fulfilled" ? aab.value : null,
+          waveData: wave.status === "fulfilled" ? wave.value : null,
+          weather: weather.status === "fulfilled" ? weather.value : null,
+          tides: tide.status === "fulfilled" ? tide.value : null,
+        };
+      }
+    );
   } else {
     if (type === "pond" || type === "lake") type = "lakes";
     if (type === "river") type = "rivers";
     const promises = [
-      collectEaInlandData(coords, 1000, type, new Date().toISOString),
+      collectEaInlandData(coords, 1000, type, new Date().toISOString()),
       getNearestEaAab(coords),
       getLiveWeather(coords),
     ];

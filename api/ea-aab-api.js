@@ -33,7 +33,7 @@ function getNearestEaAab(coords) {
       });
       return {
         name: dangerCoords[0].name,
-        distance: distanceBetweenCoords(coords, dangerCoords[0].coords),
+        distanceKm: distanceBetweenCoords(coords, dangerCoords[0].coords),
       };
     })
     .catch((err) => {
