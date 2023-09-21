@@ -44,7 +44,9 @@ function findEaSites(coords, radiusMetres, type) {
     )
     .then(({ data }) => {
       // sort by distance
-      const sites = data[type].sites.toSorted((a, b) => {
+      const sites = data[type].sites;
+      if (!sites.length) return Promise.reject();
+      sites.sort((a, b) => {
         const distanceA = distanceBetweenCoords(coords, [
           a.properties.lat,
           a.properties.lon,
@@ -62,7 +64,7 @@ function findEaSites(coords, radiusMetres, type) {
       return output;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
     });
 }
 
@@ -86,11 +88,10 @@ function processEaData(dataPromise, searchDate) {
         determinandID: detail.determinandID,
       };
       // most recent
-      const mostRecent = data
-        .toSorted((a, b) => {
-          return new Date(b.datetime) - new Date(a.datetime);
-        })
-        .find((sample) => sample.datetime <= searchDate);
+      data.sort((a, b) => {
+        return new Date(b.datetime) - new Date(a.datetime);
+      });
+      const mostRecent = data.find((sample) => sample.datetime <= searchDate);
       processedData.mostRecentValue = mostRecent.value;
       processedData.mostRecentSampleDate = mostRecent.datetime;
       processedData.determinand = mostRecent.determinand;
@@ -120,7 +121,7 @@ function processEaData(dataPromise, searchDate) {
         }
         // date match
         const date = new Date(searchDate);
-        const dateMatch = data.toSorted((a, b) => {
+        data.sort((a, b) => {
           const aThisYear = new Date(a.datetime).setFullYear(
             new Date().getFullYear()
           );
@@ -128,14 +129,15 @@ function processEaData(dataPromise, searchDate) {
             new Date().getFullYear()
           );
           return Math.abs(date - aThisYear) - Math.abs(date - bThisYear);
-        })[0];
+        });
+        const dateMatch = data[0];
         processedData.dateMatchedValue = dateMatch.value;
         processedData.dateMatchedSampleDate = dateMatch.datetime;
       }
       return processedData;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
     });
 }
 

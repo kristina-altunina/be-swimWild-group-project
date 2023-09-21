@@ -11,3 +11,8 @@
 - this data could be cached in mongoDB for a period of time?
 - get tide data
 - get pollution and green algae warnings via scraping?
+
+Forcast for the week:
+
+Weather
+hydrology data over 7 days
