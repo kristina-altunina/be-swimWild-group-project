@@ -242,19 +242,42 @@ describe("processUserData", () => {
           "https://windows10spotlight.com/wp-content/uploads/2022/06/5cc14463fca6e0211691ddf32779fbf2.jpg",
         ],
       },
+      {
+        date: "2023-04-21T10:37:39Z",
+        location: {
+          name: "Rydal, Lake District",
+        },
+        notes: "Good fun",
+        stars: 3,
+        recordTemp: null,
+        feelTemp: "average",
+        mins: 30,
+        km: 1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "medium",
+        clarity: "average",
+        imgUrls: [
+          "https://www.parkcliffe.co.uk/wp-content/uploads/2023/01/rydal-water-2-lake-district.jpg",
+          "https://www.ratedtrips.com/images/styles/rt_slider/public/00008881_A3.jpg?itok=3BSnVDBP",
+          "https://windows10spotlight.com/wp-content/uploads/2022/06/5cc14463fca6e0211691ddf32779fbf2.jpg",
+        ],
+      },
     ];
     const result = processUserData(swims);
+    console.log(result)
     expect(result).toMatchObject({
-      avStars: 4,
+      avStars: 3.5,
       outOfDepth: true,
-      avMins: 25,
-      avKms: 0.5,
-      mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
-      feelTemps: { average: "100%" },
-      sizes: { large: "100%" },
-      shores: { pebbly: "100%" },
-      bankAngles: { medium: "100%" },
-      clarities: { average: "100%" },
-    });
+      avMins: 27.5,
+      avKms: 0.75,
+      mostRecentTemp: { date: '0001-01-01T00:00:00.000Z', temp: null },
+      feelTemps: {},
+      sizes: { large: '100%' },
+      shores: { pebbly: '100%' },
+      bankAngles: { medium: '100%' },
+      clarities: { average: '100%' }
+    })
   });
 });
