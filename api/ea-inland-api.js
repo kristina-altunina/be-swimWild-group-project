@@ -1,5 +1,10 @@
 const axios = require("axios");
-const { convertToDayOfYear, formatSite } = require("./utils");
+const {
+  convertToDayOfYear,
+  formatSite,
+  calculateSeasonalSpread,
+  expectedHydrologyTemp,
+} = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
 const { distanceBetweenCoords } = require("../utils");
 
@@ -81,6 +86,8 @@ function getEaData(siteId) {
   };
 }
 
+`http://eip.ceh.ac.uk/hydrology-ukscape/stations/EA/WQ/NW-88010145?determinand=0076`;
+
 function processEaData(dataPromise, searchDate) {
   return dataPromise
     .then(({ data: { data, detail } }) => {
@@ -111,6 +118,8 @@ function processEaData(dataPromise, searchDate) {
           x.some((sample) => sample < searchDay)
         ) {
           const regression = new PolynomialRegression(x, y, 5);
+          processedData.samples = x.length;
+          processedData.sampleSpread = calculateSeasonalSpread(x);
           processedData.regression = regression.predict(searchDay);
           const mostRecentDay = convertToDayOfYear(mostRecent.datetime);
           const predictedValueOfMostRecentDay =
@@ -133,6 +142,7 @@ function processEaData(dataPromise, searchDate) {
         const dateMatch = data[0];
         processedData.dateMatchedValue = dateMatch.value;
         processedData.dateMatchedSampleDate = dateMatch.datetime;
+        processedData.expectedTemp = expectedHydrologyTemp(processedData);
       }
       return processedData;
     })
