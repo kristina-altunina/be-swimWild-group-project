@@ -86,7 +86,8 @@ function getLocationById(req, res, next) {
     .then((locationData) => {
       if (!locationData) return Promise.reject();
       location = locationData;
-      return getApiData(location.coords, location.type);
+      const { day } = req.query;
+      return getApiData(location.coords, location.type, +day);
     })
     .then((apiData) => {
       res.status(200).send({ swims, userData, location, apiData });

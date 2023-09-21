@@ -97,6 +97,34 @@ function getSurfaceResults(data) {
   return surfaceData;
 }
 
+function generateTideForecast(changeTime, reading, day) {
+  const period = 372.5 * 60 * 1000; // 6 hours 12.5 mins
+  const days = 1000 * 60 * 60 * 24;
+  let nextHigh = reading < 0 ? changeTime + period : changeTime + period * 2;
+  let nextLow = reading < 0 ? changeTime + period * 2 : changeTime + period;
+  const highTides = [nextHigh];
+  const lowTides = [nextLow];
+  for (let i = 0; i < Math.ceil((7 * days) / period); i++) {
+    nextHigh += period * 2;
+    highTides.push(nextHigh);
+    nextLow += period * 2;
+    lowTides.push(nextLow);
+  }
+  const now = new Date().getTime();
+  return {
+    highTides: highTides
+      .filter((tide) => {
+        return Math.floor(tide / days) === Math.floor(now / days + day);
+      })
+      .map((time) => new Date(time).toISOString()),
+    lowTides: lowTides
+      .filter((tide) => {
+        return Math.floor(tide / days) === Math.floor(now / days + day);
+      })
+      .map((time) => new Date(time).toISOString()),
+  };
+}
+
 module.exports = {
   convertToDayOfYear,
   formatSite,
@@ -104,4 +132,5 @@ module.exports = {
   calculateSeasonalSpread,
   expectedHydrologyTemp,
   getSurfaceResults,
+  generateTideForecast,
 };
