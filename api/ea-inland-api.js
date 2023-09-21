@@ -29,7 +29,7 @@ function collectEaInlandData(
       return siteData;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       if (err?.response?.status === 404) {
         console.log("404 at ", err.request.method, err.request.path);
       }
