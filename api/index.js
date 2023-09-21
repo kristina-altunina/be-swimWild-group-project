@@ -28,8 +28,11 @@ function getApiData(coords, type) {
       }
     );
   } else {
-    if (type === "pond" || type === "lake") type = "lakes";
-    if (type === "river") type = "rivers";
+    if (type === "pond" || type === "lake") {
+      type = "lakes";
+    } else {
+      type = "rivers";
+    }
     const promises = [
       collectEaInlandData(coords, 1000, type, new Date().toISOString()),
       getNearestEaAab(coords),
