@@ -4,6 +4,8 @@ const {
   formatSite,
   calculateSeasonalSpread,
   expectedHydrologyTemp,
+  average,
+  averageOverDay,
 } = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
 const { distanceBetweenCoords } = require("../utils");
@@ -86,8 +88,6 @@ function getEaData(siteId) {
   };
 }
 
-`http://eip.ceh.ac.uk/hydrology-ukscape/stations/EA/WQ/NW-88010145?determinand=0076`;
-
 function processEaData(dataPromise, searchDate) {
   return dataPromise
     .then(({ data: { data, detail } }) => {
@@ -99,7 +99,11 @@ function processEaData(dataPromise, searchDate) {
         return new Date(b.datetime) - new Date(a.datetime);
       });
       const mostRecent = data.find((sample) => sample.datetime <= searchDate);
-      processedData.mostRecentValue = mostRecent.value;
+      processedData.mostRecentValue = averageOverDay(
+        mostRecent.datetime,
+        data,
+        detail.determinandID
+      );
       processedData.mostRecentSampleDate = mostRecent.datetime;
       processedData.determinand = mostRecent.determinand;
       processedData.units = data[0].units;
@@ -140,7 +144,11 @@ function processEaData(dataPromise, searchDate) {
           return Math.abs(date - aThisYear) - Math.abs(date - bThisYear);
         });
         const dateMatch = data[0];
-        processedData.dateMatchedValue = dateMatch.value;
+        processedData.dateMatchedValue = averageOverDay(
+          dateMatch.datetime,
+          data,
+          detail.determinandID
+        );
         processedData.dateMatchedSampleDate = dateMatch.datetime;
         processedData.expectedTemp = expectedHydrologyTemp(processedData);
       }

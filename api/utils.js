@@ -82,10 +82,29 @@ function expectedHydrologyTemp({
   return regression;
 }
 
+function getDay(datetime) {
+  return Math.floor(new Date(datetime).getTime() / 1000 / 60 / 60 / 24);
+}
+
+function averageOverDay(date, data, determinandID) {
+  // clean some strange oxygen saturation results
+  if (determinandID === "9901") {
+    data = data.filter((sample) => {
+      return sample.value > 30;
+    });
+  }
+  const samples = data.filter((sample) => {
+    return getDay(sample.datetime) === getDay(date);
+  });
+  const total = samples.reduce((a, b) => a.value + b.value, 0);
+  return total / samples.length;
+}
+
 module.exports = {
   convertToDayOfYear,
   formatSite,
   removeSamplingPoint,
   calculateSeasonalSpread,
   expectedHydrologyTemp,
+  averageOverDay,
 };
