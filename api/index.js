@@ -31,7 +31,7 @@ function getApiData(coords, type) {
     if (type === "pond" || type === "lake") type = "lakes";
     else type = "rivers";
     const promises = [
-      collectEaInlandData(coords, 1000, type, new Date().toISOString()),
+      collectEaInlandData(coords, 10000, type, new Date().toISOString()),
       getNearestEaAab(coords),
       getLiveWeather(coords),
     ];
