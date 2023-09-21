@@ -94,7 +94,6 @@ function getSurfaceResults(data) {
     days.push(getDay(sample.datetime));
     surfaceData.push(sample);
   }
-  console.log(surfaceData);
   return surfaceData;
 }
 
