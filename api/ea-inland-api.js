@@ -17,7 +17,6 @@ function collectEaInlandData(
   return findEaSites(coords, radiusMetres, type)
     .then((sites) => {
       siteData = sites;
-      console.log(sites);
       const eaData = getEaData(sites.siteId);
       const promises = [];
       for (let dataPoint in eaData) {
@@ -46,6 +45,7 @@ function findEaSites(coords, radiusMetres, type) {
     .then(({ data }) => {
       // sort by distance
       const sites = data[type].sites;
+      if (!sites.length) return Promise.reject();
       sites.sort((a, b) => {
         const distanceA = distanceBetweenCoords(coords, [
           a.properties.lat,
@@ -88,8 +88,7 @@ function processEaData(dataPromise, searchDate) {
         determinandID: detail.determinandID,
       };
       // most recent
-      const mostRecent = [...data];
-      mostRecent
+      const mostRecent = [...data]
         .sort((a, b) => {
           return new Date(b.datetime) - new Date(a.datetime);
         })
@@ -123,8 +122,7 @@ function processEaData(dataPromise, searchDate) {
         }
         // date match
         const date = new Date(searchDate);
-        const dateMatch = [...data];
-        dateMatch.sort((a, b) => {
+        const dateMatch = [...data].sort((a, b) => {
           const aThisYear = new Date(a.datetime).setFullYear(
             new Date().getFullYear()
           );
