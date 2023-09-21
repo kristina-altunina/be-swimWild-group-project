@@ -38,7 +38,7 @@ const swimSchema = new mongoose.Schema({
   },
   feelTemp: {
     type: String,
-    enum: ["freezing", "cold", "average", "warm", "hot"],
+    enum: ["freezing", "cold", "average", "warm", "hot",null],
     default: null,
   },
   mins: {

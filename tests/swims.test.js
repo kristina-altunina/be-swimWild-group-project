@@ -67,7 +67,7 @@ describe("POST/users/swim", () => {
       shore: "muddy",
       bankAngle: "medium",
       clarity: "average",
-      imageUrls: [],
+      imgUrls: [],
       sizeKey: null,
     };
     return request(app)
@@ -103,6 +103,10 @@ describe("POST/users/swim", () => {
       date: "2023-05-02T11:00:00Z",
       locationName: "Rydal, Lake District",
       locationId: rydalId.toString(),
+      imgUrls: [
+        "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130#imgrc=Hjv1YcuTZOtFIM",
+        "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130",
+      ],
     };
 
     return request(app)
@@ -127,7 +131,10 @@ describe("POST/users/swim", () => {
           shore: null,
           bankAngle: null,
           clarity: null,
-          imgUrls: [],
+          imgUrls: [
+            "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130#imgrc=Hjv1YcuTZOtFIM",
+            "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130",
+          ],
           sizeKey: null,
         });
       });
@@ -180,7 +187,7 @@ describe("POST/users/swim", () => {
       });
   });
 
-  test.only("Should return a 400 when date is not provided", () => {
+  test("Should return a 400 when date is not provided", () => {
     const postBody = {
       locationName: "Rydal, Lake District",
       locationId: rydalId.toString(),
@@ -189,10 +196,9 @@ describe("POST/users/swim", () => {
       .post("/users/swim")
       .set("Authorization", `Bearer ${accessToken}`)
       .send(postBody)
-      .expect(201)
-      .then(({ body }) => {
-        console.log(body);
-        expect(body.msg).toBe("No date provided");
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Validation failed");
       });
   });
 
@@ -207,8 +213,7 @@ describe("POST/users/swim", () => {
       .send(postBody)
       .expect(400)
       .then(({ body }) => {
-        console.log(body.msg);
-        expect(body.msg).toBe("Location name is not provided.");
+        expect(body.msg).toBe("Location name is not valid.");
       });
   });
 
@@ -223,8 +228,36 @@ describe("POST/users/swim", () => {
       .send(postBody)
       .expect(400)
       .then(({ body }) => {
-        console.log(body.msg);
-        expect(body.msg).toBe("Location Id is not provided.");
+        expect(body.msg).toBe("Location ID is not valid.");
+      });
+  });
+
+  test("Should return a 400 when url provided in swims is not a url", () => {
+    const postBody = {
+      date: "2023-05-02T11:00:00Z",
+      locationName: "Rydal, Lake District",
+      locationId: rydalId.toString(),
+      notes:
+        "A great swim! To the dog's grave on the main island and back. Water not too cold.",
+      stars: 5,
+      recordTemp: null,
+      feelTemp: "average",
+      mins: 45,
+      km: 1,
+      outOfDepth: true,
+      shore: "muddy",
+      bankAngle: "medium",
+      clarity: "average",
+      imgUrls: ["nbjksnkasn"],
+      sizeKey: null,
+    };
+    return request(app)
+      .post("/users/swim")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(postBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("URL is not valid.");
       });
   });
 });

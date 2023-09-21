@@ -1,10 +1,8 @@
 const Locations = require("../../models/locations-model");
+const isURL = require("is-url");
 
 function validatePostSwimDate(req, res, next) {
   const { date } = req.body;
-  // if (!date) {
-  //   return res.status(400).send({ msg: "No date provided" });
-  // }
 
   const inputtedDate = new Date(date);
 
@@ -18,15 +16,6 @@ function validatePostSwimDate(req, res, next) {
 
 function validateLocationDetails(req, res, next) {
   const { locationName, locationId } = req.body;
-
-  if (!locationName) {
-    return res.status(400).send({ msg: "Location name is not provided." });
-  }
-
-  if (!locationId) {
-    return res.status(400).send({ msg: "Location Id is not provided." });
-  }
-
   return Locations.findOne({ name: locationName }).then((location) => {
     if (!location) {
       return res.status(400).send({ msg: "Location name is not valid." });
@@ -38,4 +27,23 @@ function validateLocationDetails(req, res, next) {
   });
 }
 
-module.exports = { validatePostSwimDate, validateLocationDetails };
+function validateImageUrl(req, res, next) {
+  const { imgUrls } = req.body;
+
+  if (imgUrls) {
+    if (imgUrls.length !== 0) {
+      imgUrls.forEach((url) => {
+        if (!isURL(url)) {
+          return res.status(400).send({ msg: "URL is not valid." });
+        }
+      });
+    }
+  }
+  next();
+}
+
+module.exports = {
+  validatePostSwimDate,
+  validateLocationDetails,
+  validateImageUrl,
+};

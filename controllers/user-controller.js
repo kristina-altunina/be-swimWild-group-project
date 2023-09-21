@@ -60,7 +60,7 @@ function postSwim(req, res, next) {
     shore,
     bankAngle,
     clarity,
-    imageUrls,
+    imgUrls,
   } = req.body;
   const uid = req.user.uid;
   const new_swim = {
@@ -79,11 +79,10 @@ function postSwim(req, res, next) {
     shore,
     bankAngle,
     clarity,
-    imageUrls,
+    imgUrls,
   };
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
-    .then((user) => {
-      user.validateSync();
+    .then(() => {
       return Users.findOne({ uid: uid });
     })
     .then((user) => {

@@ -11,7 +11,7 @@ const {
 
 const {
   validatePostSwimDate,
-  validateLocationDetails,
+  validateLocationDetails, validateImageUrl
 } = require("../controllers/validators/swim-validators");
 
 const usersRouter = require("express").Router();
@@ -23,7 +23,14 @@ usersRouter
 
 usersRouter.route("/profile").get(authoriseUser, getUser);
 
-usersRouter.route("/swim").post(authoriseUser, validatePostSwimDate, validateLocationDetails, postSwim);
+usersRouter
+  .route("/swim")
+  .post(
+    authoriseUser,
+    validatePostSwimDate,
+    validateLocationDetails,
+    validateImageUrl, postSwim
+  );
 
 
 module.exports = usersRouter;
