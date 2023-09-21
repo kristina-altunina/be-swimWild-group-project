@@ -30,7 +30,7 @@ function getApiData(coords, type, day = 0) {
   } else {
     if (type === "pond" || type === "lake") type = "lakes";
     else type = "rivers";
-    const now = new Date();
+    const now = new Date().getTime();
     const days = 1000 * 60 * 60 * 24;
     const promises = [
       collectEaInlandData(
