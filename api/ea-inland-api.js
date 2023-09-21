@@ -45,10 +45,6 @@ function findEaSites(coords, radiusMetres, type) {
     )
     .then(({ data }) => {
       // sort by distance
-      console.log(data);
-      console.log("type = ", type);
-      console.log("data[type] = ", data[type]);
-      console.log("data[type].sites = ", data[type].sites);
       const sites = data[type].sites;
       sites.sort((a, b) => {
         const distanceA = distanceBetweenCoords(coords, [
@@ -143,7 +139,7 @@ function processEaData(dataPromise, searchDate) {
       return processedData;
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
     });
 }
 
