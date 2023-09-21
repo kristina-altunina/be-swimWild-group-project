@@ -199,7 +199,7 @@ describe("GET location/:id", () => {
         });
       });
   });
-  test.skip("Lakes location should return Lakes apiData on a key of apiData", () => {
+  test("Lakes location should return Lakes apiData on a key of apiData", () => {
     return request(app)
       .get(`/locations/${BeckenhamID}`)
       .expect(200)
