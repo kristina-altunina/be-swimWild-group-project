@@ -12,9 +12,9 @@ const Users = require("../models/users-model");
 require("dotenv").config();
 
 let rydalId = "";
-let margateID = "";
-let BeckenhamID = "";
-let GoldigginsID = "";
+let margateId = "";
+let beckenhamId = "";
+let goldigginsId = "";
 
 beforeAll(() => {
   mongoose.set("runValidators", true);
@@ -42,9 +42,9 @@ beforeEach(() => {
     })
     .then((resolvedPromises) => {
       rydalId = resolvedPromises[0].id;
-      margateID = resolvedPromises[1].id;
-      BeckenhamID = resolvedPromises[2].id;
-      GoldigginsID = resolvedPromises[3].id;
+      margateId = resolvedPromises[1].id;
+      beckenhamId = resolvedPromises[2].id;
+      goldigginsId = resolvedPromises[3].id;
     })
     .catch((err) => {
       console.log(err);
@@ -119,9 +119,9 @@ describe("GET location/:id", () => {
         });
       });
   });
-  test.skip("should return userData key with userData, when given a location id where there are no swims", () => {
+  test("should return userData key with userData, when given a location id where there are no swims", () => {
     return request(app)
-      .get(`/locations/${BeckenhamID}`)
+      .get(`/locations/${beckenhamId}`)
       .expect(200)
       .then(({ body }) => {
         console.log(body.userData);
@@ -139,22 +139,22 @@ describe("GET location/:id", () => {
         });
       });
   });
-  test.skip("should return userData key with userData, when given a location id where there is one swim, and that swim only contains the required data", () => {
+  test("should return userData key with userData, when given a location id where there is one swim, and that swim only contains the required data", () => {
     return request(app)
-      .get(`/locations/${GoldigginsID}`)
+      .get(`/locations/${goldigginsId}`)
       .expect(200)
       .then(({ body }) => {
         expect(body.userData).toMatchObject({
-            avStars: null,
-            outOfDepth: null,
-            avMins: null,
-            avKms: null,
-            mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
-            feelTemps: {},
-            sizes: {},
-            shores: {},
-            bankAngles: {},
-            clarities: {},
+          avStars: null,
+          outOfDepth: null,
+          avMins: null,
+          avKms: null,
+          mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
+          feelTemps: {},
+          sizes: {},
+          shores: {},
+          bankAngles: {},
+          clarities: {},
         });
       });
   });
@@ -187,7 +187,7 @@ describe("GET location/:id", () => {
   });
   test("Sea location should return sea apiData on a key of apiData", () => {
     return request(app)
-      .get(`/locations/${margateID}`)
+      .get(`/locations/${margateId}`)
       .expect(200)
       .then(({ body }) => {
         expect(body.apiData).toMatchObject({
@@ -201,7 +201,7 @@ describe("GET location/:id", () => {
   });
   test("Lakes location should return Lakes apiData on a key of apiData", () => {
     return request(app)
-      .get(`/locations/${BeckenhamID}`)
+      .get(`/locations/${beckenhamId}`)
       .expect(200)
       .then(({ body }) => {
         console.log(body);
@@ -212,9 +212,10 @@ describe("GET location/:id", () => {
         });
       });
   });
-  test.skip("Lakes location should return Lakes apiData on a key of apiData", () => {
-    return request(app).get(`/locations/22222`).expect(400);
+  test("Should return 404 if location does not exist", () => {
+    return request(app).get(`/locations/650bfa752922d358b8c56564`).expect(404);
   });
+  // make test for invalid id. This needs to use the mongoDb error handler.
 });
 
 describe("processUserData", () => {
@@ -266,18 +267,18 @@ describe("processUserData", () => {
       },
     ];
     const result = processUserData(swims);
-    console.log(result)
+    console.log(result);
     expect(result).toMatchObject({
       avStars: 3.5,
       outOfDepth: true,
       avMins: 27.5,
       avKms: 0.75,
-      mostRecentTemp: { date: '0001-01-01T00:00:00.000Z', temp: null },
+      mostRecentTemp: { date: "0001-01-01T00:00:00.000Z", temp: null },
       feelTemps: {},
-      sizes: { large: '100%' },
-      shores: { pebbly: '100%' },
-      bankAngles: { medium: '100%' },
-      clarities: { average: '100%' }
-    })
+      sizes: { large: "100%" },
+      shores: { pebbly: "100%" },
+      bankAngles: { medium: "100%" },
+      clarities: { average: "100%" },
+    });
   });
 });

@@ -1,5 +1,5 @@
 function processUserData(swims) {
-  let outOfDepth = 0;
+  let outOfDepth = null;
   const mostRecentTemp = { date: "0001-01-01T00:00:00.000Z", temp: null };
   const feelTemps = [];
   const sizes = [];
@@ -12,10 +12,14 @@ function processUserData(swims) {
   const avKms = trackAndAverage();
 
   swims.forEach((swim) => {
+    console.log(swim);
     avStars.add(swim.stars);
     avMins.add(swim.mins);
     avKms.add(swim.km);
-    if (swim.outOfDepth !== null) outOfDepth += swim.outOfDepth ? 1 : -1;
+    if (swim.outOfDepth && outOfDepth === null) outOfDepth = 0;
+    if (typeof swim.outOfDepth === "boolean") {
+      outOfDepth += swim.outOfDepth ? 1 : -1;
+    }
     if (swim.recordTemp && swim.date > mostRecentTemp.date) {
       mostRecentTemp.temp = swim.recordTemp;
     }
@@ -26,9 +30,11 @@ function processUserData(swims) {
     if (swim.clarity) clarities.push(swim.clarity);
   });
 
+  if (outOfDepth !== null) outOfDepth = outOfDepth >= 0 ? true : false;
+
   return {
     avStars: avStars.getAverage(),
-    outOfDepth: outOfDepth >= 0 ? true : false,
+    outOfDepth,
     avMins: avMins.getAverage(),
     avKms: avKms.getAverage(),
     mostRecentTemp: mostRecentTemp,

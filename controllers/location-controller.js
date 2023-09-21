@@ -58,7 +58,15 @@ function getLocationById(req, res, next) {
   const swims = [];
   let userData;
   let location;
-  Users.find({ "swims.location.id": req.params.id })
+  Locations.findOne({ _id: req.params.id })
+    .then((locationData) => {
+      console.log(locationData);
+      if (!locationData) {
+        return res.status(404).send("Location not found");
+      }
+      location = locationData;
+      return Users.find({ "swims.location.id": req.params.id });
+    })
     .then((users) => {
       users.forEach((user) => {
         swims.push(
@@ -79,13 +87,7 @@ function getLocationById(req, res, next) {
       swims.sort((a, b) => {
         return b.date - a.date;
       });
-      console.log(swims)
       userData = processUserData(swims);
-      return Locations.findOne({ _id: req.params.id });
-    })
-    .then((locationData) => {
-      if (!locationData) return Promise.reject();
-      location = locationData;
       const day = +req.query.day || 0;
       return getApiData(location.coords, location.type, day);
     })
