@@ -85,6 +85,7 @@ function getLocationById(req, res, next) {
       return Locations.findOne({ _id: req.params.id });
     })
     .then((locationData) => {
+      if (!locationData) return Promise.reject();
       location = locationData;
       return getApiData(location.coords, location.type);
     })
