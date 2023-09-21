@@ -4,8 +4,7 @@ const {
   formatSite,
   calculateSeasonalSpread,
   expectedHydrologyTemp,
-  average,
-  averageOverDay,
+  getSurfaceResults,
 } = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
 const { distanceBetweenCoords } = require("../utils");
@@ -94,16 +93,13 @@ function processEaData(dataPromise, searchDate) {
       const processedData = {
         determinandID: detail.determinandID,
       };
+      data = getSurfaceResults(data);
       // most recent
       data.sort((a, b) => {
         return new Date(b.datetime) - new Date(a.datetime);
       });
       const mostRecent = data.find((sample) => sample.datetime <= searchDate);
-      processedData.mostRecentValue = averageOverDay(
-        mostRecent.datetime,
-        data,
-        detail.determinandID
-      );
+      processedData.mostRecentValue = mostRecent.value;
       processedData.mostRecentSampleDate = mostRecent.datetime;
       processedData.determinand = mostRecent.determinand;
       processedData.units = data[0].units;
@@ -143,14 +139,10 @@ function processEaData(dataPromise, searchDate) {
           );
           return Math.abs(date - aThisYear) - Math.abs(date - bThisYear);
         });
-        const dateMatch = data[0];
-        processedData.dateMatchedValue = averageOverDay(
-          dateMatch.datetime,
-          data,
-          detail.determinandID
-        );
-        processedData.dateMatchedSampleDate = dateMatch.datetime;
-        processedData.expectedTemp = expectedHydrologyTemp(processedData);
+        processedData.dateMatchedValue = data[0].value;
+        processedData.dateMatchedSampleDate = data[0].datetime;
+        processedData.maxSurfaceTemp =
+          +expectedHydrologyTemp(processedData).toFixed(1);
       }
       return processedData;
     })

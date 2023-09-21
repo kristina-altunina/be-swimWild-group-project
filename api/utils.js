@@ -70,7 +70,7 @@ function expectedHydrologyTemp({
   ) {
     return mostRecentValue;
   }
-  if (!sampleSpread.winter || !sampleSpread.summer || samples < 7) {
+  if (!sampleSpread.winter || !sampleSpread.summer) {
     return dateMatchedValue;
   }
   if (
@@ -86,18 +86,16 @@ function getDay(datetime) {
   return Math.floor(new Date(datetime).getTime() / 1000 / 60 / 60 / 24);
 }
 
-function averageOverDay(date, data, determinandID) {
-  // clean some strange oxygen saturation results
-  if (determinandID === "9901") {
-    data = data.filter((sample) => {
-      return sample.value > 30;
-    });
+function getSurfaceResults(data) {
+  const days = [];
+  const surfaceData = [];
+  for (const sample of data) {
+    if (days.includes(getDay(sample.datetime))) continue;
+    days.push(getDay(sample.datetime));
+    surfaceData.push(sample);
   }
-  const samples = data.filter((sample) => {
-    return getDay(sample.datetime) === getDay(date);
-  });
-  const total = samples.reduce((a, b) => a.value + b.value, 0);
-  return total / samples.length;
+  console.log(surfaceData);
+  return surfaceData;
 }
 
 module.exports = {
@@ -106,5 +104,5 @@ module.exports = {
   removeSamplingPoint,
   calculateSeasonalSpread,
   expectedHydrologyTemp,
-  averageOverDay,
+  getSurfaceResults,
 };
