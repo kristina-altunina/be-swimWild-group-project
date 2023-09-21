@@ -19,7 +19,7 @@ function processUserData(swims) {
     if (swim.recordTemp && swim.date > mostRecentTemp.date) {
       mostRecentTemp.temp = swim.recordTemp;
     }
-    if (swim.feelTemp) feelTemps.push(swim.feelTemp);
+    if (swim.feelTemp && withinMonth(swim.date)) feelTemps.push(swim.feelTemp);
     if (swim.sizeKey) sizes.push(swim.sizeKey);
     if (swim.shore) shores.push(swim.shore);
     if (swim.bankAngle) bankAngles.push(swim.bankAngle);
@@ -91,4 +91,15 @@ function approxHoursFromNow(time) {
   return Math.round(diff / 1000 / 60 / 60);
 }
 
-module.exports = { processUserData, distanceBetweenCoords, approxHoursFromNow };
+function withinMonth(date) {
+  const now = new Date().getTime();
+  const givenTime = new Date(date).getTime();
+  return Math.abs(now - givenTime) < 1000 * 60 * 60 * 24 * 7 * 4;
+}
+
+module.exports = {
+  processUserData,
+  distanceBetweenCoords,
+  approxHoursFromNow,
+  withinMonth,
+};

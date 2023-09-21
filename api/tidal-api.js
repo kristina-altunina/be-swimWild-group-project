@@ -27,15 +27,6 @@ function processTideData(items, day) {
       if ((r2 > 0 && r4 > r2) || (r2 < 0 && r4 < r2)) continue;
       const changeTime = new Date(items[i + 1].dateTime).getTime();
       return generateTideForecast(changeTime, r2, day);
-      const period = 372.5 * 60 * 1000; // 6 hours 12.5 mins
-      let nextHigh = r2 < 0 ? changeTime + period : changeTime + period * 2;
-      let nextLow = r2 < 0 ? changeTime + period * 2 : changeTime + period;
-      if (nextHigh < new Date().getTime()) nextHigh += period * 2;
-      if (nextLow < new Date().getTime()) nextLow += period * 2;
-      return {
-        hoursUntilHighTide: approxHoursFromNow(nextHigh),
-        hoursUntilLowTide: approxHoursFromNow(nextLow),
-      };
     }
   }
 }
