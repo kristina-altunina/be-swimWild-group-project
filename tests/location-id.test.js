@@ -10,6 +10,8 @@ const Locations = require("../models/locations-model");
 require("dotenv").config();
 
 let rydalId = "";
+let margateID = "";
+let BeckenhamID = ""
 
 beforeAll(() => {
   mongoose.set("runValidators", true);
@@ -22,10 +24,21 @@ beforeAll(() => {
 beforeEach(() => {
   return refreshDocuments(locations, users)
     .then(() => {
-      return Locations.findOne({ name: "Rydal, Lake District" });
+      const promises = [];
+      promises.push(Locations.findOne({ name: "Rydal, Lake District" }));
+      promises.push(
+        Locations.findOne({ name: "Walpole Bay Tidal Pool, Margate" })
+      );
+      promises.push(Locations.findOne({ name: "Beckenham Park Swimming Lake, London" }))
+      return Promise.all(promises);
     })
-    .then((location) => {
-      rydalId = location._id;
+    .then((resolvedPromises) => {
+      rydalId = resolvedPromises[0].id;
+      margateID = resolvedPromises[1].id;
+      BeckenhamID = resolvedPromises[2].id
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 
@@ -108,6 +121,47 @@ describe("GET location/:id", () => {
           name: "Rydal, Lake District",
           type: "lake",
           coords: [54.447268, -2.995986],
+        });
+      });
+  });
+  test("Should only return swims from that location", () => {
+    return request(app)
+      .get(`/locations/${rydalId}`)
+      .expect(200)
+      .then(({ body }) => {
+        const { swims } = body;
+        swims.forEach((swim) => {
+          expect(swim.location).toMatchObject({
+            name: "Rydal, Lake District",
+            id: expect.any(String),
+          });
+        });
+      });
+  });
+  test("Sea location should return sea apiData on a key of apiData", () => {
+    return request(app)
+      .get(`/locations/${margateID}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.apiData).toMatchObject({
+          tempCelsius : expect.anything(),
+          nearestAab : expect.anything(),
+          waveData: expect.anything(),
+          weather: expect.anything(),
+          tides: expect.anything(),
+        });
+      });
+  });
+  test("Lakes location should return Lakes apiData on a key of apiData", () => {
+    return request(app)
+      .get(`/locations/${BeckenhamID}`)
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body.apiData)
+        expect(body.apiData).toMatchObject({
+          hydrologyData : expect.anything(),
+          nearestAab : expect.anything(),
+          weather: expect.anything(),
         });
       });
   });
