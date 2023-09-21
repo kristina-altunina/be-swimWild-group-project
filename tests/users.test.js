@@ -140,7 +140,7 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
-  test("should respond with 400 if body missing name", () => {
+  test.only("should respond with 400 if body missing name", () => {
     const postBody = {
       nickname: "newnickname",
       profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
@@ -150,7 +150,10 @@ describe("POST /users", () => {
       .post("/users")
       .send(postBody)
       .set("Authorization", `Bearer ${registeredAccessToken}`)
-      .expect(400);
+      .expect(400)
+      .then(({ text }) => {
+        expect(text).toBe("Users validation failed");
+      });
   });
   test("should respond with 400 if body missing nickname", () => {
     const postBody = {

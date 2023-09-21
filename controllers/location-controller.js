@@ -2,6 +2,7 @@ const Locations = require("../models/locations-model");
 const Fuse = require("fuse.js");
 const Users = require("../models/users-model");
 const { distanceBetweenCoords, processUserData } = require("../utils");
+const { getApiData } = require("../api");
 
 function getLocations(req, res, next) {
   function paginate(arr) {
@@ -55,6 +56,8 @@ function postLocation(req, res, next) {
 
 function getLocationById(req, res, next) {
   const swims = [];
+  let userData;
+  let location;
   Users.find({ "swims.location.id": req.params.id })
     .then((users) => {
       users.forEach((user) => {
@@ -78,13 +81,15 @@ function getLocationById(req, res, next) {
       swims.sort((a, b) => {
         return b.date - a.date;
       });
-      const userData = processUserData(swims);
-      return Locations.findOne({ _id: req.params.id }).then((location) => {
-        return [location, userData, swims];
-      });
+      userData = processUserData(swims);
+      return Locations.findOne({ _id: req.params.id });
     })
-    .then(([location, userData, swims]) => {
-      res.status(200).send({ swims, userData, location });
+    .then((locationData) => {
+      location = locationData;
+      return getApiData(location.coords, location.type);
+    })
+    .then((apiData) => {
+      res.status(200).send({ swims, userData, location, apiData });
     })
     .catch(next);
 }

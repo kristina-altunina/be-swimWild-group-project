@@ -86,4 +86,9 @@ function distanceBetweenCoords(coords1, coords2) {
   return +d.toFixed(2);
 }
 
-module.exports = { processUserData, distanceBetweenCoords };
+function approxHoursFromNow(time) {
+  const diff = time - new Date().getTime();
+  return Math.round(diff / 1000 / 60 / 60);
+}
+
+module.exports = { processUserData, distanceBetweenCoords, approxHoursFromNow };
