@@ -92,8 +92,9 @@ function processEaData(dataPromise, searchDate) {
         determinandID: detail.determinandID,
       };
       // most recent
-      const mostRecent = data
-        .toSorted((a, b) => {
+      const mostRecent = [...data];
+      mostRecent
+        .sort((a, b) => {
           return new Date(b.datetime) - new Date(a.datetime);
         })
         .find((sample) => sample.datetime <= searchDate);
@@ -126,7 +127,8 @@ function processEaData(dataPromise, searchDate) {
         }
         // date match
         const date = new Date(searchDate);
-        const dateMatch = data.toSorted((a, b) => {
+        const dateMatch = [...data];
+        dateMatch.sort((a, b) => {
           const aThisYear = new Date(a.datetime).setFullYear(
             new Date().getFullYear()
           );
