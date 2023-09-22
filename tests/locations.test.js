@@ -46,6 +46,7 @@ describe("GET /locations", () => {
       .get("/locations")
       .expect(200)
       .then(({ body }) => {
+        console.log(body);
         expect(body[0]).toMatchObject({
           name: expect.any(String),
           _id: expect.any(String),
@@ -53,6 +54,14 @@ describe("GET /locations", () => {
           distanceKm: expect.any(Number),
           type: expect.any(String),
         });
+      });
+  });
+  test("locations should have average stars", () => {
+    return request(app)
+      .get("/locations")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Object.keys(body[0]).includes("avStars")).toBe(true);
       });
   });
   test("should return a list ordered by distanceKm", () => {

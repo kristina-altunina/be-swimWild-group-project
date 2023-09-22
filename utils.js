@@ -1,3 +1,5 @@
+const Users = require("./models/users-model");
+
 function processUserData(swims) {
   let outOfDepth = null;
   const mostRecentTemp = { date: "0001-01-01T00:00:00.000Z", temp: null };
@@ -12,7 +14,6 @@ function processUserData(swims) {
   const avKms = trackAndAverage();
 
   swims.forEach((swim) => {
-    console.log(swim);
     avStars.add(swim.stars);
     avMins.add(swim.mins);
     avKms.add(swim.km);
@@ -103,9 +104,61 @@ function withinMonth(date) {
   return Math.abs(now - givenTime) < 1000 * 60 * 60 * 24 * 7 * 4;
 }
 
+function getSwimsFromLocation(id) {
+  return Users.find({ "swims.location.id": id }).then((users) => {
+    const swims = [];
+    users.forEach((user) => {
+      swims.push(
+        ...user.swims
+          .filter((swim) => {
+            return swim.location.id === id;
+          })
+          .map((swim) => {
+            const newSwim = { ...swim.toObject() };
+            newSwim.uid = user.uid;
+            newSwim.name = user.name;
+            newSwim.nickname = user.nickname;
+            newSwim.profileImg = user.profileImg;
+            return newSwim;
+          })
+      );
+    });
+    swims.sort((a, b) => {
+      return b.date - a.date;
+    });
+    return swims;
+  });
+}
+
+function addDistanceToLocation(location, [lat, long]) {
+  const coords = location.coords.map((coord) => +coord);
+  const km = distanceBetweenCoords([lat, long], coords);
+  const newLocation = location.toObject();
+  newLocation.distanceKm = km;
+  return newLocation;
+}
+
+function addStarsToLocation(location) {
+  return getSwimsFromLocation(location._id.toString()).then((swims) => {
+    const newLocation = { ...location };
+    const avStars = trackAndAverage();
+    for (const swim of swims) avStars.add(swim.stars);
+    newLocation.avStars = avStars.getAverage();
+    return newLocation;
+  });
+}
+
+function paginate(arr, limit, p) {
+  return arr.slice((p - 1) * limit, p * limit);
+}
+
 module.exports = {
   processUserData,
   distanceBetweenCoords,
   approxHoursFromNow,
   withinMonth,
+  getSwimsFromLocation,
+  addDistanceToLocation,
+  addStarsToLocation,
+  paginate,
 };

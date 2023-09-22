@@ -12,7 +12,15 @@ Make sure the access token in tests/access-token.js is up to date.
 
 ## Locations/:id data guide:
 
-Returns an object with 4 keys:
+Returns an object with 5 keys:
+
+### info
+
+- `duration`: How long we reckon you should swim for
+- `equip`: A string representing what you should wear.
+- `warning`: A string representing things to think about safety wise.
+- `help`: A popup message explaining the approxDuration and why it is an approximation
+- `hazard`: A popup message if the water quality is bad
 
 ### swims
 

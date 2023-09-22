@@ -52,7 +52,11 @@ function getApiData(coords, type, day = 0) {
   }
 }
 
-module.exports = { getApiData };
+function analyseApiData(data, waterTemp, airTemp) {
+  // would be great to get the users swim history? Then can say based on your previous swims etc you will stay for this long.
+}
+
+module.exports = { getApiData, analyseApiData };
 
 // getApiData([54.07894, -2.8668929], "sea").then((data) => {
 //   console.log(data);
