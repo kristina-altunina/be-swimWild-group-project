@@ -15,12 +15,12 @@ function validatePostSwimDate(req, res, next) {
 }
 
 function validateLocationDetails(req, res, next) {
-  const { locationName, locationId } = req.body;
-  return Locations.findOne({ name: locationName }).then((location) => {
-    if (!location) {
+  const { location } = req.body;
+  return Locations.findOne({ name: location.name }).then((locationDb) => {
+    if (!locationDb) {
       return res.status(400).send({ msg: "Location name is not valid." });
     }
-    if (location._id.toString() !== locationId) {
+    if (locationDb._id.toString() !== location.id) {
       return res.status(400).send({ msg: "Location ID is not valid." });
     }
     next();

@@ -48,8 +48,7 @@ function getUser(req, res, next) {
 function postSwim(req, res, next) {
   const {
     date,
-    locationName,
-    locationId,
+    location,
     notes,
     stars,
     recordTemp,
@@ -62,12 +61,13 @@ function postSwim(req, res, next) {
     clarity,
     imgUrls,
   } = req.body;
+
   const uid = req.user.uid;
   const new_swim = {
     date,
     location: {
-      name: locationName,
-      id: locationId,
+      name: location.name,
+      id: location.id,
     },
     notes,
     stars,
