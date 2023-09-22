@@ -62,6 +62,7 @@ function postSwim(req, res, next) {
     imgUrls,
   } = req.body;
 
+
   const uid = req.user.uid;
   const new_swim = {
     date,
@@ -81,12 +82,12 @@ function postSwim(req, res, next) {
     clarity,
     imgUrls,
   };
+
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
     .then(() => {
       return Users.findOne({ uid: uid });
     })
     .then((user) => {
-      console.log(user);
       const newSwim = user.swims[user.swims.length - 1];
       res.status(201).send(newSwim);
     })
@@ -97,11 +98,11 @@ function patchSwim(req, res, next) {
   const { id } = req.params;
   const uid = req.user.uid;
 
+
   Users.findOne({ uid: uid })
   .then((user) => {
     let newUser = { ...user.toObject() };
     newUser.swims = newUser.swims.map((swim) => {
-      console.log(swim._id.toString())
       if (swim._id.toString() !== id) return swim;
       for (const key in req.body) {
         swim[key] = req.body[key];
@@ -113,7 +114,7 @@ function patchSwim(req, res, next) {
   .then(()=>{
     return Users.findOne({ uid: uid })
   })
-  .then((updatedUser)=>{
+    .then((updatedUser) => {
     const updatedSwimArr = updatedUser.swims.filter((swim)=>{
       return swim._id.toString() === id
     })

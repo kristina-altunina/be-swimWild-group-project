@@ -13,9 +13,10 @@ require("dotenv").config();
 
 let accessToken;
 let registeredAccessToken;
-let swimRegisterToken
+let swimRegisterToken;
 let rydalId = "";
 let swimId = "";
+let elieId = "";
 beforeAll(() => {
   const promises = [];
   mongoose.set("runValidators", true);
@@ -54,6 +55,12 @@ beforeEach(() => {
         })
         .then((swim) => {
           swimId = swim._id.toString();
+        })
+        .then(() => {
+          return Locations.findOne({ name: "Elie Beach, Fife" });
+        })
+        .then((location) => {
+          return (elieId = location._id);
         });
     });
 });
@@ -62,7 +69,7 @@ afterAll(() => {
   return mongoose.connection.close();
 });
 
-describe.skip("POST/users/swim", () => {
+describe("POST/users/swim", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).post("/users/swim").expect(401);
   });
@@ -213,7 +220,7 @@ describe.skip("POST/users/swim", () => {
       });
   });
 
-  test("Should return a 400 when date is not provided", () => {
+  test ("Should return a 400 when date is not provided", () => {
     const postBody = {
       location: {
         name: "Rydal, Lake District",
@@ -225,8 +232,8 @@ describe.skip("POST/users/swim", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .send(postBody)
       .expect(400)
-      .then(({ text }) => {
-        expect(text).toBe("Validation failed");
+      .then(({ body }) => {
+        expect(body.msg).toBe("Fields are needed for completion");
       });
   });
 
@@ -264,10 +271,37 @@ describe.skip("POST/users/swim", () => {
       });
   });
 
+  test("Should return a 400 when no location details are not provided", () => {
+    const postBody = {
+      date: "2023-05-02T11:00:00Z"
+    };
+    return request(app)
+      .post("/users/swim")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(postBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Fields are needed for completion");
+      });
+  });
+
+   test("Should return a 400 when body is empty", () => {
+     const postBody = {
+     };
+     return request(app)
+       .post("/users/swim")
+       .set("Authorization", `Bearer ${accessToken}`)
+       .send(postBody)
+       .expect(400)
+       .then(({ body }) => {
+         expect(body.msg).toBe("Fields are needed for completion");
+       });
+   });
+
   test("Should return a 400 when url provided in swims is not a url", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-     location: {
+      location: {
         name: "Rydal, Lake District",
         id: rydalId.toString(),
       },
@@ -294,18 +328,23 @@ describe.skip("POST/users/swim", () => {
         expect(body.msg).toBe("URL is not valid.");
       });
   });
+
+ 
 });
+
 
 describe("PATCH/users/swim/:swimId", () => {
   test("respond 401 Unauthorized when no access token provided", () => {
-    return request(app).patch("/users/swim/43").expect(401);
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .expect(401);
   });
 
-  test.only("be able to update swim details and respond with 200", () => {
-    const postBody = {
-      location:{
+  test("be able to update swim details and respond with 200", () => {
+    const patchBody = {
+      location: {
         name: "Rydal, Lake District",
-        id: rydalId.toString()
+        id: rydalId.toString(),
       },
       date: "2022-05-02T11:00:00Z",
       notes: "Water Freezing",
@@ -325,11 +364,10 @@ describe("PATCH/users/swim/:swimId", () => {
     };
     return request(app)
       .patch(`/users/swim/${swimId}`)
-      .send(postBody)
+      .send(patchBody)
       .set("Authorization", `Bearer ${swimRegisterToken}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body)
         expect(body).toMatchObject({
           date: "2022-05-02T11:00:00.000Z",
           notes: "Water Freezing",
@@ -353,4 +391,142 @@ describe("PATCH/users/swim/:swimId", () => {
         });
       });
   });
+
+  test("be able to update swim details and respond with 200", () => {
+    const patchBody = {
+      recordTemp: 2,
+    };
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .send(patchBody)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          location: {
+            id: elieId.toString(),
+            name: "Elie Beach, Fife",
+          },
+          date: "2023-08-29T18:00:00.000Z",
+          notes:
+            "Extremely cold, wetsuit necessary. Clear water though, but lots of seaweed and still quite shallow a long way out.",
+          stars: 3,
+          recordTemp: 2,
+          feelTemp: "freezing",
+          mins: 20,
+          km: 0.5,
+          outOfDepth: false,
+          shore: "sandy",
+          bankAngle: "shallow",
+          clarity: "clear",
+          imgUrls: [
+            "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
+          ],
+          sizeKey: "large",
+        });
+      });
+  });
+
+   test("be able to update swim details and respond with 200", () => {
+     const patchBody = {
+       imgUrls: [
+         "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
+         "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130",
+      ],
+     };
+     return request(app)
+       .patch(`/users/swim/${swimId}`)
+       .send(patchBody)
+       .set("Authorization", `Bearer ${swimRegisterToken}`)
+       .expect(200)
+       .then(({ body }) => {
+         expect(body).toMatchObject({
+           location: {
+             id: elieId.toString(),
+             name: "Elie Beach, Fife",
+           },
+           date: "2023-08-29T18:00:00.000Z",
+           notes:
+             "Extremely cold, wetsuit necessary. Clear water though, but lots of seaweed and still quite shallow a long way out.",
+           stars: 3,
+           recordTemp: null,
+           feelTemp: "freezing",
+           mins: 20,
+           km: 0.5,
+           outOfDepth: false,
+           shore: "sandy",
+           bankAngle: "shallow",
+           clarity: "clear",
+           imgUrls: [
+             "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
+             "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130",
+           ],
+           sizeKey: "large",
+         });
+       });
+   });
+  
+  
+  test("send 400 when updating an empty body ", () => {
+    const patchBody = {}
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .send(patchBody)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Nothing to post.");
+          
+      });
+  });
+
+  test("Should return a 400 when incorrect patch body is sent", () => {
+    const patchBody = {
+      location: {
+        name: "Lake District",
+      },
+    };
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .send(patchBody)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Location name is not valid.");
+      });
+  });
+
+  test("Should return a 400 when incorrect patch body is sent", () => {
+    const patchBody = {
+      location: {
+        name: "Rydal, Lake District",
+      },
+    };
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .send(patchBody)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Location ID is not valid.");
+      });
+  });
+
+    test("Should return a 400 when incorrect url is sent", () => {
+      const patchBody = {
+        imgUrls: [
+          "fsscsdcsdcs"
+        ]
+      };
+      return request(app)
+        .patch(`/users/swim/${swimId}`)
+        .send(patchBody)
+        .set("Authorization", `Bearer ${swimRegisterToken}`)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("URL is not valid.");
+        });
+    });
+
+
 });

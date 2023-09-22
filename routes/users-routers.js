@@ -11,8 +11,11 @@ const {
 } = require("../controllers/validators/user-validators");
 
 const {
-  validatePostSwimDate,
-  validateLocationDetails, validateImageUrl
+  validateSwimDate,
+  validateLocationDetails,
+  validateImageUrl,
+  validateBody,
+  validatePostFields,
 } = require("../controllers/validators/swim-validators");
 
 const usersRouter = require("express").Router();
@@ -20,20 +23,31 @@ const usersRouter = require("express").Router();
 usersRouter
   .route("/")
   .post(authoriseUser, postUser)
-  .patch(authoriseUser, validateUserPatchBody, patchUser)
+  .patch(authoriseUser, validateUserPatchBody, patchUser);
 
 usersRouter.route("/profile").get(authoriseUser, getUser);
+
+
+
 
 usersRouter
   .route("/swim")
   .post(
     authoriseUser,
-    validatePostSwimDate,
+    validatePostFields,
     validateLocationDetails,
-    validateImageUrl, postSwim
-);
+    validateSwimDate,
+    validateImageUrl,
+    postSwim
+  );
 
-usersRouter.route("/swim/:id").patch(authoriseUser,patchSwim);
+usersRouter.route("/swim/:id").patch(
+  authoriseUser,
+  validateLocationDetails,
+  validateImageUrl,
+  validateBody,
+  patchSwim
+);
 
 
 module.exports = usersRouter;
