@@ -55,9 +55,11 @@ describe("GET /users/profile", () => {
       .get("/users/profile")
       .set("Authorization", `Bearer ${accessToken}`)
       .then(({ body }) => {
+        console.log(body);
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",
+          bio: "My life is swimming",
           dob: "1997-09-02T11:00:00.000Z",
           profileImg:
             "https://upload.wikimedia.org/wikipedia/commons/a/a7/40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg",
@@ -98,6 +100,8 @@ describe("POST /users", () => {
       nickname: "test",
       profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
       dob: "1997-08-29T18:00:00+0000",
+      bio: "i like swimming",
+      home: "swimming pools usually",
     };
     return request(app)
       .post("/users")
@@ -111,6 +115,8 @@ describe("POST /users", () => {
           nickname: "test",
           profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
           dob: "1997-08-29T18:00:00.000Z",
+          bio: "i like swimming",
+          home: "swimming pools usually",
         });
       });
   });
@@ -184,6 +190,18 @@ describe("POST /users", () => {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
       profileImg: "https://i.redd.it/p6f66n7xbmb11.notanimage",
+    };
+    return request(app)
+      .post("/users")
+      .send(postBody)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
+      .expect(400);
+  });
+  test("should respond with 400 if bio invalid", () => {
+    const postBody = {
+      name: "my name",
+      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
+      bio: 3,
     };
     return request(app)
       .post("/users")
