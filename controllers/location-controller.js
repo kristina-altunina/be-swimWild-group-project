@@ -16,6 +16,7 @@ function getLocations(req, res, next) {
     limit = 10,
     p = 1,
     filterName,
+    sort_by = "proximity",
   } = req.query;
   Locations.find()
     .then((locations) => {
@@ -38,6 +39,11 @@ function getLocations(req, res, next) {
       return Promise.all(promises);
     })
     .then((locations) => {
+      if (sort_by === "rating") {
+        locations.sort((a, b) => {
+          return b.avStars || 0 - a.avStars || 0;
+        });
+      }
       return res.status(200).send(paginate(locations, limit, p));
     })
     .catch(next);

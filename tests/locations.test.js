@@ -64,6 +64,15 @@ describe("GET /locations", () => {
         expect(Object.keys(body[0]).includes("avStars")).toBe(true);
       });
   });
+  test("query of sort_by = rating sorts by rating", () => {
+    return request(app)
+      .get("/locations?sort_by=rating")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        expect(body).toBeSortedBy("avStars", { descending: true });
+      });
+  });
   test("should return a list ordered by distanceKm", () => {
     return request(app)
       .get("/locations")
