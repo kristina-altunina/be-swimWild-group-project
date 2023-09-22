@@ -177,12 +177,13 @@ module.exports = [
   },
   {
     uid: "QRI8lUM1URYy2vCN3tSHSkU560S2",
-    name: "",
-    nickname: "",
-    profileImg: "",
-    dob: "",
-    home: "",
-    bio: "",
+    name: "Briana Lenore Sebastiani",
+    nickname: "brianaswims",
+    profileImg:
+      "https://img.olympicchannel.com/images/image/private/t_s_pog_staticContent_hero_lg_2x/f_auto/v1668613537/primary/z0l02peeuizeeg8oqq6x",
+    dob: "1996-04-24T07:30:00+0000",
+    home: "Falmouth, UK",
+    bio: "Swimming, surfing, bbq, kangeroos. That's my scene.",
     swims: [
       {
         date: "2023-01-01T08:30:00+0000",
@@ -204,6 +205,28 @@ module.exports = [
         clarity: "murky",
         imgUrls: [
           "https://lh3.googleusercontent.com/p/AF1QipPTjU2zKsuu9CJ_C2KmtPl37RM-xYTufMDBMPaS=s1360-w1360-h1020",
+        ],
+      },
+      {
+        date: "2022-08-05T07:00:00+0000",
+        location: {
+          name: "Burnsall, River Wharfe",
+          id: null,
+        },
+        notes:
+          "Would recommend going early if it's a sunny day in the school summer holidays",
+        stars: 5,
+        recordTemp: null,
+        feelTemp: "warm",
+        mins: 10,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "small",
+        shore: "sandy",
+        bankAngle: "shallow",
+        clarity: "average",
+        imgUrls: [
+          "https://files.holidaycottages.co.uk/gorgeouscottages%2Fguides%2F1689166492104-Kisdon+Force.jpg",
         ],
       },
     ],
@@ -239,6 +262,70 @@ module.exports = [
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVBkVZUMJRc4rwZzIuVlhO2iVvvMt4IpgjNA&usqp=CAU",
         ],
       },
+      {
+        date: "2023-02-24T13:45:00+0000",
+        location: {
+          name: "National Trust - Fell Foot, Windermere",
+          id: null,
+        },
+        notes:
+          "Me and the wife have been staying in the area on holiday and are keen wild swimmers but hadn't been here yet. We were on our way up to Bowness but had to have a quick post-lunch swim on our drive past. Weather was a bit grey and miserable but the swim was great. Had a coffee after to warm up and a slice of cake too in the cafe. 5/5",
+        stars: 5,
+        recordTemp: null,
+        feelTemp: "freezing",
+        mins: 7,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "rocky",
+        bankAngle: "shallow",
+        clarity: "average",
+        imgUrls: [
+          "https://www.sykescottages.co.uk/inspiration/wp-content/uploads/Fell-Foot-Park-Windermere.jpg",
+        ],
+      },
+      {
+        date: "2023-08-14T11:00:00+0000",
+        location: {
+          name: "Burnsall, River Wharfe",
+          id: null,
+        },
+        notes:
+          "Was told to come here by some friends but afraid I can't recommend - water was cold and fast flowing, also no easy access into the river",
+        stars: 2,
+        recordTemp: null,
+        feelTemp: "cold",
+        mins: null,
+        km: null,
+        outOfDepth: true,
+        sizeKey: "medium",
+        shore: "rocky",
+        bankAngle: "medium",
+        clarity: "murky",
+        imgUrls: ["https://www.yorkshire-dales.com/appletreewick-05.jpg"],
+      },
+      {
+        date: "2023-06-24T15:00:00+0000",
+        location: {
+          name: "Warkworth Beach, Northumberland",
+          id: null,
+        },
+        notes:
+          "Weather was overcast meaning air temp felt a little cold so only had a quick dip. Would have put my swim gloves and socks on but forgot them! If the tide is out it's a long walk down to the sea",
+        stars: 4,
+        recordTemp: null,
+        feelTemp: "cold",
+        mins: 5,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "sandy",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://files.holidaycottages.co.uk/docs/cottagesinnorthumberland/warkworthresize.jpg",
+        ],
+      },
     ],
   },
   {
@@ -270,6 +357,50 @@ module.exports = [
         clarity: "muddy",
         imgUrls: [
           "https://static.independent.co.uk/2022/04/12/08/newFile-2.jpg?width=1200",
+        ],
+      },
+      {
+        date: "2022-03-10T10:00:00+0000",
+        location: {
+          name: "Rydal, Lake District",
+          id: null,
+        },
+        notes:
+          "Came with my swimming group for the first time. Great spot for swimming but water wasn't the clearest because of recent rainfall. Needed the wetsuit on and a cuppa afterwards!",
+        stars: 4,
+        recordTemp: null,
+        feelTemp: "cold",
+        mins: 35,
+        km: 1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.swimthelakes.co.uk%2F11095%2Flake-swimming%2Flake-swimming-rydal-water%2F&psig=AOvVaw3VjKR0J5knQ4UZ4Jt--ij4&ust=1695478471099000&source=images&cd=vfe&opi=89978449&ved=0CA8QjRxqFwoTCMDIkNKzvoEDFQAAAAAdAAAAABAJ",
+        ],
+      },
+      {
+        date: "2021-05-29T17:30:00+0000",
+        location: {
+          name: "Warkworth Beach, Northumberland",
+          id: null,
+        },
+        notes:
+          "Water always a bit murky here but a great swim on a hot day after work! Sea was a little choppy but still felt safe",
+        stars: 5,
+        recordTemp: 16,
+        feelTemp: "warm",
+        mins: 10,
+        km: 0.1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "sandy",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://media-cdn.tripadvisor.com/media/photo-s/07/e5/b2/ce/warkworth-beach.jpg",
         ],
       },
     ],
@@ -306,6 +437,51 @@ module.exports = [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/3f/6f/f7/sandsend-beach.jpg?w=2000&h=-1&s=1",
         ],
       },
+      {
+        date: "2022-08-02T15:00:00+0000",
+        location: {
+          name: "National Trust - Fell Foot, Windermere",
+          id: null,
+        },
+        notes:
+          "Came to go paddle boarding but the weather ending up being so nice we had to have a dip too. Hired some kayaks for the kids whilst we swam alongside. There are some steps to help you get in but a bit rocky underfoot so would recommend wearing swim shoes. Was a bit busy but it's the school summer holidays so to be expected. Cafe is nice too but a bit pricey.",
+        stars: 4,
+        recordTemp: null,
+        feelTemp: "warm",
+        mins: 15,
+        km: 1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "rocky",
+        bankAngle: "medium",
+        clarity: "average",
+        imgUrls: [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/c0/b7/87/fun-at-the-lake.jpg?w=1400&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/25/32/ce/c7/caption.jpg?w=1200&h=-1&s=1",
+        ],
+      },
+      {
+        date: "2023-02-15T07:30:00+0000",
+        location: {
+          name: "Durdle Door, Dorset",
+          id: null,
+        },
+        notes:
+          "Quick morning dip with my friend Val. Wet and windy so not for the fainthearted, but exhilarating! Bring a flask for after!",
+        stars: 5,
+        recordTemp: null,
+        feelTemp: "freezing",
+        mins: 6,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/1f/e4/d7/photo3jpg.jpg?w=1400&h=-1&s=1",
+        ],
+      },
     ],
   },
   {
@@ -338,6 +514,50 @@ module.exports = [
         clarity: "clear",
         imgUrls: [
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/bd/a8/4e/sandsend-beach.jpg?w=1400&h=-1&s=1",
+        ],
+      },
+      {
+        date: "2023-04-05T16:30:00+0000",
+        location: {
+          name: "National Trust - Fell Foot, Windermere",
+          id: null,
+        },
+        notes:
+          "Water seemed a bit murkier than usual but a good swim regardless.",
+        stars: 4,
+        recordTemp: 10,
+        feelTemp: "average",
+        mins: 30,
+        km: 1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "medium",
+        clarity: "murky",
+        imgUrls: [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/82/87/0e/20180401-135947-largejpg.jpg?w=800&h=-1&s=1",
+        ],
+      },
+      {
+        date: "2023-05-19T14:00:00+0000",
+        location: {
+          name: "Rydal, Lake District",
+          id: null,
+        },
+        notes:
+          "Gorgeous swim at Rydal Water today! Water was a little bit cold so had to put my swim gloves and hat on",
+        stars: 5,
+        recordTemp: 12,
+        feelTemp: "cold",
+        mins: 10,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "shallow",
+        clarity: "perfect",
+        imgUrls: [
+          "https://swimmingthelakes.files.wordpress.com/2015/10/rydal-water-035.jpg",
         ],
       },
     ],

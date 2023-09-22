@@ -157,16 +157,16 @@ function generateInfo(swims, userData, location, apiData, user) {
   const hazards = [];
   if (apiData.hydrologyData) {
     const data = apiData.hydrologyData.data;
-    temp = data[0].maxSurfaceTemp;
+    temp = data[0]?.maxSurfaceTemp;
     if (data[1]?.mostRecentValue < 80)
       hazards.push(
         `Oxygen saturation was measured at ${
-          data[1].mostRecentValue
+          data[1]?.mostRecentValue
         } on ${new Date(
-          data[1].mostRecentSampleDate
+          data[1]?.mostRecentSampleDate
         ).toDateString()}. This may suggest the water is less safe for swimming.`
       );
-  } else temp = apiData.tempCelsius;
+  } else temp = apiData?.tempCelsius;
   if (apiData.nearestAab.distanceKm < 10) {
     hazards.push(
       `A government Advice Against Bathing warning has been issued for ${apiData.nearestAab.name} which is ${apiData.nearestAab.distanceKm}km away.`

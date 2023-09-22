@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const locations = require("../test-data/locations");
-const users = require("../test-data/users");
+const locations = require("../dev-data/locations");
+const users = require("../dev-data/users");
 const { seedWithLogs } = require("./seed");
 
 require("dotenv").config();
