@@ -75,6 +75,28 @@ module.exports = [
           "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
         ],
       },
+      {
+        date: "2023-02-15T07:30:00+0000",
+        location: {
+          name: "Durdle Door, Dorset",
+          id: null,
+        },
+        notes:
+          "Quick morning dip with my friend Val. Wet and windy so not for the fainthearted, but exhilarating! Bring a flask for after!",
+        stars: 5,
+        recordTemp: null,
+        feelTemp: "freezing",
+        mins: 6,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/1f/e4/d7/photo3jpg.jpg?w=1400&h=-1&s=1",
+        ],
+      },
     ],
   },
   {
@@ -110,6 +132,52 @@ module.exports = [
           "https://windows10spotlight.com/wp-content/uploads/2022/06/5cc14463fca6e0211691ddf32779fbf2.jpg",
         ],
       },
+      {
+        date: "2023-08-04T14:00:00+0000",
+        location: {
+          name: "Durdle Door, Dorset",
+          id: null,
+        },
+        notes:
+          "Beach gets busy and the parking is a pain, but a great spot. Swam a bit too far out so take care",
+        stars: 4,
+        recordTemp: 18,
+        feelTemp: "warm",
+        mins: 25,
+        km: null,
+        outOfDepth: true,
+        sizeKey: "large",
+        shore: "pebbly",
+        bankAngle: "medium",
+        clarity: "average",
+        imgUrls: [
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/36/4b/e3/caption.jpg?w=1100&h=-1&s=1",
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/36/4b/e2/caption.jpg?w=1100&h=-1&s=1",
+        ],
+      },
+      {
+        date: "2021-06-19T14:00:00+0000",
+        location: {
+          name: "Linhope Spout, Northumberland",
+          id: null,
+        },
+        notes:
+          "Great dip this morning. It seems to get busy on hot summer days so I'd recommend going early or in the late afternoon. Water is pretty cold but very refreshing. It's not the easiest to access so it's a good idea to wear swim socks or just jump right in",
+        stars: 5,
+        recordTemp: null,
+        feelTemp: "cold",
+        mins: 10,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "tiny",
+        shore: "rocky",
+        bankAngle: "jump-in",
+        clarity: "perfect",
+        imgUrls: [
+          "https://i.ytimg.com/vi/Nc61VeJ8QlI/maxresdefault.jpg",
+          "https://i2-prod.chroniclelive.co.uk/incoming/article18317370.ece/ALTERNATES/s1200c/3_HGR_NEC_270520linhopemess-7jpeg.jpg",
+        ],
+      },
     ],
   },
   {
@@ -120,7 +188,75 @@ module.exports = [
       "https://img.freepik.com/free-photo/side-profile-camel-with-rope-its-mouth-desert-landscape_181624-29653.jpg?w=2000",
 
     dob: "1992-09-02T11:00:00+0000",
-    swims: [],
+    swims: [
+      {
+        date: "2021-06-19T14:00:00+0000",
+        location: {
+          name: "Goldiggins Quarry, Minions, Cornwall",
+          id: null,
+        },
+        notes:
+          "Have wanted to come here for ages but was a bit disappointed as the access wasn't great. If you like jumping straight in you'll be fine",
+        stars: 2,
+        recordTemp: 10,
+        feelTemp: "cold",
+        mins: 5,
+        km: null,
+        outOfDepth: true,
+        sizeKey: "small",
+        shore: "rocky",
+        bankAngle: "jump-in",
+        clarity: "murky",
+        imgUrls: [
+          "https://thegirloutdoors.co.uk/wp-content/uploads/2019/01/IMG_3254.jpg",
+        ],
+      },
+      {
+        date: "2023-06-22T10:30:00+0000",
+        location: {
+          name: "Goldiggins Quarry, Minions, Cornwall",
+          id: null,
+        },
+        notes:
+          "One of our favourite places to swim. Still, clear waters as always",
+        stars: 5,
+        recordTemp: 13,
+        feelTemp: "average",
+        mins: 15,
+        km: 0.1,
+        outOfDepth: false,
+        sizeKey: "small",
+        shore: "grassy",
+        bankAngle: "medium",
+        clarity: "perfect",
+        imgUrls: [
+          "https://www.treworgeycottages.com/images/blog/2022/wild%20swimming/golddiggings%202.jpg",
+          "https://files.holidaycottages.co.uk/stayincornwall%2Fguides%2F1610623265833-goldiggins-quarry-resize.jpg",
+        ],
+      },
+      {
+        date: "2023-06-22T10:30:00+0000",
+        location: {
+          name: "Walpole Bay Tidal Pool, Margate",
+          id: null,
+        },
+        notes:
+          "Great that you can go for a swim regardless of the tide. Makes it feel really safe. Water was lovely and warm but a little cloudy. The path around can be slippery so take care",
+        stars: 5,
+        recordTemp: 18,
+        feelTemp: "warm",
+        mins: 20,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "medium",
+        shore: "rocky",
+        bankAngle: "steep",
+        clarity: "murky",
+        imgUrls: [
+          "https://www.visitthanet.co.uk/media/29711/walpole-bay-tidal-pool.jpg?quality=75",
+        ],
+      },
+    ],
   },
   {
     uid: "voEGvEJ9LeX3bEZvtV9UzXnh66c2",
@@ -138,6 +274,50 @@ module.exports = [
           name: "Goldiggins Quarry, Minions, Cornwall",
           id: null,
         },
+      },
+      {
+        date: "2022-09-05T16:00:00+0000",
+        location: {
+          name: "Walpole Bay Tidal Pool, Margate",
+          id: null,
+        },
+        notes:
+          "Water is murky and shallow so wasn't the best swim, especially when the weather is overcast.",
+        stars: 3,
+        recordTemp: 17,
+        feelTemp: "hot",
+        mins: null,
+        km: 1,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "sandy",
+        bankAngle: "medium",
+        clarity: "murky",
+        imgUrls: [
+          "https://beachsearcher.com/images/beaches/826201008/UK201008_fit_550_300.jpg",
+        ],
+      },
+      {
+        date: "2023-08-25T13:45:00+0000",
+        location: {
+          name: "Beckenham Park Swimming Lake, London",
+          id: null,
+        },
+        notes:
+          "Nice place but busy so wouldn't recommend for a proper swim. Water clarity isn't  great either but to be expected.",
+        stars: 4,
+        recordTemp: 18,
+        feelTemp: "warm",
+        mins: 30,
+        km: null,
+        outOfDepth: false,
+        sizeKey: "medium",
+        shore: "grassy",
+        bankAngle: "shallow",
+        clarity: "murky",
+        imgUrls: [
+          "https://images.squarespace-cdn.com/content/v1/6058878cac0e160e88993761/1669029971158-8K8GS5QXBJYSZWKFC94F/beckenham-place-park-lewisham-things-to-see-and-do-lake-swimmers-in-lake.jpg",
+        ],
       },
     ],
   },
@@ -171,6 +351,28 @@ module.exports = [
         clarity: "average",
         imgUrls: [
           "https://www.google.com/search?sca_esv=567587230&sxsrf=AM9HkKm0F9r_Ixqaz96SNt9aN67aHu7ejg:1695387983576&q=linhope+spout&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwi-1Y-0pL6BAxWCZsAKHc-gA6wQ0pQJegQICBAB&biw=939&bih=740&dpr=2#imgrc=JWTmIDuKkstrBM",
+        ],
+      },
+      {
+        date: "2023-07-03T10:15:00+0000",
+        location: {
+          name: "Beckenham Park Swimming Lake, London",
+          id: null,
+        },
+        notes:
+          "Clear water and enough space to get some lengths in. Would recommend to anyone",
+        stars: 5,
+        recordTemp: 17,
+        feelTemp: "warm",
+        mins: 30,
+        km: 0.75,
+        outOfDepth: false,
+        sizeKey: "large",
+        shore: "grassy",
+        bankAngle: "shallow",
+        clarity: "perfect",
+        imgUrls: [
+          "https://offloadmedia.feverup.com/secretldn.com/wp-content/uploads/2018/06/18094456/Beckenham-Place-Park-3.jpg",
         ],
       },
     ],
