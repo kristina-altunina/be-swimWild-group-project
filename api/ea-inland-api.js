@@ -109,16 +109,19 @@ function processEaData(dataPromise, searchDate) {
         // polynomial regression
         const x = [];
         const y = [];
+        const logs = [];
         for (const sample of data) {
           x.push(convertToDayOfYear(sample.datetime));
           y.push(sample.value);
+          logs.push([convertToDayOfYear(sample.datetime), sample.value]);
         }
+        processedData.logs = logs;
         const searchDay = convertToDayOfYear(searchDate);
         if (
           x.some((sample) => sample > searchDay) &&
           x.some((sample) => sample < searchDay)
         ) {
-          const regression = new PolynomialRegression(x, y, 5);
+          const regression = new PolynomialRegression(x, y, 2);
           processedData.samples = x.length;
           processedData.sampleSpread = calculateSeasonalSpread(x);
           processedData.regression = regression.predict(searchDay);
@@ -144,6 +147,7 @@ function processEaData(dataPromise, searchDate) {
         processedData.dateMatchedSampleDate = data[0].datetime;
         processedData.maxSurfaceTemp =
           +expectedHydrologyTemp(processedData).toFixed(1);
+        logs.sort((a, b) => a[0] - b[0]);
       }
       return processedData;
     })
