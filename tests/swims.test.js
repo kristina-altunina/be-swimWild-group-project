@@ -54,8 +54,10 @@ describe("POST/users/swim", () => {
   test("should respond with new swim object", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
-      locationId: rydalId.toString(),
+      location: {
+        name: "Rydal, Lake District",
+        id: rydalId.toString(),
+      },
       notes:
         "A great swim! To the dog's grave on the main island and back. Water not too cold.",
       stars: 5,
@@ -101,8 +103,10 @@ describe("POST/users/swim", () => {
   test("Should return a 201 when location name plus id and date are provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
-      locationId: rydalId.toString(),
+      location: {
+        name: "Rydal, Lake District",
+        id: rydalId.toString(),
+      },
       imgUrls: [
         "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130#imgrc=Hjv1YcuTZOtFIM",
         "https://www.google.com/search?q=rydal+lake+district&tbm=isch&ved=2ahUKEwi4js-KqbuBAxWGmicCHSppA08Q2-cCegQIABAA&oq=rydal+lake+di&gs_lcp=CgNpbWcQARgAMgUIABCABDIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgYIABAIEB4yBggAEAgQHjIGCAAQCBAeMgcIABAYEIAEMgcIABAYEIAEOgQIIxAnUOIDWPAZYOwiaABwAHgAgAFFiAHNA5IBATiYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=jwMMZfiKHIa1nsEPqtKN-AQ&bih=585&biw=1130",
@@ -143,8 +147,10 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when date is in the future", () => {
     const postBody = {
       date: "2024-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
-      locationId: rydalId.toString(),
+      location: {
+        name: "Rydal, Lake District",
+        id: rydalId.toString(),
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -158,8 +164,10 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when location does not exist", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Ake District",
-      locationId: rydalId.toString(),
+      location: {
+        name: "Ake District",
+        id: rydalId.toString(),
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -174,8 +182,10 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when location id does not match with location provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
-      locationId: "6509b4ba2f6a0d22670c2ab7",
+      location: {
+        name: "Rydal, Lake District",
+        id: "5738934902",
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -189,8 +199,10 @@ describe("POST/users/swim", () => {
 
   test("Should return a 400 when date is not provided", () => {
     const postBody = {
-      locationName: "Rydal, Lake District",
-      locationId: rydalId.toString(),
+      location: {
+        name: "Rydal, Lake District",
+        id: rydalId.toString(),
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -205,7 +217,9 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when Location name is not provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationId: rydalId.toString(),
+      location: {
+        id: rydalId.toString(),
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -220,7 +234,9 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when Location Id is not provided", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
+      location: {
+        name: "Rydal, Lake District",
+      },
     };
     return request(app)
       .post("/users/swim")
@@ -235,8 +251,10 @@ describe("POST/users/swim", () => {
   test("Should return a 400 when url provided in swims is not a url", () => {
     const postBody = {
       date: "2023-05-02T11:00:00Z",
-      locationName: "Rydal, Lake District",
-      locationId: rydalId.toString(),
+     location: {
+        name: "Rydal, Lake District",
+        id: rydalId.toString(),
+      },
       notes:
         "A great swim! To the dog's grave on the main island and back. Water not too cold.",
       stars: 5,
