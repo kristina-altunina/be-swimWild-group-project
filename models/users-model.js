@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
     ],
   },
+  home: {
+    type: String,
+  },
+  bio: {
+    type: String,
+  },
   dob: {
     type: Date,
     required: true,
