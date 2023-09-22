@@ -17,10 +17,11 @@ function collectEaInlandData(
   coords,
   radiusMetres,
   type = "lakes",
-  searchDate = new Date().toISOString()
+  searchDate = new Date().toISOString(),
+  station
 ) {
   let siteData;
-  return findEaSites(coords, radiusMetres, type)
+  return findEaSites(coords, radiusMetres, type, station)
     .then((sites) => {
       siteData = sites;
       const eaData = getEaData(sites.siteId);
@@ -42,7 +43,7 @@ function collectEaInlandData(
     });
 }
 
-function findEaSites(coords, radiusMetres, type) {
+function findEaSites(coords, radiusMetres, type, station) {
   // type can only be 'lakes' or 'rivers'
   return api
     .get(
@@ -63,7 +64,7 @@ function findEaSites(coords, radiusMetres, type) {
         ]);
         return distanceA - distanceB;
       });
-      const output = formatSite(sites.shift());
+      const output = formatSite(sites[station]);
       output.nearby = sites.map((site) => {
         return formatSite(site);
       });
