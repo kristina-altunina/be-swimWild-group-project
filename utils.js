@@ -2,7 +2,7 @@ const Users = require("./models/users-model");
 
 function processUserData(swims) {
   let outOfDepth = null;
-  const mostRecentTemp = { date: "0001-01-01T00:00:00.000Z", temp: null };
+  const mostRecentTemp = { date: null, temp: null };
   const feelTemps = [];
   const sizes = [];
   const shores = [];
