@@ -30,6 +30,15 @@ function getAccessTokens() {
       }
     )
   );
+
+  promises.push(
+    signInWithEmailAndPassword(auth, "teser@test.com", "password").then(
+      (userCredential) => {
+        return userCredential.user.stsTokenManager.accessToken;
+      }
+    )
+  );
+
   return Promise.all(promises);
 }
 

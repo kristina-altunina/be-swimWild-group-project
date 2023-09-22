@@ -29,7 +29,7 @@ function patchUser(req, res, next) {
       res.status(200).send(newUser);
     })
     .catch((err) => {
-      console.log("why here");
+      console.log(err);
     });
 }
 
@@ -86,10 +86,37 @@ function postSwim(req, res, next) {
       return Users.findOne({ uid: uid });
     })
     .then((user) => {
+      console.log(user);
       const newSwim = user.swims[user.swims.length - 1];
       res.status(201).send(newSwim);
     })
     .catch(next);
 }
 
-module.exports = { postUser, getUser, patchUser, postSwim };
+function patchSwim(req, res, next) {
+  const { id } = req.params;
+  const uid = req.user.uid;
+  const update = {};
+  console.log(uid);
+  console.log(id)
+
+  console.log(req.body);
+  Object.keys(req.body).forEach((key) => {
+    if (key === "id" || key === "name") {
+      update[`location.${key}`] = req.body[key];
+    } else {
+      update[key] = req.body[key];
+    }
+  });
+
+  console.log(update)
+
+  return Users.findOneAndUpdate(
+    { uid: uid, "swims._id": id },
+    { $set: update },
+  ).then((updatedUser) => {
+    console.log(updatedUser);
+  });
+}
+
+module.exports = { postUser, getUser, patchUser, postSwim, patchSwim };

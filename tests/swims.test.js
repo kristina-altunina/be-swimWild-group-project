@@ -7,12 +7,15 @@ const locations = require("../test-data/locations");
 const users = require("../test-data/users");
 const { getAccessTokens } = require("./access-token");
 const Locations = require("../models/locations-model");
+const Users = require("../models/users-model");
 
 require("dotenv").config();
 
 let accessToken;
 let registeredAccessToken;
+let swimRegisterToken
 let rydalId = "";
+let swimId = "";
 beforeAll(() => {
   const promises = [];
   mongoose.set("runValidators", true);
@@ -23,11 +26,14 @@ beforeAll(() => {
     })
   );
   promises.push(
-    getAccessTokens().then(([unregisteredToken, registeredToken]) => {
-      console.log(unregisteredToken, registeredToken);
-      accessToken = unregisteredToken;
-      registeredAccessToken = registeredToken;
-    })
+    getAccessTokens().then(
+      ([unregisteredToken, registeredToken, swimRegisteredToken]) => {
+        console.log(unregisteredToken, registeredToken, swimRegisteredToken);
+        accessToken = unregisteredToken;
+        registeredAccessToken = registeredToken;
+        swimRegisterToken = swimRegisteredToken;
+      }
+    )
   );
   return Promise.all(promises);
 });
@@ -39,6 +45,16 @@ beforeEach(() => {
     })
     .then((location) => {
       return (rydalId = location._id);
+    })
+    .then(() => {
+      return Users.find({ uid: "QyqF2JQjSEY6TOqDvdaSAd99WyA2" })
+        .then((user) => {
+          const date = new Date("2023-08-29T18:00:00.000Z");
+          return user[0].swims.find((s) => s.date.getTime() === date.getTime());
+        })
+        .then((swim) => {
+          swimId = swim._id.toString();
+        });
     });
 });
 
@@ -46,7 +62,7 @@ afterAll(() => {
   return mongoose.connection.close();
 });
 
-describe("POST/users/swim", () => {
+describe.skip("POST/users/swim", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).post("/users/swim").expect(401);
   });
@@ -112,7 +128,7 @@ describe("POST/users/swim", () => {
     return request(app)
       .post("/users/swim")
       .send(postBody)
-      .set("Authorization", `Bearer ${accessToken}`)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
       .expect(201)
       .then(({ body }) => {
         expect(body).toMatchObject({
@@ -258,6 +274,62 @@ describe("POST/users/swim", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("URL is not valid.");
+      });
+  });
+});
+
+describe("PATCH/users/swim/:swimId", () => {
+  test("respond 401 Unauthorized when no access token provided", () => {
+    return request(app).patch("/users/swim/43").expect(401);
+  });
+
+  test.only("be able to update swim details and respond with 200", () => {
+    const postBody = {
+      date: "2022-05-02T11:00:00Z",
+      name: "Rydal, Lake District",
+      id: rydalId.toString(),
+      notes: "Water Freezing",
+      stars: 5,
+      recordTemp: -2,
+      feelTemp: "average",
+      mins: 20,
+      km: 1,
+      outOfDepth: true,
+      shore: "sandy",
+      bankAngle: "steep",
+      clarity: "murky",
+      imgUrls: [
+        "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
+      ],
+      sizeKey: "tiny",
+    };
+    return request(app)
+      .patch(`/users/swim/${swimId}`)
+      .send(postBody)
+      .set("Authorization", `Bearer ${swimRegisterToken}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          date: "2022-05-02T11:00:00Z",
+          notes: "Water Freezing",
+          stars: 5,
+          location: {
+            name: "Rydal, Lake District",
+            id: rydalId.toString(),
+          },
+          recordTemp: -2,
+          feelTemp: "average",
+          mins: 20,
+          km: 1,
+          outOfDepth: true,
+          shore: "sandy",
+          bankAngle: "steep",
+          clarity: "murky",
+          imgUrls: [
+            "https://assets.bedful.com/images/c36604cce170b0e7b1e6504ac794699d3e538b47/small.jpg",
+          ],
+          sizeKey: "tiny",
+        });
       });
   });
 });

@@ -3,7 +3,8 @@ const {
   postUser,
   patchUser,
   getUser,
-  postSwim
+  postSwim,
+  patchSwim
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
@@ -30,7 +31,9 @@ usersRouter
     validatePostSwimDate,
     validateLocationDetails,
     validateImageUrl, postSwim
-  );
+);
+
+usersRouter.route("/swim/:id").patch(authoriseUser,patchSwim);
 
 
 module.exports = usersRouter;
