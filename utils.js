@@ -23,6 +23,7 @@ function processUserData(swims) {
     }
     if (swim.recordTemp && swim.date > mostRecentTemp.date) {
       mostRecentTemp.temp = swim.recordTemp;
+      mostRecentTemp.date = swim.date;
     }
     if (swim.feelTemp && withinMonth(swim.date)) feelTemps.push(swim.feelTemp);
     if (swim.sizeKey) sizes.push(swim.sizeKey);
