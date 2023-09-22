@@ -7,6 +7,8 @@ module.exports = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mad_scientist_transparent_background.svg/1200px-Mad_scientist_transparent_background.svg.png",
 
     dob: "1997-09-02T11:00:00+0000",
+    bio: "Rydal is love, Rydal is life",
+    home: "Rydal, Ambleside LA22 9SD",
     swims: [
       {
         date: "2023-09-02T11:00:00+0000",
@@ -123,15 +125,16 @@ module.exports = [
     name: "Test 4",
     nickname: "casualSwimmer",
     profileImg:
-    "https://i.pinimg.com/1200x/5c/eb/7b/5ceb7b4e812071f1988052cefd889d03.jpg",
+      "https://i.pinimg.com/1200x/5c/eb/7b/5ceb7b4e812071f1988052cefd889d03.jpg",
     dob: "1992-08-02T11:00:00+0000",
-    swims: [{
-      date: "2023-07-29T18:00:00+0000",
-      location: {
-        name: "Goldiggins Quarry, Minions, Cornwall",
-        id: null,
-      }
-    }],
+    swims: [
+      {
+        date: "2023-07-29T18:00:00+0000",
+        location: {
+          name: "Goldiggins Quarry, Minions, Cornwall",
+          id: null,
+        },
+      },
+    ],
   },
-
 ];
