@@ -152,6 +152,71 @@ function paginate(arr, limit, p) {
   return arr.slice((p - 1) * limit, p * limit);
 }
 
+function generateInfo(swims, userData, location, apiData, user) {
+  let temp;
+  const hazards = [];
+  if (apiData.hydrologyData) {
+    const data = apiData.hydrologyData.data;
+    temp = data[0].maxSurfaceTemp;
+    if (data[1]?.mostRecentValue < 80)
+      hazards.push(
+        `Oxygen saturation was measured at ${
+          data[1].mostRecentValue
+        } on ${new Date(
+          data[1].mostRecentSampleDate
+        ).toDateString()}. This may suggest the water is less safe for swimming.`
+      );
+  } else temp = apiData.tempCelsius;
+  if (apiData.nearestAab.distanceKm < 10) {
+    hazards.push(
+      `A government Advice Against Bathing warning has been issued for ${apiData.nearestAab.name} which is ${apiData.nearestAab.distanceKm}km away.`
+    );
+  }
+  let msg;
+  switch (Math.floor(temp / 5)) {
+    case 0:
+      msg =
+        "This water is extremely cold. Do not swim unless you have professional advice, assistance and equipment.";
+      break;
+    case 1:
+      msg =
+        "This water is very cold. Wetsuits should be worn with a thickness of 5-6mm. Strongly consider wearing gloves, boots, and a hood, and bringing a swim buoy. Swimming in water of this temperature is dangerous - only do so with proper training, assistance, and equipment.";
+      break;
+    case 2:
+      msg =
+        "This water is cold. You should consider wearing a wetsuit of 3-4mm thick for prolonged swims. Gloves and socks may make the experience more comfortable. Use a swim buoy for safety in deep water.";
+      break;
+    case 3:
+      msg =
+        "This water is of an average temperature. You may choose to wear a wetsuit of 2-3mm for prolonged exposure. Consider wearing shoes to protect your feet. Use a swim buoy for safety in deep water.";
+      break;
+    case 4:
+      msg =
+        "This water is warm, most will prefer to swim without a wetsuit, although you should consider wearing shoes to protect your feet against rocks and underwater objects. Use a swim buoy for safety in deep water.";
+      break;
+    case 5:
+      msg =
+        "This water is hot and may not cool you effectively. Be mindful for symptoms of heatsroke and stay hydrated. Use a swim buoy for safety in deep water.";
+      break;
+  }
+  const disclaimer =
+    "All wild swimming is dangerous and may result in death. SwimWild cannot verify the integrity of data taken from third parties and thus cannot guarantee your safety in the water. Take precautions and always follow local rules and advice.";
+  const warnings = [
+    "Many physiological factors affect how much cold an individual can withstand. Heuristics such as '1 minute for each degree celsius' have no scientific basis and may put you at risk.",
+    "Always enter the water slowly to avoid cold shock responses. Take warming up afterwards seriously - ensure you own thick robes or towels and have warm, dry clothes to change into afterwards.",
+    "Be aware that you will feel coldest 10-40 minutes after your swim as blood moves from the core back to the extremities. Pack food, water and hot drinks for afterwards.",
+    "Muscles behave very differently in cold water and you should never presume to be able to swim long distances after training in warm water. Stay close to standing depth and remember that you always have to swim back!",
+    "Learn to spot and avoid rip currents, which may sometimes appear to be calmer patches of water. If caught in a rip current, swim laterally and never fight the current or risk exhaustion. Shout for help!",
+    "Never swim near weirs, waterfall edges, or other dangerous obstacles/formations that might cause strong currents. If local advice says don't swim, then don't swim!",
+  ];
+  return {
+    msg,
+    disclaimer,
+    warnings,
+    hazards,
+  };
+}
+
 module.exports = {
   processUserData,
   distanceBetweenCoords,
@@ -161,4 +226,5 @@ module.exports = {
   addDistanceToLocation,
   addStarsToLocation,
   paginate,
+  generateInfo,
 };

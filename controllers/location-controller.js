@@ -6,6 +6,7 @@ const {
   addDistanceToLocation,
   addStarsToLocation,
   paginate,
+  generateInfo,
 } = require("../utils");
 const { getApiData } = require("../api");
 
@@ -83,7 +84,9 @@ function getLocationById(req, res, next) {
       return getApiData(location.coords, location.type, day, station);
     })
     .then((apiData) => {
-      res.status(200).send({ swims, userData, location, apiData });
+      const user = req.query.uid;
+      const info = generateInfo(swims, userData, location, apiData, user);
+      res.status(200).send({ swims, userData, location, apiData, info });
     })
     .catch(next);
 }
