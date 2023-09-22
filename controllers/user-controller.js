@@ -7,6 +7,8 @@ function postUser(req, res, next) {
     nickname: req.body.nickname,
     dob: req.body.dob,
     profileImg: req.body.profileImg,
+    bio: req.body.bio,
+    home: req.body.home,
   };
   Users.create(newUser)
     .then((newUser) => {
@@ -17,9 +19,9 @@ function postUser(req, res, next) {
 }
 
 function patchUser(req, res, next) {
-  const { nickname, profileImg } = req.body;
   const filter = { uid: req.user.uid };
-  const update = { nickname: nickname, profileImg: profileImg };
+  const update = {};
+  for (const key in req.body) update[key] = req.body[key];
   Users.findOneAndUpdate(filter, update)
     .then(() => {
       return Users.findOne(filter);
@@ -31,14 +33,16 @@ function patchUser(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  Users.find({ uid: { $eq: req.user.uid } })
+  Users.findOne({ uid: { $eq: req.user.uid } })
     .then((user) => {
       res.status(200).send({
-        name: user[0].name,
-        nickname: user[0].nickname,
-        profileImg: user[0].profileImg,
-        dob: user[0].dob,
-        swims: user[0].swims,
+        name: user.name,
+        nickname: user.nickname,
+        profileImg: user.profileImg,
+        dob: user.dob,
+        swims: user.swims,
+        bio: user.bio,
+        home: user.home,
       });
     })
     .catch(next);
@@ -54,17 +58,19 @@ function removeUser(req, res, next) {
 
 function getUserById(req, res, next) {
   const { uid } = req.params;
-  Users.find({ uid: { $eq: uid } })
+  Users.findOne({ uid: { $eq: uid } })
     .then((user) => {
-      if (!user.length) {
+      if (!user) {
         return res.status(404).send({ msg: "user not found" });
       } else {
         return res.status(200).send({
-          name: user[0].name,
-          nickname: user[0].nickname,
-          profileImg: user[0].profileImg,
-          dob: user[0].dob,
-          swims: user[0].swims,
+          name: user.name,
+          nickname: user.nickname,
+          profileImg: user.profileImg,
+          dob: user.dob,
+          swims: user.swims,
+          bio: user.bio,
+          home: user.home,
         });
       }
     })

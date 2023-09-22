@@ -50,11 +50,12 @@ describe("GET /users/profile", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200);
   });
-  test("should respond with correct user information", () => {
+  test.only("should respond with correct user information", () => {
     return request(app)
       .get("/users/profile")
       .set("Authorization", `Bearer ${accessToken}`)
       .then(({ body }) => {
+        console.log(body);
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",
@@ -98,6 +99,8 @@ describe("POST /users", () => {
       nickname: "test",
       profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
       dob: "1997-08-29T18:00:00+0000",
+      bio: "i like swimming",
+      home: "swimming pools usually",
     };
     return request(app)
       .post("/users")
@@ -111,6 +114,8 @@ describe("POST /users", () => {
           nickname: "test",
           profileImg: "https://i.redd.it/p6f66n7xbmb11.jpg",
           dob: "1997-08-29T18:00:00.000Z",
+          bio: "i like swimming",
+          home: "swimming pools usually",
         });
       });
   });
