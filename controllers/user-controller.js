@@ -96,26 +96,29 @@ function postSwim(req, res, next) {
 function patchSwim(req, res, next) {
   const { id } = req.params;
   const uid = req.user.uid;
-  const update = {};
-  console.log(uid);
-  console.log(id)
 
-  console.log(req.body);
-  Object.keys(req.body).forEach((key) => {
-    if (key === "id" || key === "name") {
-      update[`location.${key}`] = req.body[key];
-    } else {
-      update[key] = req.body[key];
-    }
-  });
-
-  console.log(update)
-
-  return Users.findOneAndUpdate(
-    { uid: uid, "swims._id": id },
-    { $set: update },
-  ).then((updatedUser) => {
-    console.log(updatedUser);
+  Users.findOne({ uid: uid })
+  .then((user) => {
+    let newUser = { ...user.toObject() };
+    newUser.swims = newUser.swims.map((swim) => {
+      console.log(swim._id.toString())
+      if (swim._id.toString() !== id) return swim;
+      for (const key in req.body) {
+        swim[key] = req.body[key];
+      }
+      return swim;
+    });
+    return Users.updateOne({ uid: uid }, {$set: newUser})
+  })
+  .then(()=>{
+    return Users.findOne({ uid: uid })
+  })
+  .then((updatedUser)=>{
+    const updatedSwimArr = updatedUser.swims.filter((swim)=>{
+      return swim._id.toString() === id
+    })
+    const updatedSwim = updatedSwimArr[0]
+    res.status(200).send(updatedSwim)
   });
 }
 

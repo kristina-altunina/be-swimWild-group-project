@@ -285,9 +285,11 @@ describe("PATCH/users/swim/:swimId", () => {
 
   test.only("be able to update swim details and respond with 200", () => {
     const postBody = {
+      location:{
+        name: "Rydal, Lake District",
+        id: rydalId.toString()
+      },
       date: "2022-05-02T11:00:00Z",
-      name: "Rydal, Lake District",
-      id: rydalId.toString(),
       notes: "Water Freezing",
       stars: 5,
       recordTemp: -2,
@@ -309,8 +311,9 @@ describe("PATCH/users/swim/:swimId", () => {
       .set("Authorization", `Bearer ${swimRegisterToken}`)
       .expect(200)
       .then(({ body }) => {
+        console.log(body)
         expect(body).toMatchObject({
-          date: "2022-05-02T11:00:00Z",
+          date: "2022-05-02T11:00:00.000Z",
           notes: "Water Freezing",
           stars: 5,
           location: {
