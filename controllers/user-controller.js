@@ -77,4 +77,8 @@ function getUserById(req, res, next) {
     .catch(next);
 }
 
-module.exports = { postUser, getUser, patchUser, getUserById, removeUser };
+function removeSwim(){
+
+}
+
+module.exports = { postUser, getUser, patchUser, getUserById, removeUser, removeSwim };

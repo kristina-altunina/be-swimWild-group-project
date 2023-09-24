@@ -5,6 +5,7 @@ const {
   getUser,
   getUserById,
   removeUser,
+  removeSwim
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
@@ -23,5 +24,9 @@ usersRouter
   .delete(authoriseUser, removeUser);
 
 usersRouter.route("/:uid").get(getUserById);
+
+usersRouter.route("/swims")
+.delete(authoriseUser, removeSwim)
+
 
 module.exports = usersRouter;
