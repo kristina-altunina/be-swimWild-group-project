@@ -25,7 +25,7 @@ usersRouter
 
 usersRouter.route("/:uid").get(getUserById);
 
-usersRouter.route("/swims/:oid")
+usersRouter.route("/swims/:swimId")
 .delete(authoriseUser, removeSwim)
 
 

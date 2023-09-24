@@ -87,10 +87,6 @@ function removeSwim(req, res, next){
     newUser.swims = newUser.swims.map((swim) => {
       console.log(swim._id.toString())
       if (swim._id.toString() !== id) return swim;
-      for (const key in req.body) {
-        swim[key] = req.body[key];
-      }
-      return swim;
     });
     return Users.updateOne({ uid: uid }, {$set: newUser})
   })
@@ -98,11 +94,8 @@ function removeSwim(req, res, next){
     return Users.findOne({ uid: uid })
   })
   .then((updatedUser)=>{
-    const updatedSwimArr = updatedUser.swims.filter((swim)=>{
-      return swim._id.toString() === id
-    })
-    const updatedSwim = updatedSwimArr[0]
-    res.status(200).send(updatedSwim)
+    const updatedSwimArr = updatedUser.swims
+    res.status(200).send(updatedSwimArr)
   });
 
 }
