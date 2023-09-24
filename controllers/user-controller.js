@@ -78,17 +78,16 @@ function getUserById(req, res, next) {
 }
 
 function removeSwim(req, res, next) {
-  const { id } = req.params;
+  const { swimId } = req.params;
   const uid = req.user.uid;
+
 
   Users.findOne({ uid: uid })
     .then((user) => {
       let newUser = { ...user.toObject() };
-      console.log(newUser);
       newUser.swims = newUser.swims.filter((swim) => {
-        swim._id.toString() !== id;
+        return swim._id.toString() !== swimId;
       });
-      console.log(newUser);
       return Users.updateOne({ uid: uid }, { $set: newUser });
     })
     .then(() => {
@@ -99,7 +98,6 @@ function removeSwim(req, res, next) {
       res.status(200).send(updatedSwimArr);
     })
     .catch((err)=>{
-      console.log(err)
       next(err)
     })
 }

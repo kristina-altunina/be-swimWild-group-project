@@ -5,11 +5,12 @@ const {
   getUser,
   getUserById,
   removeUser,
-  removeSwim
+  removeSwim,
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
 } = require("../middleware/validators/user-validators");
+const { validateSwimId } = require("../middleware/validators/swimId-validator");
 
 const usersRouter = require("express").Router();
 
@@ -25,8 +26,6 @@ usersRouter
 
 usersRouter.route("/:uid").get(getUserById);
 
-usersRouter.route("/swims/:swimId")
-.delete(authoriseUser, removeSwim)
-
+usersRouter.route("/swims/:swimId").delete(authoriseUser, validateSwimId, removeSwim);
 
 module.exports = usersRouter;
