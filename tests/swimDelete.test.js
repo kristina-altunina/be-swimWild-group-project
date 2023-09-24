@@ -81,7 +81,21 @@ afterAll(() => {
 
 
 describe("DELETE /users/swims",()=>{
-    test("",()=>{
-        
+    test("Returns the updated swims array of that user",()=>{
+      return request(app)
+      .delete(`/users/swims/${swimId}`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .then(({body})=>{
+        expect(body).toEqual([])
+      })
+    })
+    test("Returns the updated swims array of that user",()=>{
+      return request(app)
+      .delete(`/users/swims/33`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(400)
+      .then((response)=>{
+        console.log(response)
+      })
     })
 })

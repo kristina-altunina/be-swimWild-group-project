@@ -77,27 +77,38 @@ function getUserById(req, res, next) {
     .catch(next);
 }
 
-function removeSwim(req, res, next){
+function removeSwim(req, res, next) {
   const { id } = req.params;
   const uid = req.user.uid;
 
   Users.findOne({ uid: uid })
-  .then((user) => {
-    let newUser = { ...user.toObject() };
-    newUser.swims = newUser.swims.map((swim) => {
-      console.log(swim._id.toString())
-      if (swim._id.toString() !== id) return swim;
-    });
-    return Users.updateOne({ uid: uid }, {$set: newUser})
-  })
-  .then(()=>{
-    return Users.findOne({ uid: uid })
-  })
-  .then((updatedUser)=>{
-    const updatedSwimArr = updatedUser.swims
-    res.status(200).send(updatedSwimArr)
-  });
-
+    .then((user) => {
+      let newUser = { ...user.toObject() };
+      console.log(newUser);
+      newUser.swims = newUser.swims.filter((swim) => {
+        swim._id.toString() !== id;
+      });
+      console.log(newUser);
+      return Users.updateOne({ uid: uid }, { $set: newUser });
+    })
+    .then(() => {
+      return Users.findOne({ uid: uid });
+    })
+    .then((updatedUser) => {
+      const updatedSwimArr = updatedUser.swims;
+      res.status(200).send(updatedSwimArr);
+    })
+    .catch((err)=>{
+      console.log(err)
+      next(err)
+    })
 }
 
-module.exports = { postUser, getUser, patchUser, getUserById, removeUser, removeSwim };
+module.exports = {
+  postUser,
+  getUser,
+  patchUser,
+  getUserById,
+  removeUser,
+  removeSwim,
+};
