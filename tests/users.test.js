@@ -24,7 +24,6 @@ beforeAll(() => {
   );
   promises.push(
     getAccessTokens().then(([unregisteredToken, registeredToken]) => {
-      console.log(unregisteredToken, registeredToken);
       accessToken = unregisteredToken;
       registeredAccessToken = registeredToken;
     })
@@ -354,7 +353,7 @@ describe("PATCH /users/", () => {
         );
       });
   });
-  test("Should return 400 error when passed incorret body", () => {
+  test("Should return 400 error when passed incorrect body", () => {
     const toUpdateBad = {
       nickname: null,
       profileImg: null,

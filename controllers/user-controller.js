@@ -77,10 +77,83 @@ function getUserById(req, res, next) {
     .catch(next);
 }
 
+function postSwim(req, res, next) {
+  const {
+    date,
+    location,
+    notes,
+    stars,
+    recordTemp,
+    feelTemp,
+    mins,
+    km,
+    outOfDepth,
+    shore,
+    bankAngle,
+    clarity,
+    imgUrls,
+  } = req.body;
+  const uid = req.user.uid;
+  const new_swim = {
+    date,
+    location: {
+      name: location.name,
+      id: location.id,
+    },
+    notes,
+    stars,
+    recordTemp,
+    feelTemp,
+    mins,
+    km,
+    outOfDepth,
+    shore,
+    bankAngle,
+    clarity,
+    imgUrls,
+  };
+  Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
+    .then(() => {
+      return Users.findOne({ uid: uid });
+    })
+    .then((user) => {
+      const newSwim = user.swims[user.swims.length - 1];
+      res.status(201).send(newSwim);
+    })
+    .catch(next);
+}
+
+function patchSwim(req, res, next) {
+  const { id } = req.params;
+  const uid = req.user.uid;
+  console.log("uid", uid);
+  Users.findOne({ uid: uid })
+    .then((user) => {
+      let newUser = { ...user.toObject() };
+      newUser.swims = newUser.swims.map((swim) => {
+        if (swim._id.toString() !== id) return swim;
+        for (const key in req.body) {
+          swim[key] = req.body[key];
+        }
+        return swim;
+      });
+      return Users.updateOne({ uid: uid }, { $set: newUser });
+    })
+    .then(() => {
+      return Users.findOne({ uid: uid });
+    })
+    .then((updatedUser) => {
+      console.log("updatedUser", updatedUser);
+      const updatedSwim = updatedUser.swims.find((swim) => {
+        return swim._id.toString() === id;
+      });
+      res.status(200).send(updatedSwim);
+    });
+}
+
 function removeSwim(req, res, next) {
   const { swimId } = req.params;
   const uid = req.user.uid;
-
 
   Users.findOne({ uid: uid })
     .then((user) => {
@@ -97,9 +170,9 @@ function removeSwim(req, res, next) {
       const updatedSwimArr = updatedUser.swims;
       res.status(200).send(updatedSwimArr);
     })
-    .catch((err)=>{
-      next(err)
-    })
+    .catch((err) => {
+      next(err);
+    });
 }
 
 module.exports = {
@@ -109,4 +182,6 @@ module.exports = {
   getUserById,
   removeUser,
   removeSwim,
+  postSwim,
+  patchSwim,
 };
