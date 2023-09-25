@@ -18,7 +18,7 @@ const {
   validateImageUrl,
   validateBody,
   validatePostFields,
-} = require("../controllers/validators/swim-validators");
+} = require("../middleware/validators/swim-validators");
 
 const usersRouter = require("express").Router();
 

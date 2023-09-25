@@ -24,7 +24,6 @@ beforeAll(() => {
   );
   promises.push(
     getAccessTokens().then(([unregisteredToken, registeredToken]) => {
-      console.log(unregisteredToken, registeredToken);
       accessToken = unregisteredToken;
       registeredAccessToken = registeredToken;
     })

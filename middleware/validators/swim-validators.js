@@ -7,22 +7,19 @@ const isObjectEmpty = (objectName) => {
 };
 
 function validateBody(req, res, next) {
-
   if (isObjectEmpty(req.body)) {
-    return res.status(400).send({ msg: "Nothing to post." });
+    return res.status(400).send({ msg: "Nothing to post" });
   }
   next();
 }
 
 function validateSwimDate(req, res, next) {
-  const {date} = req.body
+  const { date } = req.body;
   if (date) {
     const inputtedDate = new Date(date);
-
     const now = new Date();
-
     if (inputtedDate > now) {
-      return res.status(400).send({ msg: "Date is not valid." });
+      return res.status(400).send({ msg: "Date cannot be in the future" });
     }
   }
   next();
@@ -30,41 +27,41 @@ function validateSwimDate(req, res, next) {
 
 function validatePostFields(req, res, next) {
   const { location, date } = req.body;
-
   if (!date || !location) {
-    return res.status(400).send({ msg: "Fields are needed for completion" });
+    return res
+      .status(400)
+      .send({ msg: "Please provide a date and a location" });
   }
-    next();
-
+  next();
 }
 
 function validateLocationDetails(req, res, next) {
   const { location } = req.body;
-
   if (location) {
     return Locations.findOne({ name: location.name }).then((locationDb) => {
       if (!locationDb) {
-        return res.status(400).send({ msg: "Location name is not valid." });
+        return res
+          .status(404)
+          .send({ msg: "Location does not exist in database" });
       }
       if (locationDb._id.toString() !== location.id) {
-        return res.status(400).send({ msg: "Location ID is not valid." });
+        return res
+          .status(400)
+          .send({ msg: "Location ID does not match location name" });
       }
-      next();
+      return next();
     });
-  } 
-  next()
+  }
+  next();
 }
 
 function validateImageUrl(req, res, next) {
-  const { imgUrls } = req.body;
-  if (imgUrls) {
-
-    if (imgUrls.length !== 0) {
-      imgUrls.forEach((url) => {
-        if (!isURL(url)) {
-          return res.status(400).send({ msg: "URL is not valid." });
-        }
-      });
+  const { imgUrls = [] } = req.body;
+  if (imgUrls.length !== 0) {
+    for (const url of imgUrls) {
+      if (!isURL(url)) {
+        return res.status(400).send({ msg: "URL is not valid" });
+      }
     }
   }
   next();
