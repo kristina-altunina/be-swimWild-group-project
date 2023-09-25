@@ -209,6 +209,18 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
+  test("should respond with 400 ifpostBody is empty", () => {
+    const postBody = {
+    };
+    return request(app)
+      .post("/users")
+      .send(postBody)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
+      .expect(400)
+      .then((response)=>{
+        expect(response.text).toBe("Users validation failed")
+      });
+  });
 });
 
 describe("PATCH /users/", () => {
