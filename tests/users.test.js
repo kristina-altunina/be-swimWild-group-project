@@ -390,11 +390,12 @@ describe("PATCH /users/", () => {
 });
 
 describe("GET /users/:uid", () => {
-  test("returns correct user info", () => {
+  test.only("returns correct user info", () => {
     return request(app)
       .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
       .expect(200)
       .then(({ body }) => {
+        console.log(body)
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",

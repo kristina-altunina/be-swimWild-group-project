@@ -98,7 +98,8 @@ describe("DELETE /users/swims", () => {
     return request(app)
       .delete(`/users/swims/${swimId}`)
       .set("Authorization", `Bearer ${accessToken}`)
-      .then(({ body }) => {
+      .expect(200)
+      .then(({body}) => {
         expect(body).toEqual([]);
       });
   });
