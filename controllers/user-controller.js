@@ -12,7 +12,7 @@ function postUser(req, res, next) {
   };
   Users.create(newUser)
     .then((newUser) => {
-      console.log(newUser);
+      // console.log(newUser);
       res.status(201).send(newUser);
     })
     .catch(next);
@@ -126,7 +126,7 @@ function postSwim(req, res, next) {
 function patchSwim(req, res, next) {
   const { id } = req.params;
   const uid = req.user.uid;
-  console.log("uid", uid);
+  // console.log("uid", uid);
   Users.findOne({ uid: uid })
     .then((user) => {
       let newUser = { ...user.toObject() };
