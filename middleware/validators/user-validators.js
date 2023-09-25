@@ -2,6 +2,12 @@ const isURL = require("is-url");
 const { post } = require("../../routes/users-routers");
 
 function validateUserPatchBody(req, res, next) {
+  const patchBodyKeys = Object.keys(req.body)
+  patchBodyKeys.forEach((key)=>{
+    if(!["nickname", "profileImg"].includes(key)){
+       return res.status(400).send({msg: "invalid patch body"})
+    }
+  })
   const { nickname, profileImg } = req.body;
   if (!nickname && !profileImg) {
     return res.status(400).send({
@@ -21,7 +27,6 @@ function validatePostBody(req,res,next){
   const {uid} = req.user 
   const{name, nickname, dob, profileImg, bio, home} = req.body
   const postBodyKeys = Object.keys(req.body)
-  console.log(postBodyKeys)
   postBodyKeys.forEach((key)=>{
     if(!["name", "nickname", "profileImg", "dob", "bio", "home"].includes(key)){
        return res.status(400).send({msg: "invalid post body"})

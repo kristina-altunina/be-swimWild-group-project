@@ -109,6 +109,7 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(201)
       .then(({ body }) => {
+        console.log(body)
         expect(body).toMatchObject({
           uid: "ChYMb6pn4sQn4Hs0qt6XW9TaE742",
           name: "Test User",
@@ -292,7 +293,6 @@ describe("PATCH /users/", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body).toMatchObject({
-          name: "testUser",
           nickname: "dobbyforRon",
           profileImg:
             "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
@@ -368,7 +368,24 @@ describe("PATCH /users/", () => {
           "Please enter a nickname or profile image to update"
         );
       });
-  });
+  })
+  test("Should return 400 error when Patch body contains invalid key", () => {
+    const toUpdateBad = {
+      nickname: "hello",
+      profileImg: "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+      Banana: "really tasty"
+    };
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdateBad)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "invalid patch body"
+        );
+      });
+  })
 });
 
 describe("GET /users/:uid", () => {
