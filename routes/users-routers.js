@@ -8,7 +8,7 @@ const {
   removeSwim,
 } = require("../controllers/user-controller");
 const {
-  validateUserPatchBody,
+  validateUserPatchBody, validatePostBody
 } = require("../middleware/validators/user-validators");
 const { validateSwimId } = require("../middleware/validators/swimId-validator");
 
@@ -16,7 +16,7 @@ const usersRouter = require("express").Router();
 
 usersRouter
   .route("/")
-  .post(authoriseUser, postUser)
+  .post(authoriseUser, validatePostBody, postUser)
   .patch(authoriseUser, validateUserPatchBody, patchUser);
 
 usersRouter

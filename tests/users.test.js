@@ -185,11 +185,12 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
-  test("should respond with 400 if image url invalid", () => {
+  test("should respond with 400 if url invalid for ProfileImg", () => {
     const postBody = {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
-      profileImg: "https://i.redd.it/p6f66n7xbmb11.notanimage",
+      profileImg: "fish",
+      dob: "1997-08-29T18:00:00+0000",
     };
     return request(app)
       .post("/users")
@@ -202,6 +203,7 @@ describe("POST /users", () => {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
       bio: 3,
+      dob: "1997-08-29T18:00:00+0000"
     };
     return request(app)
       .post("/users")
@@ -209,7 +211,7 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400);
   });
-  test("should respond with 400 ifpostBody is empty", () => {
+  test("should respond with 400 if postBody is empty", () => {
     const postBody = {
     };
     return request(app)
@@ -221,6 +223,56 @@ describe("POST /users", () => {
         expect(response.text).toBe("Users validation failed")
       });
   });
+  test("should respond with 401 if post body contains uid", () => {
+    const postBody = {
+      uid: "3420",
+      name: "my name",
+      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
+      bio: "Hello",
+      dob: "1997-08-29T18:00:00+0000"
+    };
+    return request(app)
+      .post("/users")
+      .send(postBody)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("invalid post body")
+      })
+  })
+  test("should respond with 400 if post body contains invalid keys", () => {
+    const postBody = {
+      Banana: "are great",
+      name: "my name",
+      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
+      bio: "Hello",
+      dob: "1997-08-29T18:00:00+0000",
+    };
+    return request(app)
+      .post("/users")
+      .send(postBody)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("invalid post body")
+      })
+  })
+  test("should respond with 400 if dob is invalid on post body", () => {
+    const postBody = {
+      name: "my name",
+      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
+      bio: "Hello",
+      dob: 3
+    };
+    return request(app)
+      .post("/users")
+      .send(postBody)
+      .set("Authorization", `Bearer ${registeredAccessToken}`)
+      .expect(400)
+      .then(({body})=>{
+        expect(body.msg).toBe("dob should be a string")
+      })
+  })
 });
 
 describe("PATCH /users/", () => {

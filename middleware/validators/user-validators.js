@@ -1,4 +1,5 @@
 const isURL = require("is-url");
+const { post } = require("../../routes/users-routers");
 
 function validateUserPatchBody(req, res, next) {
   const { nickname, profileImg } = req.body;
@@ -16,4 +17,35 @@ function validateUserPatchBody(req, res, next) {
   next();
 }
 
-module.exports = { validateUserPatchBody };
+function validatePostBody(req,res,next){
+  const {uid} = req.user 
+  const{name, nickname, dob, profileImg, bio, home} = req.body
+  const postBodyKeys = Object.keys(req.body)
+  console.log(postBodyKeys)
+  postBodyKeys.forEach((key)=>{
+    if(!["name", "nickname", "profileImg", "dob", "bio", "home"].includes(key)){
+       return res.status(400).send({msg: "invalid post body"})
+    }
+  })
+  if (nickname && typeof nickname !== "string") {
+    return res.status(400).send({ msg: "Nickname should be a string" });
+  }
+  if (name && typeof name !== "string") {
+    return res.status(400).send({ msg: "Nickname should be a string" });
+  }
+  if (profileImg && !isURL(profileImg)) {
+    return res.status(400).send({ msg: `${profileImg} is not a valid URL` });
+  }
+  if (bio && typeof bio !== "string") {
+    return res.status(400).send({ msg: "bio should be a string" });
+  }
+  if (home && typeof home !== "string") {
+    return res.status(400).send({ msg: "bio should be a string" });
+  }
+  if (dob && typeof dob !== "string") {
+    return res.status(400).send({ msg: "dob should be a string" });
+  }
+  next()
+}
+
+module.exports = { validateUserPatchBody, validatePostBody };
