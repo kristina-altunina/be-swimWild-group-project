@@ -292,6 +292,7 @@ describe("PATCH /users/", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200)
       .then(({ body }) => {
+        console.log(body)
         expect(body).toMatchObject({
           nickname: "dobbyforRon",
           profileImg:
@@ -431,8 +432,3 @@ describe("DELETE /users/profile", () => {
   });
 });
 
-describe("check refresh", () => {
-  test("should ", () => {
-    expect().toBe();
-  });
-});

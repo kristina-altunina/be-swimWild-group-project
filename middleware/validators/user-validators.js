@@ -24,7 +24,6 @@ function validateUserPatchBody(req, res, next) {
 }
 
 function validatePostBody(req,res,next){
-  const {uid} = req.user 
   const{name, nickname, dob, profileImg, bio, home} = req.body
   const postBodyKeys = Object.keys(req.body)
   postBodyKeys.forEach((key)=>{
