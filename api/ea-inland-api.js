@@ -1,10 +1,13 @@
 const axios = require("axios");
 const {
-  distanceBetweenCoords,
   convertToDayOfYear,
   formatSite,
+  calculateSeasonalSpread,
+  expectedHydrologyTemp,
+  getSurfaceResults,
 } = require("./utils");
 const PolynomialRegression = require("ml-regression-polynomial");
+const { distanceBetweenCoords } = require("../utils");
 
 const api = axios.create({
   baseURL: "http://eip.ceh.ac.uk/hydrology-ukscape",
@@ -14,10 +17,11 @@ function collectEaInlandData(
   coords,
   radiusMetres,
   type = "lakes",
-  searchDate = new Date().toISOString()
+  searchDate = new Date().toISOString(),
+  station
 ) {
   let siteData;
-  return findEaSites(coords, radiusMetres, type)
+  return findEaSites(coords, radiusMetres, type, station)
     .then((sites) => {
       siteData = sites;
       const eaData = getEaData(sites.siteId);
@@ -32,14 +36,14 @@ function collectEaInlandData(
       return siteData;
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err?.response?.status);
       if (err?.response?.status === 404) {
         console.log("404 at ", err.request.method, err.request.path);
       }
     });
 }
 
-function findEaSites(coords, radiusMetres, type) {
+function findEaSites(coords, radiusMetres, type, station) {
   // type can only be 'lakes' or 'rivers'
   return api
     .get(
@@ -47,7 +51,9 @@ function findEaSites(coords, radiusMetres, type) {
     )
     .then(({ data }) => {
       // sort by distance
-      const sites = data[type].sites.toSorted((a, b) => {
+      const sites = data[type].sites;
+      if (!sites.length) return Promise.reject();
+      sites.sort((a, b) => {
         const distanceA = distanceBetweenCoords(coords, [
           a.properties.lat,
           a.properties.lon,
@@ -58,7 +64,7 @@ function findEaSites(coords, radiusMetres, type) {
         ]);
         return distanceA - distanceB;
       });
-      const output = formatSite(sites.shift());
+      const output = formatSite(sites[station]);
       output.nearby = sites.map((site) => {
         return formatSite(site);
       });
@@ -88,30 +94,36 @@ function processEaData(dataPromise, searchDate) {
       const processedData = {
         determinandID: detail.determinandID,
       };
+      data = getSurfaceResults(data);
       // most recent
-      const mostRecent = data
-        .toSorted((a, b) => {
-          return new Date(b.datetime) - new Date(a.datetime);
-        })
-        .find((sample) => sample.datetime <= searchDate);
+      data.sort((a, b) => {
+        return new Date(b.datetime) - new Date(a.datetime);
+      });
+      const mostRecent = data.find((sample) => sample.datetime <= searchDate);
       processedData.mostRecentValue = mostRecent.value;
       processedData.mostRecentSampleDate = mostRecent.datetime;
       processedData.determinand = mostRecent.determinand;
+      processedData.units = data[0].units;
 
       if (detail.determinandID === "0076") {
         // polynomial regression
         const x = [];
         const y = [];
+        const logs = [];
         for (const sample of data) {
           x.push(convertToDayOfYear(sample.datetime));
           y.push(sample.value);
+          logs.push([convertToDayOfYear(sample.datetime), sample.value]);
         }
+        processedData.logs = logs;
         const searchDay = convertToDayOfYear(searchDate);
         if (
           x.some((sample) => sample > searchDay) &&
           x.some((sample) => sample < searchDay)
         ) {
-          const regression = new PolynomialRegression(x, y, 5);
+          const regression = new PolynomialRegression(x, y, 2);
+          processedData.samples = x.length;
+          processedData.sampleSpread = calculateSeasonalSpread(x);
           processedData.regression = regression.predict(searchDay);
           const mostRecentDay = convertToDayOfYear(mostRecent.datetime);
           const predictedValueOfMostRecentDay =
@@ -122,7 +134,7 @@ function processEaData(dataPromise, searchDate) {
         }
         // date match
         const date = new Date(searchDate);
-        const dateMatch = data.toSorted((a, b) => {
+        data.sort((a, b) => {
           const aThisYear = new Date(a.datetime).setFullYear(
             new Date().getFullYear()
           );
@@ -130,24 +142,29 @@ function processEaData(dataPromise, searchDate) {
             new Date().getFullYear()
           );
           return Math.abs(date - aThisYear) - Math.abs(date - bThisYear);
-        })[0];
-        processedData.dateMatchedValue = dateMatch.value;
-        processedData.dateMatchedSampleDate = dateMatch.datetime;
+        });
+        processedData.dateMatchedValue = data[0].value;
+        processedData.dateMatchedSampleDate = data[0].datetime;
+        processedData.maxSurfaceTemp =
+          +expectedHydrologyTemp(processedData).toFixed(1);
+        logs.sort((a, b) => a[0] - b[0]);
       }
       return processedData;
     })
     .catch((err) => {
-      console.log(err);
+      if (err?.response?.status === 404) {
+        console.log("404 at ", err.request.method, err.request.path);
+      }
     });
 }
 
 module.exports = { collectEaInlandData };
 
-collectEaInlandData(
-  [54.2744, -2.9516],
-  1000,
-  "lakes",
-  new Date().toISOString()
-).then((data) => {
-  console.log(data);
-});
+// collectEaInlandData(
+//   [54.2744, -2.9516],
+//   1000,
+//   "lakes",
+//   new Date().toISOString()
+// ).then((data) => {
+//   console.log(data);
+// });

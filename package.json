@@ -2,11 +2,11 @@
   "name": "spikeauth",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "listen.js",
   "scripts": {
     "test": "jest --runInBand",
     "start": "node listen.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon listen.js",
     "seed": "node models/run-seed.js"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "express-openid-connect": "^2.16.0",
     "firebase": "^10.4.0",
     "firebase-admin": "^11.10.1",
+    "fuse.js": "^6.6.2",
     "is-url": "^1.2.4",
     "isurl": "^4.0.2",
     "jest": "^29.7.0",

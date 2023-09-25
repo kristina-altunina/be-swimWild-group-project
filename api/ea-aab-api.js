@@ -1,12 +1,13 @@
 const axios = require("axios");
 const { removeSamplingPoint } = require("./utils");
+const { distanceBetweenCoords } = require("../utils");
 
 const api = axios.create({
   baseURL: "https://environment.data.gov.uk",
 });
 
-function getEaAdviceAgainstBathing() {
-  api
+function getNearestEaAab(coords) {
+  return api
     .get(
       "/doc/bathing-water-quality/advice-against-bathing/situations.json?_pageSize=1000&_page=0&_view=situation-details"
     )
@@ -25,13 +26,21 @@ function getEaAdviceAgainstBathing() {
           coords: [sample.lat, sample.long],
         };
       });
-      console.log(dangerCoords);
+      dangerCoords.sort((a, b) => {
+        const distanceA = distanceBetweenCoords(coords, a.coords);
+        const distanceB = distanceBetweenCoords(coords, b.coords);
+        return distanceA - distanceB;
+      });
+      return {
+        name: dangerCoords[0].name,
+        distanceKm: distanceBetweenCoords(coords, dangerCoords[0].coords),
+      };
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 }
 
-module.exports = { getEaAdviceAgainstBathing };
+module.exports = { getNearestEaAab };
 
-getEaAdviceAgainstBathing();
+//getNearestEaAab([54.2744, -2.9516]).then((data) => console.log(data));

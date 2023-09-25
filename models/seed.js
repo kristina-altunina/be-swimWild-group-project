@@ -1,6 +1,21 @@
 const Locations = require("./locations-model");
 const Users = require("./users-model");
-const { addIdToLocations } = require("./utils");
+
+function addIdToLocations(locations, userData) {
+  return userData.map((user) => {
+    const swims = user.swims.map((swim) => {
+      const locationID = locations.find((location) => {
+        return location.name === swim.location.name;
+      })._id;
+      const newSwim = { ...swim };
+      newSwim.location.id = locationID;
+      return newSwim;
+    });
+    const newUser = { ...user };
+    newUser.swims = swims;
+    return newUser;
+  });
+}
 
 const deleteDB = () => {
   const promises = [];
@@ -33,7 +48,7 @@ const seedWithLogs = (locationData, userData) => {
     });
 };
 
-const testSeed = (locationData, userData) => {
+const seedWithoutLogs = (locationData, userData) => {
   return deleteDB()
     .then(() => Locations.create(locationData))
     .then(() => Locations.find({}))
@@ -48,4 +63,14 @@ const testSeed = (locationData, userData) => {
     });
 };
 
-module.exports = { testSeed, seedWithLogs };
+const refreshDocuments = (locationData, userData) => {
+  return Users.deleteMany({})
+    .then(() => Locations.deleteMany({}))
+    .then(() => Locations.create(locationData))
+    .then(() => Locations.find({}))
+    .then((data) => Users.create(addIdToLocations(data, userData)))
+    .then(() => Locations.syncIndexes())
+    .then(() => Users.syncIndexes());
+};
+
+module.exports = { seedWithoutLogs, seedWithLogs, refreshDocuments };

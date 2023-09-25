@@ -1,4 +1,4 @@
-const { distanceBetweenCoords } = require("../scripts/utils");
+const { distanceBetweenCoords } = require("../utils");
 
 describe("distanceBetweenCoords", () => {
   test("should return the correct distance", () => {

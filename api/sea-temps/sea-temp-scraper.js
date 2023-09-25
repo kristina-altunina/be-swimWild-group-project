@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { parse } = require("node-html-parser");
 const { locations } = require("./sea-temp-locations");
-const { distanceBetweenCoords } = require("../utils");
+const { distanceBetweenCoords } = require("../../utils");
 
 const web = axios.create({
   baseURL: "https://www.seatemperature.org/",
@@ -33,8 +33,8 @@ function findTempOfNearestBeach(coords) {
   });
 }
 
-findTempOfNearestBeach([54.2744, -2.9516]).then((data) => {
-  console.log(data);
-});
+// findTempOfNearestBeach([54.2744, -2.9516]).then((data) => {
+//   console.log(data);
+// });
 
 module.exports = { findTempOfNearestBeach };

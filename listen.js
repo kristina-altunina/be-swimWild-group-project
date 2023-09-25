@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const port = 3000;
 
+mongoose.set("runValidators", true);
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => {

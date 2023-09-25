@@ -3,12 +3,14 @@ const {
   postUser,
   patchUser,
   getUser,
+  getUserById,
+  removeUser,
   postSwim,
-  patchSwim
+  patchSwim,
 } = require("../controllers/user-controller");
 const {
   validateUserPatchBody,
-} = require("../controllers/validators/user-validators");
+} = require("../middleware/validators/user-validators");
 
 const {
   validateSwimDate,
@@ -25,10 +27,12 @@ usersRouter
   .post(authoriseUser, postUser)
   .patch(authoriseUser, validateUserPatchBody, patchUser);
 
-usersRouter.route("/profile").get(authoriseUser, getUser);
+usersRouter
+  .route("/profile")
+  .get(authoriseUser, getUser)
+  .delete(authoriseUser, removeUser);
 
-
-
+usersRouter.route("/:uid").get(getUserById);
 
 usersRouter
   .route("/swim")
@@ -41,13 +45,14 @@ usersRouter
     postSwim
   );
 
-usersRouter.route("/swim/:id").patch(
-  authoriseUser,
-  validateLocationDetails,
-  validateImageUrl,
-  validateBody,
-  patchSwim
-);
-
+usersRouter
+  .route("/swim/:id")
+  .patch(
+    authoriseUser,
+    validateLocationDetails,
+    validateImageUrl,
+    validateBody,
+    patchSwim
+  );
 
 module.exports = usersRouter;

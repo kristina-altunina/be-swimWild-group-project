@@ -38,7 +38,7 @@ const swimSchema = new mongoose.Schema({
   },
   feelTemp: {
     type: String,
-    enum: ["freezing", "cold", "average", "warm", "hot",null],
+    enum: ["freezing", "cold", "average", "warm", "hot", null],
     default: null,
   },
   mins: {
@@ -75,7 +75,9 @@ const swimSchema = new mongoose.Schema({
   },
   imgUrls: {
     type: [String],
-    match: [/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i],
+    match: [
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
+    ],
     default: [],
   },
 });
@@ -102,6 +104,12 @@ const userSchema = mongoose.Schema({
     match: [
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i,
     ],
+  },
+  home: {
+    type: String,
+  },
+  bio: {
+    type: String,
   },
   dob: {
     type: Date,

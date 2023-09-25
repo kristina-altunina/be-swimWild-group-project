@@ -9,5 +9,14 @@
 - use ML to improve inland data processing?
 - build master function that takes a lat and long and a type (river, lake, sea) and returns all api data
 - this data could be cached in mongoDB for a period of time?
-- get data for surf and tide
+- get tide data
 - get pollution and green algae warnings via scraping?
+
+Forcast for the week:
+
+Weather
+hydrology data over 7 days
+
+outOfDepth should return null not true with no data
+
+Improve the quality of temp predictions hydrology if little data rydal
