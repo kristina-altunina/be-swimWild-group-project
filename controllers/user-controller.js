@@ -14,7 +14,6 @@ function postUser(req, res, next) {
   };
   Users.create(newUser)
     .then((newUser) => {
-      // console.log(newUser);
       res.status(201).send(newUser);
     })
     .catch(next);
