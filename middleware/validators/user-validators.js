@@ -50,7 +50,7 @@ function validatePostBody(req, res, next) {
     if (dob && typeof dob !== "string") {
       return res.status(400).send({ msg: "dob should be a string" });
     }
-    console.log("passed auth");
+    console.log("passed validator");
     return next();
   }
 }

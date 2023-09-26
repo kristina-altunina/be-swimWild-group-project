@@ -12,14 +12,14 @@ function postUser(req, res, next) {
     bio: req.body.bio,
     home: req.body.home,
   };
-  Users.create(newUser)
+  return Users.create(newUser)
     .then((newUser) => {
       return res.status(201).send(newUser);
     })
     .catch((err) => {
       console.log("failed the controller");
       console.log(err);
-      next(err);
+      return next(err);
     });
 }
 

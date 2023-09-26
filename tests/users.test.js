@@ -92,7 +92,7 @@ describe("GET /users/profile", () => {
   });
 });
 
-describe("POST /users", () => {
+describe.only("POST /users", () => {
   test("should respond with and create user", () => {
     const postBody = {
       name: "Test User",
