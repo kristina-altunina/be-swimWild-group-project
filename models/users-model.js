@@ -53,7 +53,7 @@ const swimSchema = new mongoose.Schema({
     type: Boolean,
     default: null,
   },
-  sizeKey: {
+  size: {
     type: String,
     enum: ["tiny", "small", "medium", "large", null],
     default: null,
