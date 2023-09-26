@@ -16,7 +16,7 @@ function postUser(req, res, next) {
     .then((newUser) => {
       return res.status(201).send(newUser);
     })
-    .catch(() => {
+    .catch((err) => {
       console.log("hit error");
       next(err);
     });
