@@ -34,6 +34,7 @@ function patchUser(req, res, next) {
 
 function getUser(req, res, next) {
   console.log(req.user.uid);
+  console.log(req.user);
   Users.findOne({ uid: { $eq: req.user.uid } })
     .then((user) => {
       if (!user) return Promise.reject();
