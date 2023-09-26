@@ -16,11 +16,7 @@ function postUser(req, res, next) {
     .then((newUser) => {
       return res.status(201).send(newUser);
     })
-    .catch((err) => {
-      console.log("hit error");
-      console.log(err);
-      next(err);
-    });
+    .catch(next);
 }
 
 function patchUser(req, res, next) {
