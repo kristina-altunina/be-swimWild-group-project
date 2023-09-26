@@ -23,6 +23,7 @@ function validateUserPatchBody(req, res, next) {
 }
 
 function validatePostBody(req, res, next) {
+  console.log("in the validator");
   const { name, nickname, dob, profileImg, bio, home } = req.body;
   const postBodyKeys = Object.keys(req.body);
   for (const key of postBodyKeys) {
@@ -49,6 +50,7 @@ function validatePostBody(req, res, next) {
     if (dob && typeof dob !== "string") {
       return res.status(400).send({ msg: "dob should be a string" });
     }
+    console.log("passed auth");
     return next();
   }
 }

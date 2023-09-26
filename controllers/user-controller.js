@@ -17,6 +17,7 @@ function postUser(req, res, next) {
       return res.status(201).send(newUser);
     })
     .catch((err) => {
+      consoel.log("failed the controller");
       console.log(err);
       next(err);
     });

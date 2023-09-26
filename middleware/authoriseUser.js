@@ -1,6 +1,7 @@
 const admin = require("firebase-admin");
 
 const authoriseUser = (req, res, next) => {
+  console.log("in the auth");
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res
@@ -12,6 +13,7 @@ const authoriseUser = (req, res, next) => {
     .auth()
     .verifyIdToken(token)
     .then((user) => {
+      console.log("passed auth");
       req.user = user;
       return next();
     })
