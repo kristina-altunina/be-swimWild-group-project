@@ -99,7 +99,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    size,
+    sizeKey
   } = req.body;
   const uid = req.user.uid;
   const new_swim = {
@@ -119,7 +119,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    size,
+    sizeKey
   };
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
     .then(() => {
