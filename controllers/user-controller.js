@@ -42,16 +42,19 @@ function getUser(req, res, next) {
   console.log(req.user);
   Users.findOne({ uid: { $eq: req.user.uid } })
     .then((user) => {
-      if (!user) return Promise.reject();
-      res.status(200).send({
-        name: user.name,
-        nickname: user.nickname,
-        profileImg: user.profileImg,
-        dob: user.dob,
-        swims: user.swims,
-        bio: user.bio,
-        home: user.home,
-      });
+      if (!user) {
+        return Promise.reject();
+      } else {
+        return res.status(200).send({
+          name: user.name,
+          nickname: user.nickname,
+          profileImg: user.profileImg,
+          dob: user.dob,
+          swims: user.swims,
+          bio: user.bio,
+          home: user.home,
+        });
+      }
     })
     .catch(next);
 }
