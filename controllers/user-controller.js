@@ -16,7 +16,10 @@ function postUser(req, res, next) {
     .then((newUser) => {
       return res.status(201).send(newUser);
     })
-    .catch(next);
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 }
 
 function patchUser(req, res, next) {
@@ -96,7 +99,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    sizeKey
+    sizeKey,
   } = req.body;
   const uid = req.user.uid;
   const new_swim = {
@@ -116,7 +119,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    sizeKey
+    sizeKey,
   };
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
     .then(() => {
