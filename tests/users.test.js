@@ -108,7 +108,7 @@ describe("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(201)
       .then(({ body }) => {
-        console.log(body)
+        console.log(body);
         expect(body).toMatchObject({
           uid: "ChYMb6pn4sQn4Hs0qt6XW9TaE742",
           name: "Test User",
@@ -203,7 +203,7 @@ describe("POST /users", () => {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
       bio: 3,
-      dob: "1997-08-29T18:00:00+0000"
+      dob: "1997-08-29T18:00:00+0000",
     };
     return request(app)
       .post("/users")
@@ -212,15 +212,14 @@ describe("POST /users", () => {
       .expect(400);
   });
   test("should respond with 400 if postBody is empty", () => {
-    const postBody = {
-    };
+    const postBody = {};
     return request(app)
       .post("/users")
       .send(postBody)
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400)
-      .then((response)=>{
-        expect(response.text).toBe("Users validation failed")
+      .then((response) => {
+        expect(response.text).toBe("Users validation failed");
       });
   });
   test("should respond with 401 if post body contains uid", () => {
@@ -229,17 +228,17 @@ describe("POST /users", () => {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
       bio: "Hello",
-      dob: "1997-08-29T18:00:00+0000"
+      dob: "1997-08-29T18:00:00+0000",
     };
     return request(app)
       .post("/users")
       .send(postBody)
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("invalid post body")
-      })
-  })
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid post body");
+      });
+  });
   test("should respond with 400 if post body contains invalid keys", () => {
     const postBody = {
       Banana: "are great",
@@ -253,26 +252,26 @@ describe("POST /users", () => {
       .send(postBody)
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("invalid post body")
-      })
-  })
+      .then(({ body }) => {
+        expect(body.msg).toBe("invalid post body");
+      });
+  });
   test("should respond with 400 if dob is invalid on post body", () => {
     const postBody = {
       name: "my name",
       nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
       bio: "Hello",
-      dob: 3
+      dob: 3,
     };
     return request(app)
       .post("/users")
       .send(postBody)
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(400)
-      .then(({body})=>{
-        expect(body.msg).toBe("dob should be a string")
-      })
-  })
+      .then(({ body }) => {
+        expect(body.msg).toBe("dob should be a string");
+      });
+  });
 });
 
 describe("PATCH /users/", () => {
@@ -291,7 +290,7 @@ describe("PATCH /users/", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body)
+        console.log(body);
         expect(body).toMatchObject({
           nickname: "dobbyforRon",
           profileImg:
@@ -368,12 +367,13 @@ describe("PATCH /users/", () => {
           "Please enter a nickname or profile image to update"
         );
       });
-  })
+  });
   test("Should return 400 error when Patch body contains invalid key", () => {
     const toUpdateBad = {
       nickname: "hello",
-      profileImg: "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
-      Banana: "really tasty"
+      profileImg:
+        "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+      Banana: "really tasty",
     };
     return request(app)
       .patch("/users")
@@ -381,11 +381,9 @@ describe("PATCH /users/", () => {
       .send(toUpdateBad)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe(
-          "invalid patch body"
-        );
+        expect(body.msg).toBe("invalid patch body");
       });
-  })
+  });
 });
 
 describe("GET /users/:uid", () => {
@@ -394,7 +392,7 @@ describe("GET /users/:uid", () => {
       .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
       .expect(200)
       .then(({ body }) => {
-        console.log(body)
+        console.log(body);
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",
@@ -431,4 +429,3 @@ describe("DELETE /users/profile", () => {
       });
   });
 });
-

@@ -18,6 +18,7 @@ function postUser(req, res, next) {
     })
     .catch((err) => {
       console.log("hit error");
+      console.log(err);
       next(err);
     });
 }
