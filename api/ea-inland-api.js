@@ -36,9 +36,9 @@ function collectEaInlandData(
       return siteData;
     })
     .catch((err) => {
-      console.log(err?.response?.status);
+      //console.log(err?.response?.status);
       if (err?.response?.status === 404) {
-        console.log("404 at ", err.request.method, err.request.path);
+        //console.log("404 at ", err.request.method, err.request.path);
       }
     });
 }
@@ -71,7 +71,7 @@ function findEaSites(coords, radiusMetres, type, station) {
       return output;
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 }
 

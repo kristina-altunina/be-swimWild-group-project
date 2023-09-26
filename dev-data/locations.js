@@ -54,4 +54,69 @@ module.exports = [
     type: "lake",
     coords: [51.420439601017776, -0.014583048102605571],
   },
+  {
+    name: "Tongue Pot, Eskdale",
+    type: "river",
+    coords: [54.42050147442003, -3.1934157653623587],
+  },
+  {
+    name: "Watendlath Tarn, Keswick",
+    type: "lake",
+    coords: [54.535288769935, -3.121812388110952],
+  },
+  {
+    name: "Derwentwater, Lake District",
+    type: "lake",
+    coords: [54.59527448948709, -3.1419065639179364],
+  },
+  {
+    name: "Crummock Water, Lake District",
+    type: "lake",
+    coords: [54.55807911351997, -3.303205071363664],
+  },
+  {
+    name: "Grasmere Lake, Lake District",
+    type: "lake",
+    coords: [54.44871295669687, -3.0252056430732313],
+  },
+  {
+    name: "Wast Water, Lake District",
+    type: "lake",
+    coords: [54.44146232318726, -3.300237745769037],
+  },
+  {
+    name: "Black Moss Pot, Keswick",
+    type: "river",
+    coords: [54.491759290474185, -3.132869481760457],
+  },
+  {
+    name: "Coniston Water, Cumbria",
+    type: "lake",
+    coords: [54.33778876428315, -3.0747157937782794],
+  },
+  {
+    name: "Buttermere Pools, Lake District",
+    type: "river",
+    coords: [54.5113416, -3.2365254],
+  },
+  {
+    name: "Ullswater, Lake District",
+    type: "lake",
+    coords: [54.59962208499564, -2.848580181809748],
+  },
+  {
+    name: "Loweswater, Cumbria",
+    type: "lake",
+    coords: [54.58368398282981, -3.3562736590343514],
+  },
+  {
+    name: "Bassenthwaite Lake, Cumbria",
+    type: "lake",
+    coords: [54.647922375127486, -3.2031690546696807],
+  },
+  {
+    name: "Styhead Tarn, Borrowdale",
+    type: "lake",
+    coords: [54.47803932583824, -3.2026702873073294],
+  },
 ];
