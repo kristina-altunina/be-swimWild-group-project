@@ -23,7 +23,7 @@ app.use("/locations", locationsRouter);
 app.use(mongoDbErrors);
 
 app.use((err, req, res, next) => {
-  consoel.log(err);
+  console.log(err);
   res.status(500).send("something has gone wrong here!");
 });
 
