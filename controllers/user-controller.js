@@ -14,9 +14,12 @@ function postUser(req, res, next) {
   };
   Users.create(newUser)
     .then((newUser) => {
-      res.status(201).send(newUser);
+      return res.status(201).send(newUser);
     })
-    .catch(next);
+    .catch(() => {
+      console.log("hit error");
+      next(err);
+    });
 }
 
 function patchUser(req, res, next) {
