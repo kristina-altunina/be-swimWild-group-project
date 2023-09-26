@@ -1,6 +1,8 @@
 const Users = require("../models/users-model");
 
 function postUser(req, res, next) {
+  console.log("the body", req.body);
+  console.log("the token", req.user);
   const newUser = {
     uid: req.user.uid,
     name: req.body.name,
@@ -95,7 +97,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    size
+    size,
   } = req.body;
   const uid = req.user.uid;
   const new_swim = {
@@ -115,7 +117,7 @@ function postSwim(req, res, next) {
     bankAngle,
     clarity,
     imgUrls,
-    size
+    size,
   };
   Users.updateOne({ uid: uid }, { $push: { swims: new_swim } })
     .then(() => {
