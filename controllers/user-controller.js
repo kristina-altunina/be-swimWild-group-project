@@ -33,8 +33,10 @@ function patchUser(req, res, next) {
 }
 
 function getUser(req, res, next) {
+  console.log(req.user.uid);
   Users.findOne({ uid: { $eq: req.user.uid } })
     .then((user) => {
+      if (!user) return Promise.reject();
       res.status(200).send({
         name: user.name,
         nickname: user.nickname,
@@ -126,7 +128,6 @@ function postSwim(req, res, next) {
 function patchSwim(req, res, next) {
   const { id } = req.params;
   const uid = req.user.uid;
-  // console.log("uid", uid);
   Users.findOne({ uid: uid })
     .then((user) => {
       let newUser = { ...user.toObject() };
