@@ -2,11 +2,20 @@ const isURL = require("is-url");
 
 function validateUserPatchBody(req, res, next) {
   const patchBodyKeys = Object.keys(req.body);
-  patchBodyKeys.forEach((key) => {
-    if (!["nickname", "profileImg"].includes(key)) {
-      return res.status(400).send({ msg: "invalid patch body" });
-    }
-  });
+   const foundAnyPatchableValue = ["nickname", "profileImg", "bio", "home"]
+   .some(key => patchBodyKeys.includes(key))
+
+  
+   if(!foundAnyPatchableValue){
+    return res.status(400).send({ msg: "invalid patch body" });
+   }
+   
+  // patchBodyKeys.forEach((key) => {
+  //   if (!["nickname", "profileImg","bio","home"].includes(key)) {
+  //     return res.status(400).send({ msg: "invalid patch body" });
+  //   }
+  // });
+
   const { nickname, profileImg } = req.body;
   if (!nickname && !profileImg) {
     return res.status(400).send({

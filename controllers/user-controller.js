@@ -20,9 +20,17 @@ function postUser(req, res, next) {
 }
 
 function patchUser(req, res, next) {
+  
+  const validPatchProperties = ["bio","home","profileImg","nickname"]
+
   const filter = { uid: req.user.uid };
   const update = {};
-  for (const key in req.body) update[key] = req.body[key];
+  for (const key in req.body) {
+    update[key] = req.body[key]
+     if(validPatchProperties.includes(key)){
+      update[key] = req.body[key]
+     }
+  };
   Users.findOneAndUpdate(filter, update)
     .then(() => {
       return Users.findOne(filter);

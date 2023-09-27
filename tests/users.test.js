@@ -242,6 +242,7 @@ describe("PATCH /users/", () => {
   test("should respond 401 Unauthorized when no access token provided", () => {
     return request(app).patch("/users").expect(401);
   });
+
   test("responds with correct user information when passed correctly formated body", () => {
     const toUpdate = {
       nickname: "dobbyforRon",
@@ -265,6 +266,26 @@ describe("PATCH /users/", () => {
           expect(user.nickname).toBe("dobbyforRon");
         });
       });
+  });
+  test("responds with correct user information when passed correctly formated body even with non-existent key", () => {
+    const toUpdate = {
+      nickname: "hello",
+      profileImg:
+        "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+      Banana: "really tasty",
+    };
+    return request(app)
+      .patch("/users")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send(toUpdate)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          nickname: "hello",
+          profileImg:
+            "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
+        });
+      })
   });
   test("check the refresh db function actually refreshes db", () => {
     Users.find({}).then((allUsers) => {
@@ -331,10 +352,9 @@ describe("PATCH /users/", () => {
         );
       });
   });
-  test("Should return 400 error when Patch body contains invalid key", () => {
+  test("Should return 400 error when Patch body contains only invalid keys", () => {
     const toUpdateBad = {
-      nickname: "hello",
-      profileImg:
+      apple:
         "https://static.wikia.nocookie.net/harrypotter/images/8/82/Dobby.jpg",
       Banana: "really tasty",
     };
