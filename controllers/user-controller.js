@@ -1,8 +1,6 @@
 const Users = require("../models/users-model");
 
 function postUser(req, res, next) {
-  console.log("the body", req.body);
-  console.log("the token", req.user);
   const newUser = {
     uid: req.user.uid,
     name: req.body.name,
@@ -17,8 +15,6 @@ function postUser(req, res, next) {
       return res.status(201).send(newUser);
     })
     .catch((err) => {
-      console.log("failed the controller");
-      console.log(err);
       return next(err);
     });
 }
@@ -38,8 +34,6 @@ function patchUser(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  console.log(req.user.uid);
-  console.log(req.user);
   Users.findOne({ uid: { $eq: req.user.uid } })
     .then((user) => {
       if (!user) {
@@ -155,7 +149,6 @@ function patchSwim(req, res, next) {
       return Users.findOne({ uid: uid });
     })
     .then((updatedUser) => {
-      console.log("updatedUser", updatedUser);
       const updatedSwim = updatedUser.swims.find((swim) => {
         return swim._id.toString() === id;
       });

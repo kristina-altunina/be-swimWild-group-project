@@ -34,7 +34,7 @@ function getMarineWeather(lat, lng, end) {
       });
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
     });
 }
 

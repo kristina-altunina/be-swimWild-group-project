@@ -47,7 +47,7 @@ beforeEach(() => {
       goldigginsId = resolvedPromises[3].id;
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 });
 
@@ -61,7 +61,6 @@ describe("GET location/:id", () => {
       .get(`/locations/${rydalId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.swims[0]).toMatchObject({
           uid: expect.any(String),
           name: "Test",
@@ -124,7 +123,6 @@ describe("GET location/:id", () => {
       .get(`/locations/${beckenhamId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body.userData);
         expect(body.userData).toMatchObject({
           avStars: null,
           outOfDepth: null,
@@ -204,7 +202,6 @@ describe("GET location/:id", () => {
       .get(`/locations/${beckenhamId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.apiData).toMatchObject({
           hydrologyData: expect.anything(),
           nearestAab: expect.anything(),
@@ -267,7 +264,6 @@ describe("processUserData", () => {
       },
     ];
     const result = processUserData(swims);
-    console.log(result);
     expect(result).toMatchObject({
       avStars: 3.5,
       outOfDepth: true,

@@ -32,7 +32,7 @@ beforeAll(() => {
   promises.push(
     getAccessTokens().then(
       ([unregisteredToken, registeredToken, swimRegisteredToken]) => {
-        console.log(unregisteredToken, registeredToken);
+        // console.log(unregisteredToken, registeredToken);
         accessToken = unregisteredToken;
         (registeredAccessToken = registeredToken),
           (swimRegisteredToken = swimRegisteredToken);
@@ -99,7 +99,7 @@ describe("DELETE /users/swims", () => {
       .delete(`/users/swims/${swimId}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200)
-      .then(({body}) => {
+      .then(({ body }) => {
         expect(body).toEqual([]);
       });
   });

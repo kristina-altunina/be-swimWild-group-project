@@ -13,24 +13,27 @@ function processUserData(swims) {
   const avMins = trackAndAverage();
   const avKms = trackAndAverage();
 
-  swims.forEach((swim) => {
-    avStars.add(swim.stars);
-    avMins.add(swim.mins);
-    avKms.add(swim.km);
-    if (swim.outOfDepth && outOfDepth === null) outOfDepth = 0;
-    if (typeof swim.outOfDepth === "boolean") {
-      outOfDepth += swim.outOfDepth ? 1 : -1;
-    }
-    if (swim.recordTemp && swim.date > mostRecentTemp.date) {
-      mostRecentTemp.temp = swim.recordTemp;
-      mostRecentTemp.date = swim.date;
-    }
-    if (swim.feelTemp && withinMonth(swim.date)) feelTemps.push(swim.feelTemp);
-    if (swim.sizeKey) sizes.push(swim.sizeKey);
-    if (swim.shore) shores.push(swim.shore);
-    if (swim.bankAngle) bankAngles.push(swim.bankAngle);
-    if (swim.clarity) clarities.push(swim.clarity);
-  });
+  if (Array.isArray(swims)) {
+    swims.forEach((swim) => {
+      avStars.add(swim.stars);
+      avMins.add(swim.mins);
+      avKms.add(swim.km);
+      if (swim.outOfDepth && outOfDepth === null) outOfDepth = 0;
+      if (typeof swim.outOfDepth === "boolean") {
+        outOfDepth += swim.outOfDepth ? 1 : -1;
+      }
+      if (swim.recordTemp && swim.date > mostRecentTemp.date) {
+        mostRecentTemp.temp = swim.recordTemp;
+        mostRecentTemp.date = swim.date;
+      }
+      if (swim.feelTemp && withinMonth(swim.date))
+        feelTemps.push(swim.feelTemp);
+      if (swim.sizeKey) sizes.push(swim.sizeKey);
+      if (swim.shore) shores.push(swim.shore);
+      if (swim.bankAngle) bankAngles.push(swim.bankAngle);
+      if (swim.clarity) clarities.push(swim.clarity);
+    });
+  }
 
   if (outOfDepth !== null) outOfDepth = outOfDepth >= 0 ? true : false;
 
@@ -163,7 +166,7 @@ function generateInfo(swims, userData, location, apiData, user) {
       hazards.push(
         `Oxygen saturation was measured at ${
           data[1]?.mostRecentValue
-        } on ${new Date(
+        }% on ${new Date(
           data[1]?.mostRecentSampleDate
         ).toDateString()}. This may suggest the water is less safe for swimming.`
       );

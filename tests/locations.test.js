@@ -24,7 +24,7 @@ beforeAll(() => {
   );
   promises.push(
     getAccessTokens().then(([unregisteredToken, registeredToken]) => {
-      console.log(unregisteredToken, registeredToken);
+      // console.log(unregisteredToken, registeredToken);
       accessToken = unregisteredToken;
       registeredAccessToken = registeredToken;
     })
@@ -46,7 +46,6 @@ describe("GET /locations", () => {
       .get("/locations")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body[0]).toMatchObject({
           name: expect.any(String),
           _id: expect.any(String),
@@ -69,7 +68,6 @@ describe("GET /locations", () => {
       .get("/locations?sort_by=rating")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toBeSortedBy("avStars", { descending: true });
       });
   });
@@ -213,7 +211,6 @@ describe("POST /locations", () => {
       .send({ name: "test", type: "river", coords: [] })
       .expect(400)
       .then(({ text }) => {
-        console.log(text);
         expect(text).toBe("Must include coordinates as array of [lat, long]!");
       });
   });

@@ -17,7 +17,7 @@ function getLiveWeather([lat, long], day) {
       return output;
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 }
 

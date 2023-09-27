@@ -119,4 +119,39 @@ module.exports = [
     type: "lake",
     coords: [54.47803932583824, -3.2026702873073294],
   },
+  {
+    name: "Grantchester Meadows, Cambridge",
+    type: "river",
+    coords: [52.1898314104158, 0.10488203332170269],
+  },
+  {
+    name: "Barcombe Mills - River Ouse, East Sussex",
+    type: "river",
+    coords: [50.91494489982441, 0.03950223251888474],
+  },
+  {
+    name: "St Nectan's Kieve, Cornwall",
+    type: "river",
+    coords: [50.664711664840794, -4.716404168549602],
+  },
+  {
+    name: "River Waveney, Suffolk",
+    type: "river",
+    coords: [52.45591354691067, 1.4466346601796294],
+  },
+  {
+    name: "River Lugg, Herefordshire",
+    type: "river",
+    coords: [52.26744545430148, -2.9408826696128627],
+  },
+  {
+    name: "River Dart, Devon",
+    type: "river",
+    coords: [52.26744545430148, -2.9408826696128627],
+  },
+  {
+    name: "Bude Sea Pool, Cornwall",
+    type: "sea",
+    coords: [50.83249425707116, -4.553987909548146],
+  },
 ];

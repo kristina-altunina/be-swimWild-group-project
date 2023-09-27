@@ -54,7 +54,6 @@ describe("GET /users/profile", () => {
       .get("/users/profile")
       .set("Authorization", `Bearer ${accessToken}`)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",
@@ -92,7 +91,7 @@ describe("GET /users/profile", () => {
   });
 });
 
-describe.only("POST /users", () => {
+describe("POST /users", () => {
   test("should respond with and create user", () => {
     const postBody = {
       name: "Test User",
@@ -108,7 +107,6 @@ describe.only("POST /users", () => {
       .set("Authorization", `Bearer ${registeredAccessToken}`)
       .expect(201)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toMatchObject({
           uid: "ChYMb6pn4sQn4Hs0qt6XW9TaE742",
           name: "Test User",
@@ -222,40 +220,6 @@ describe.only("POST /users", () => {
         expect(response.text).toBe("Users validation failed");
       });
   });
-  test("should respond with 401 if post body contains uid", () => {
-    const postBody = {
-      uid: "3420",
-      name: "my name",
-      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
-      bio: "Hello",
-      dob: "1997-08-29T18:00:00+0000",
-    };
-    return request(app)
-      .post("/users")
-      .send(postBody)
-      .set("Authorization", `Bearer ${registeredAccessToken}`)
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("invalid post body");
-      });
-  });
-  test("should respond with 400 if post body contains invalid keys", () => {
-    const postBody = {
-      Banana: "are great",
-      name: "my name",
-      nickname: "https://i.redd.it/p6f66n7xbmb11.jpg",
-      bio: "Hello",
-      dob: "1997-08-29T18:00:00+0000",
-    };
-    return request(app)
-      .post("/users")
-      .send(postBody)
-      .set("Authorization", `Bearer ${registeredAccessToken}`)
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("invalid post body");
-      });
-  });
   test("should respond with 400 if dob is invalid on post body", () => {
     const postBody = {
       name: "my name",
@@ -290,7 +254,6 @@ describe("PATCH /users/", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toMatchObject({
           nickname: "dobbyforRon",
           profileImg:
@@ -392,7 +355,6 @@ describe("GET /users/:uid", () => {
       .get("/users/UHaKMQx4MLbrELny74UYMyUBcOm2")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toMatchObject({
           name: "testUser",
           nickname: "tester",

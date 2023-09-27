@@ -153,7 +153,7 @@ function processEaData(dataPromise, searchDate) {
     })
     .catch((err) => {
       if (err?.response?.status === 404) {
-        console.log("404 at ", err.request.method, err.request.path);
+        // console.log("404 at ", err.request.method, err.request.path);
       }
     });
 }
